@@ -1,5 +1,5 @@
 import React from 'react';
-import Frame from './components/AppFrame';
+import Stage from './components/Stage';
 import Input from './components/Input';
 import './App.css';
 
@@ -10,7 +10,7 @@ function App() {
         <h1>Header</h1>
       </div>
       <Input />
-      <Frame />
+      <Stage />
       <div className="app-footer">
        <h1>Footer</h1>
       </div>

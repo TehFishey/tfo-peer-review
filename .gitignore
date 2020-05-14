@@ -4,7 +4,8 @@
 /app/node_modules
 /.pnp
 .pnp.js
-.code-workspace
+/.vscode
+*.code-workspace
 
 # testing
 /coverage
