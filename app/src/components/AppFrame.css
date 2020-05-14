@@ -1,0 +1,45 @@
+.appframe {
+    width: 800px;
+    height: 800px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+    background-color: #8c5c46;
+    border-radius: 25px;
+  }
+
+.appframe-selector {
+    width: 300px;
+    height: 600px;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    margin: auto;
+    background-color: #8c5c46;
+    border-radius: 25px;
+  }
+
+.appframe-selector-item {
+    width: 60px;
+    height: 50px;
+    background-color: #1f1410;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.appframe-view {
+    width: 300px;
+    height: 600px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+    background-color: #8c5c46;
+    border-radius: 25px;
+  }
+
+.appframe-view-iframe {
+    width: 90%;
+    height: 90%;
+}
