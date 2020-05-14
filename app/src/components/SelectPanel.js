@@ -1,12 +1,12 @@
 import React from 'react';
-import CreatureItem from './CreatureItem';
+import SelectPanelItem from './SelectPanelItem';
 
 export default class SelectPanel extends React.Component {
     createItems() {
         let items = []
 
         this.props.creatures.forEach(i => items.push(
-            <CreatureItem code = {i.code} 
+            <SelectPanelItem code = {i.code} 
                 src={i.imgsrc} 
                 onClick={(code) => this.props.onCreaturePick(code)}
             />));

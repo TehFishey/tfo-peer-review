@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import ImportPanel from './ImportPanel';
 import SelectPanel from './SelectPanel.js';
 import ViewPanel from './ViewPanel.js';
-import './Stage.css';
+import './stage-top.css';
+import './stage-bottom.css';
 
 export default class Stage extends React.Component {
     constructor(props) {
@@ -32,14 +34,18 @@ export default class Stage extends React.Component {
 
     render() {
         return (
-            <div className="stage">
-                <SelectPanel 
-                    creatures={this.state.creatures} 
-                    onCreaturePick={(code) => this.updateViewUrl(code)}
-                />
-                <ViewPanel currentView={this.state.currentView}/>
+            <div>
+                <div className="stage-top">
+                    <ImportPanel />
+                </div>
+                <div className="stage-bottom">
+                    <SelectPanel 
+                        creatures={this.state.creatures} 
+                        onCreaturePick={(code) => this.updateViewUrl(code)}
+                    />
+                    <ViewPanel currentView={this.state.currentView}/>
+                </div>
             </div>
         )
     }
 }
-//
