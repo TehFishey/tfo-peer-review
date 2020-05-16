@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class CreatureItem extends React.Component {
+export default class SelectPanelItem extends React.Component {
     render () {
         return (
                 <button 

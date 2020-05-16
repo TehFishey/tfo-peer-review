@@ -12,11 +12,39 @@
 
 .import-panel {
   width: 700px;
-  height: 80px;
+  height: auto;
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
   margin: auto;
   background-color: #8c5c46;
   border-radius: 25px;
+}
+
+.import-panel-select {
+  width: 700px;
+  height: auto;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  margin: auto;
+  background-color: #8c5c46;
+  border-radius: 25px;
+}
+
+.import-panel-item {
+  width: 70px;
+  height: 70px;
+  display: block;
+  background-color: #817c7a;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.creature-image {
+  width: 45px;
+  height: 50px;
+  background-color: #141414;
+  margin: auto;
+  border-radius: 5px;
 }

@@ -3,15 +3,19 @@ import SelectPanelItem from './SelectPanelItem';
 
 export default class SelectPanel extends React.Component {
     createItems() {
-        let items = []
+        let panelItems = []
 
-        this.props.creatures.forEach(i => items.push(
-            <SelectPanelItem code = {i.code} 
-                src={i.imgsrc} 
-                onClick={(code) => this.props.onCreaturePick(code)}
-            />));
-
-        return items;
+        if(this.props.creatures) {
+            this.props.creatures.forEach((creature, index) => panelItems.push(
+                <SelectPanelItem key = {index}
+                    code = {creature.code} 
+                    src={creature.imgsrc} 
+                    onClick={(code) => this.props.onCreaturePick(code)}
+                />
+            ));
+            return panelItems;
+        } else return <label> Looks like there's nothing here... </label>
+        
     }
 
     render () {

@@ -1,11 +1,16 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-  
+
+// if preflight, return only the headers and not the content
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
+
 // include database and object files
-include_once '../config/database.php';
-include_once '../objects/creature.php';
+include_once './config/database.php';
+include_once './objects/creature.php';
   
 // instantiate database and product object
 $database = new Database();
@@ -35,12 +40,11 @@ if($num>0) {
         extract($row);
   
         $creature_item=array(
-            "id" => $id,
             "code" => $code,
             "imgsrc" => $imgsrc,
             "gotten" => $gotten,
             "name" => $name,
-            "growth" => $growth
+            "growthLevel" => $growthLevel
         );
   
         array_push($creatures_arr["records"], $creature_item);
@@ -49,15 +53,11 @@ if($num>0) {
     // set response code - 200 OK
     http_response_code(200);
   
-    // show products data in json format
+    // show object data in json format
     echo json_encode($creatures_arr);
 } else {
-  
-    // set response code - 404 Not found
-    http_response_code(404);
-  
-    // tell the user no products found
+    // tell the user no objects found
     echo json_encode(
-        array("message" => "No products found.")
+        array("error" => "(404) No creatures found.")
     );
 }

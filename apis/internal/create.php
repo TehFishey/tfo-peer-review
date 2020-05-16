@@ -1,14 +1,16 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-  
-// include database and object files
-include_once '../config/database.php';
-include_once '../objects/creature.php';
+
+// if preflight, return only the headers and not the content
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
+
+// include database and object file
+include_once './config/database.php';
+include_once './objects/creature.php';
   
 $database = new Database();
 $db = $database->getConnection();
@@ -19,39 +21,26 @@ $creature = new Creature($db);
 $data = json_decode(file_get_contents("php://input"));
   
 // make sure data is not empty
-if (
+if(
     !empty($data->code) &&
     !empty($data->imgsrc) &&
     !empty($data->gotten) &&
     !empty($data->name) &&
-    !empty($data->growth)
-) {
+    !empty($data->growthLevel)
+){
   
     // set property values
     $creature->code = $data->code;
     $creature->imgsrc = $data->imgsrc;
     $creature->gotten = $data->gotten;
     $creature->name = $data->name;
-    $creature->growth = $data->growth;
+    $creature->growthLevel = $data->growthLevel;
   
     // create the object
-    if($creature->create()){
-  
-        // set response code - 201 created
-        http_response_code(201);
-  
-        // tell the user
+    if($creature->replace()){
         echo json_encode(array("message" => "(201) Creature was created."));
-    }
-  
-    // if unable to create the object, tell the user
-    else {
-  
-        // set response code - 503 service unavailable
-        http_response_code(503);
-  
-        // tell the user
-        echo json_encode(array("message" => "(503) Unable to create creature."));
+    } else {
+        echo json_encode(array("error" => "(503) Unable to create creature."));
     }
 }
   
@@ -61,7 +50,7 @@ else{
     // set response code - 400 bad request
     http_response_code(400);
   
-    // tell the user
+   // tell the user
     echo json_encode(array("message" => "(400) Unable to create creature. Data is incomplete."));
 }
 ?>
