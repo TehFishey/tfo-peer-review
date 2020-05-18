@@ -22,6 +22,21 @@ class CreatureKey {
         return $stmt;
     }
 
+    function replace() {
+        $query = "REPLACE INTO " . $this->table_name . " SET 
+            code=:code";
+        $stmt = $this->conn->prepare($query);
+      
+        $this->imgsrc=htmlspecialchars(strip_tags($this->code));
+        $stmt->bindParam(":code", $this->code);
+
+        if($stmt->execute()){
+            return true;
+        }
+      
+        return false;  
+    }
+
     function clear() {
         $query = "TRUNCATE TABLE " . $this->table_name;
 

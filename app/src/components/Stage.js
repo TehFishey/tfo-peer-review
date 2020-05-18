@@ -77,6 +77,11 @@ export default class Stage extends React.Component {
         console.log('view is now: '+this.state.currentView)
     }
 
+    flagCreature(code) {
+        this.iAPI.markForRemoval(code);
+        console.log('marking creature ' + code + ' as illegal!')
+    }
+
     updateDisplayCreatures() {
         this.iAPI.getAllEntries((data) => {
             this.setState({ displayCreatures : data.records });
@@ -107,6 +112,7 @@ export default class Stage extends React.Component {
                     <SelectPanel 
                         creatures={this.state.displayCreatures} 
                         onCreaturePick={(code) => this.updateViewUrl(code)}
+                        onCreatureFlag={(code) => this.flagCreature(code)}
                     />
                     <ViewPanel currentView={this.state.currentView}/>
                 </div>

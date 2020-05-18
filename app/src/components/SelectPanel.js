@@ -11,6 +11,7 @@ export default class SelectPanel extends React.Component {
                     code = {creature.code} 
                     src={creature.imgsrc} 
                     onClick={(code) => this.props.onCreaturePick(code)}
+                    onRemovalClick={(code) => this.props.onCreatureFlag(code)}
                 />
             ));
             return panelItems;

@@ -11,7 +11,7 @@ export default class ExternalAPIService {
         const cmd = 'creature.getall.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting getall AJAX request');
+        console.log('InternalAPI AJAX: Attempting to retrieve all creature entries');
 
         this.service.get(url)
         .then(response => response.data)
@@ -23,7 +23,7 @@ export default class ExternalAPIService {
         const cmd = 'creature.get?code='+code;
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting get AJAX request with code: ' + code);
+        console.log('InternalAPI AJAX: Attempting to retrieve creature entry with code: ' + code);
         
         this.service.get(url)
         .then(response => response.data)
@@ -35,8 +35,8 @@ export default class ExternalAPIService {
         const cmd = 'creature.update.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting update AJAX request for object with code: ' + entry.code);
-        console.log(entry);
+        console.log('InternalAPI AJAX: Attempting to add/update creature entry with code: ' + entry.code);
+
         if(callback !== undefined) {
             this.service.post(url, entry)
             .then(response => response.data)
@@ -52,8 +52,8 @@ export default class ExternalAPIService {
         const cmd = 'creature.delete.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting delete AJAX request for object with code: ' + entry.code);
-        console.log(entry);
+        console.log('InternalAPI AJAX: to delete creature entry with code: ' + entry.code);
+
         if(callback !== undefined) {
             this.service.post(url, entry)
             .then(response => response.data)
@@ -61,6 +61,23 @@ export default class ExternalAPIService {
             .catch(error => {console.log(error)});
         } else {
             this.service.post(url, entry)
+            .catch(error => {console.log(error)});
+        }
+    }
+
+    markForRemoval(code, callback) {
+        const cmd = 'ckey.update.php';
+        let url = rootUrl + cmd;
+
+        console.log('InternalAPI AJAX: Attempting to add ' + code + ' to markedkeys db table');
+
+        if(callback !== undefined) {
+            this.service.post(url, {'code' : code})
+            .then(response => response.data)
+            .then((data) => callback(data))
+            .catch(error => {console.log(error)});
+        } else {
+            this.service.post(url, {'code' : code})
             .catch(error => {console.log(error)});
         }
     }
