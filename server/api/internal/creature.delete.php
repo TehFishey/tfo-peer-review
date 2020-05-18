@@ -9,8 +9,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // include database and object file
-include_once './config/database.php';
-include_once './objects/creature.php';
+include_once './db/db.php';
+include_once './library/creature.php';
   
 $database = new Database();
 $db = $database->getConnection();

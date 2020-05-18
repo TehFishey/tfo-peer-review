@@ -3,14 +3,14 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Credentials: true");
-header('Content-Type: application/json');
+header("Content-Type: application/json; charset=UTF-8");
 
 // if preflight, return only the headers and not the content
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // include database and object files
-include_once './config/database.php';
-include_once './objects/creature.php';
+include_once './db/db.php';
+include_once './library/creature.php';
   
 // get database connection
 $database = new Database();

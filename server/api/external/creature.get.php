@@ -8,10 +8,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // if preflight, return only the headers and not the content
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
+include_once '../../config/config.php';
+
 //API for forwarding frontend requests to finaloutpost.net and returning results
 
-$url = "https://finaloutpost.net/usersc/plugins/apibuilder/examples/labLoad.php";
-$key = "G7I1Z-SQ0UQ-5EBC3-DECB3-9A6";
+$url = API_PATH;
+$key = API_KEY;
 
 //request Json should include Action and Value props
 $request = json_decode(file_get_contents("php://input"));

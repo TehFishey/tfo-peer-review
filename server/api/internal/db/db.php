@@ -1,11 +1,13 @@
 <?php
+    
+    include_once '../../config/config.php';
+
 class Database {
-  
-    // specify your own database credentials
-    private $host = "localhost";
-    private $db_name = "peereview";
-    private $username = "root";
-    private $password = "root";
+    // specify your own credentials
+    private $host = DB_HOST;
+    private $db_name = DB_NAME;
+    private $username = DB_USERNAME;
+    private $password = DB_PASSWORD;
     public $conn;
   
     // get the database connection

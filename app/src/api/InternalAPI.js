@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const rootUrl = 'https://xampp.test.environment/apis/internal';
+const rootUrl = 'https://xampp.test.environment/api/internal/';
 
 export default class ExternalAPIService {
     constructor() {
@@ -8,10 +8,10 @@ export default class ExternalAPIService {
     }
 
     getAllEntries(callback) {
-        const cmdUrl = '/read_all.php';
-        let url = rootUrl + cmdUrl;
+        const cmd = 'creature.getall.php';
+        let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting read_all AJAX request');
+        console.log('InternalAPI: Attempting getall AJAX request');
 
         this.service.get(url)
         .then(response => response.data)
@@ -20,10 +20,10 @@ export default class ExternalAPIService {
     }
 
     getSingleEntry(code, callback) {
-        const cmdUrl = '/read_code.php?code='+code;
-        let url = rootUrl + cmdUrl;
+        const cmd = 'creature.get?code='+code;
+        let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting read_code AJAX request with code: ' + code);
+        console.log('InternalAPI: Attempting get AJAX request with code: ' + code);
         
         this.service.get(url)
         .then(response => response.data)
@@ -32,10 +32,10 @@ export default class ExternalAPIService {
     }
 
     addEntry(entry, callback) {
-        const cmdUrl = '/create.php';
-        let url = rootUrl + cmdUrl;
+        const cmd = 'creature.update.php';
+        let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting add AJAX request for object with code: ' + entry.code);
+        console.log('InternalAPI: Attempting update AJAX request for object with code: ' + entry.code);
         console.log(entry);
         if(callback !== undefined) {
             this.service.post(url, entry)
@@ -49,10 +49,10 @@ export default class ExternalAPIService {
     }
 
     removeEntry(entry, callback) {
-        const cmdUrl = '/delete.php';
-        let url = rootUrl + cmdUrl;
+        const cmd = 'creature.delete.php';
+        let url = rootUrl + cmd;
 
-        console.log('InternalAPI: Attempting remove AJAX request for object with code: ' + entry.code);
+        console.log('InternalAPI: Attempting delete AJAX request for object with code: ' + entry.code);
         console.log(entry);
         if(callback !== undefined) {
             this.service.post(url, entry)

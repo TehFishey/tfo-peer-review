@@ -9,8 +9,8 @@ header("Content-Type: application/json; charset=UTF-8");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // include database and object files
-include_once './config/database.php';
-include_once './objects/creature.php';
+include_once './db/db.php';
+include_once './library/creature.php';
   
 // instantiate database and product object
 $database = new Database();
