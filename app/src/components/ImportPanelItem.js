@@ -3,7 +3,8 @@ import React from 'react';
 export default class ImportPanelItem extends React.Component {
     render () {
         return (
-            <div className="import-panel-item">
+            <div className="import-panel-item" 
+                onClick={() => this.props.onCheck(this.props.code, !this.props.checked)} >
                 <div className="creature-image"
                     style={{
                         backgroundImage : 'url('+this.props.src+')',
@@ -12,13 +13,8 @@ export default class ImportPanelItem extends React.Component {
                     }}/>
                 <div>
                     <label>{this.props.code}</label>
-                    <input 
-                    type="checkbox"
-                    checked={this.props.checked}
-                    onChange={() => this.props.onCheck(this.props.code, !this.props.checked)}
-                />
+                    <input type="checkbox" readOnly checked={this.props.checked} />
                 </div>
-                
             </div>
         )
     }

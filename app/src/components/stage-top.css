@@ -1,6 +1,7 @@
 .stage-top {
   width: 800px;
-  height: 100px;
+  min-height: 100px;
+  height: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -17,8 +18,16 @@
   flex-flow: row wrap;
   align-content: flex-start;
   margin: auto;
-  background-color: #8c5c46;
+  background-color: #927e75;
   border-radius: 25px;
+}
+
+.import-panel-search {
+  display: block;
+}
+
+.import-panel-search button {
+  
 }
 
 .import-panel-select {

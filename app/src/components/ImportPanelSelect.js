@@ -5,11 +5,13 @@ export default class ImportPanelSelect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            importCreatures : this.props.importCreatures
+            importCreatures : this.props.importCreatures,
+            checkAllBox: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleCheckAll = this.handleCheckAll.bind(this);
     }
 
     handleSubmit() {
@@ -20,11 +22,17 @@ export default class ImportPanelSelect extends React.Component {
         this.props.onClose();
     }
 
+    handleCheckAll() {
+        this.setState({ checkAllBox : !this.state.checkAllBox });
+        this.setState({ importCreatures : this.state.importCreatures.map(
+            (tuple) => {return [!this.state.checkAllBox, tuple[1]]}
+        )});
+    }
+
     onItemCheck(code, checked) {
         this.setState({ importCreatures : this.state.importCreatures.map(
             (tuple) => { return (tuple[1].code === code) ? [checked, tuple[1]] : tuple }
         )});
-        console.log('checked state for ' + code + ' is now: ' + checked.toString())
     }
 
     createPanelItems() {
@@ -43,10 +51,11 @@ export default class ImportPanelSelect extends React.Component {
     render () {
         return (
             <div className="import-panel">
+                <label><input type="checkbox" checked={this.state.checkAllBox} onChange={this.handleCheckAll} />(Un)select All</label>
                 <div className="import-panel-select">
                     {this.createPanelItems()}
-                    <button text="Submit" onClick={this.handleSubmit}/>
-                    <button text="Cancel" onClick={this.handleClose}/>
+                    <button onClick={this.handleSubmit}>Submit</button>
+                    <button onClick={this.handleClose}>Cancel</button>
                 </div>
             </div>
         )

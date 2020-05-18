@@ -39,7 +39,7 @@ export default class Stage extends React.Component {
 
         importArray.forEach((item) => {
             this.iAPI.getSingleEntry(item.code, (data) => {
-                (typeof data.code !== undefined) ?
+                (typeof data.code !== 'undefined') ?
                 creatures.push([true, item]) :
                 creatures.push([false, item]) 
                 this.setState({importCreatures : creatures})
