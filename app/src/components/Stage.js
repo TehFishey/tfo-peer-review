@@ -72,7 +72,7 @@ export default class Stage extends React.Component {
     }
 
     updateViewUrl(code) {
-        let url = 'https://finaloutpost.net/view/'+code;
+        let url = 'https://finaloutpost.net/view/'+code+'#main';
         this.setState({ currentView : url });
         console.log('view is now: '+this.state.currentView);
         this.clearCreature(code);
@@ -93,7 +93,7 @@ export default class Stage extends React.Component {
         if(this.state.displayCreatures.length <= 25) {
             this.iAPI.getEntrySet(
                 (data) => { 
-                    let displayCodes = this.state.displayCreatures.map((item)=>{return item.code});
+                    let displayCodes = this.state.displayCreatures.map((item)=>{return item.code}).push(code);
                     let newEntries = data.records.filter(item => !displayCodes.includes(item.code));
 
                     this.setState({displayCreatures : this.state.displayCreatures.concat(newEntries)});
@@ -114,7 +114,7 @@ export default class Stage extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="App-stage">
                 <div className="stage-top">
                     {(this.state.labIsOpen) ? 
                         <ImportPanelSelect
@@ -128,13 +128,15 @@ export default class Stage extends React.Component {
                         />
                     }
                 </div>
-                <div className="stage-bottom">
+                <div className="stage-bottom-outer">
+                    <div className="stage-bottom-inner">
                     <SelectPanel 
                         creatures={this.state.displayCreatures} 
                         onCreaturePick={(code) => this.updateViewUrl(code)}
                         onCreatureFlag={(code) => this.flagCreature(code)}
                     />
                     <ViewPanel currentView={this.state.currentView}/>
+                    </div>
                 </div>
             </div>
         )

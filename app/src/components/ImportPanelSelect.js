@@ -51,9 +51,11 @@ export default class ImportPanelSelect extends React.Component {
     render () {
         return (
             <div className="import-panel">
-                <label><input type="checkbox" checked={this.state.checkAllBox} onChange={this.handleCheckAll} />(Un)select All</label>
                 <div className="import-panel-select">
-                    {this.createPanelItems()}
+                    <label><input type="checkbox" checked={this.state.checkAllBox} onChange={this.handleCheckAll} />(Un)select All</label>
+                    <div className="import-panel-select-items">
+                        {this.createPanelItems()}
+                    </div>
                     <button onClick={this.handleSubmit}>Submit</button>
                     <button onClick={this.handleClose}>Cancel</button>
                 </div>

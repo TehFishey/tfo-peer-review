@@ -8,10 +8,10 @@ class Creature {
   
     // object properties
     public $code;           // string - 5 character creature code (ex. "6bMDs")
-    public $imgsrc;         // string - creature image src (ex. "https:\/\/finaloutpost.net\/s\/6bMDs.png")
-    public $gotten;         // string - db entry creation Unix timestamp (ex. 1589163235)
-    public $name;           // string - creature name (or Unnamed) (ex. "Unnamed")
-    public $growthLevel;    // string - creature growthLevel level (1-egg, 2-hatch, 3-mature) (ex. "1")
+    public $imgsrc;         // string - 60 character image src (ex. "https:\/\/finaloutpost.net\/s\/6bMDs.png")
+    public $gotten;         // string - 10 character Unix timestamp for when creature was aquired
+    public $name;           // string - 30 creature name (or Unnamed) (ex. "Unnamed")
+    public $growthLevel;    // string - 1 character creature growthLevel level (1-egg, 2-hatch, 3-mature) (ex. "1")
   
     // constructor with $db as database connection
     public function __construct($db) {

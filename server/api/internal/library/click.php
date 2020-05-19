@@ -24,10 +24,8 @@ class UserClick {
         $stmt->bindParam(":code", $this->code);
 
         if($stmt->execute()){
-            echo("\n exe success");
             return true;
         }
-        echo("\n exe failed");
         return false; 
     }
 }

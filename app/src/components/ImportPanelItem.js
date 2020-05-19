@@ -5,7 +5,7 @@ export default class ImportPanelItem extends React.Component {
         return (
             <div className="import-panel-item" 
                 onClick={() => this.props.onCheck(this.props.code, !this.props.checked)} >
-                <div className="creature-image"
+                <div className="import-creature-image"
                     style={{
                         backgroundImage : 'url('+this.props.src+')',
                         backgroundRepeat : 'no-repeat', 
