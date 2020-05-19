@@ -17,7 +17,7 @@ $database = new Database();
 $db = $database->getConnection();
   
 // prepare object
-$creature = new creature($db);
+$creature = new Creature($db);
   
 // set code property of record to read
 $creature->code = isset($_GET['code']) ? $_GET['code'] : die();

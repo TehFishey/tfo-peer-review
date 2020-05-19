@@ -11,28 +11,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 // include database and object file
 include_once './db/db.php';
 include_once './library/click.php';
+include_once './library/creature.php';
   
 $database = new Database();
 $db = $database->getConnection();
   
 $click = new UserClick($db);
-  
+$creature = new creature($db);
+
 $data = json_decode(file_get_contents("php://input"));
 if(!empty($data->code)){
+    
+    // first check if creature code exists in creature db (input validation)
+    $creature->code = $data->code;
+    $creature->readOne();
+    if($creature->name!=null){
+
+        // set property values
+        $click->uip = $_SERVER['REMOTE_ADDR'];
+        $click->code = $data->code;
   
-    // set property values
-    $click->uip = $_SERVER['REMOTE_ADDR'];
-    $click->code = $data->code;
-  
-    // create the object
-    if($click->create()){
-        echo json_encode(array("message" => "(201) Creature was created."));
+        // create the object
+        if($click->create()){
+            echo json_encode(array("message" => "(201) entry was created."));
+        } else {
+            echo json_encode(array("error" => "(503) Unable to create entry."));
+        }
     } else {
-        echo json_encode(array("error" => "(503) Unable to create creature."));
+        http_response_code(400);
+        echo json_encode(array("message" => "(400) Unable to create entry. Creature code is invalid."));
     }
 }
 else{
     http_response_code(400);
-    echo json_encode(array("message" => "(400) Unable to create creature. Data is incomplete."));
+    echo json_encode(array("message" => "(400) Unable to create entry. Data is incomplete."));
 }
 ?>

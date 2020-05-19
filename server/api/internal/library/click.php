@@ -15,7 +15,9 @@ class UserClick {
     }
 
     function create() {
-        $query = "INSERT INTO " . $this->table_name . " SET ip=:ip, code=:code";
+        $query = "INSERT INTO " . $this->table_name . "(ip, code) 
+            select :ip, :code 
+            on duplicate key update ip = values(ip)";
         $stmt = $this->conn->prepare($query);
 
         $this->uip=htmlspecialchars(strip_tags($this->uip));
