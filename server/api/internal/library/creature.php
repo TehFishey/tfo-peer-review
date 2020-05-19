@@ -4,6 +4,7 @@ class Creature {
     // database connection and table name
     private $conn;
     private $table_name = "creatures";
+    private $ip_table_name = "userclicks";
   
     // object properties
     public $code;           // string - 5 character creature code (ex. "6bMDs")
@@ -17,7 +18,9 @@ class Creature {
         $this->conn = $db;
     }
 
-    function read() {
+    //Currently unused
+    /*
+    function readAll() {
         // select all query
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel FROM " 
                  . $this->table_name . " AS c";
@@ -30,12 +33,30 @@ class Creature {
       
         return $stmt;
     }
+    */
+
+    function readSet($uip) {
+        // Retrieves 50 random 'creatures' entries where no 'userclicks' entry match the creature code
+        $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel 
+            FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->ip_table_name . " AS ip ON c.code = ip.code 
+            GROUP BY c.code 
+            HAVING COUNT(CASE WHEN ip.ip = '" . $uip . "' THEN 1 END) = 0
+            ORDER BY RAND()
+            LIMIT 50";
+
+        $stmt = $this->conn->prepare($query);
+      
+        // execute query
+        $stmt->execute();
+      
+        return $stmt;
+    }
 
     function readOne() {
         // query to read single record
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel FROM "
                     . $this->table_name . " AS c WHERE c.code = ? LIMIT 0,1";
-      
+
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
       
@@ -87,6 +108,7 @@ class Creature {
         return false;  
     }
     
+    //Currently unused
     /*
     function create() {
         // query to insert record
@@ -116,7 +138,10 @@ class Creature {
       
         return false;  
     }
+    */
 
+    //Currently unused
+    /*
     function update() {
         // update query
         $query = "UPDATE " . $this->table_name . " SET

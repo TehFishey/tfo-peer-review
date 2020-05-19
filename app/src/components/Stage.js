@@ -74,16 +74,36 @@ export default class Stage extends React.Component {
     updateViewUrl(code) {
         let url = 'https://finaloutpost.net/view/'+code;
         this.setState({ currentView : url });
-        console.log('view is now: '+this.state.currentView)
+        console.log('view is now: '+this.state.currentView);
+        this.clearCreature(code);
     }
 
     flagCreature(code) {
         this.iAPI.markForRemoval(code);
         console.log('marking creature ' + code + ' as illegal!')
+        this.clearCreature(code);
+    }
+
+    clearCreature(code) {
+        this.iAPI.addClick(code);
+        this.setState({ displayCreatures : this.state.displayCreatures.filter(
+            item => item.code !== code 
+        )})
+
+        if(this.state.displayCreatures.length <= 25) {
+            this.iAPI.getEntrySet(
+                (data) => { 
+                    let displayCodes = this.state.displayCreatures.map((item)=>{return item.code});
+                    let newEntries = data.records.filter(item => !displayCodes.includes(item.code));
+
+                    this.setState({displayCreatures : this.state.displayCreatures.concat(newEntries)});
+                }
+            )
+        }
     }
 
     updateDisplayCreatures() {
-        this.iAPI.getAllEntries((data) => {
+        this.iAPI.getEntrySet((data) => {
             this.setState({ displayCreatures : data.records });
         });
     }

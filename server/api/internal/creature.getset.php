@@ -15,12 +15,15 @@ include_once './library/creature.php';
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
-  
+
+// get ip address of frontend
+$uip = $_SERVER['REMOTE_ADDR'];
+
 // initialize object
 $creature = new Creature($db);
   
-// query products
-$stmt = $creature->read();
+// query for group; pass in user ip
+$stmt = $creature->readSet($uip);
 $num = $stmt->rowCount();
   
 // check if more than 0 record found

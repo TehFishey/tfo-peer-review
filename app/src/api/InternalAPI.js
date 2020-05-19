@@ -7,8 +7,8 @@ export default class ExternalAPIService {
         this.service = axios.create();
     }
 
-    getAllEntries(callback) {
-        const cmd = 'creature.getall.php';
+    getEntrySet(callback) {
+        const cmd = 'creature.getset.php';
         let url = rootUrl + cmd;
 
         console.log('InternalAPI AJAX: Attempting to retrieve all creature entries');
@@ -70,6 +70,23 @@ export default class ExternalAPIService {
         let url = rootUrl + cmd;
 
         console.log('InternalAPI AJAX: Attempting to add ' + code + ' to markedkeys db table');
+
+        if(callback !== undefined) {
+            this.service.post(url, {'code' : code})
+            .then(response => response.data)
+            .then((data) => callback(data))
+            .catch(error => {console.log(error)});
+        } else {
+            this.service.post(url, {'code' : code})
+            .catch(error => {console.log(error)});
+        }
+    }
+
+    addClick(code, callback) {
+        const cmd = 'click.create.php';
+        let url = rootUrl + cmd;
+
+        console.log('InternalAPI AJAX: updating server click tracker for code ' + code);
 
         if(callback !== undefined) {
             this.service.post(url, {'code' : code})
