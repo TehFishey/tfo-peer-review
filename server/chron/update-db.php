@@ -6,10 +6,10 @@
 // For each code, retrieve the creature from TLO and push it do the 'creatures' table
 // Clear 'markedkeys' table afterwards
 
-include_once '../config/config.php';
-include_once '../api/internal/db/db.php';
-include_once '../api/internal/library/ckey.php';
-include_once '../api/internal/library/creature.php';
+include_once (__DIR__).'/../config/config.php';
+include_once (__DIR__).'/../api/internal/db/db.php';
+include_once (__DIR__).'/../api/internal/library/ckey.php';
+include_once (__DIR__).'/../api/internal/library/creature.php';
 
 $database = new Database();
 $conn = $database->getConnection();

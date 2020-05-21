@@ -13,6 +13,7 @@ export default class Stage extends React.Component {
         super(props);
         this.state = {
             labIsOpen : false,
+            labError : false,
             importCreatures : [],
             displayCreatures : [],
             currentView : '',
@@ -22,6 +23,7 @@ export default class Stage extends React.Component {
     }
 
     openLabView(labName) {
+        this.setState({labError : false});
         this.eAPI.labRequest(labName, (data) => {
             if(!data.error) {
                 delete data.error;
@@ -29,7 +31,7 @@ export default class Stage extends React.Component {
                 this.checkCreatures(Object.values(data));
                 this.setState({labIsOpen : true});
             } else {
-                //something something scroll not found...
+                this.setState({labError : true})
             }
         })
     }
@@ -56,13 +58,13 @@ export default class Stage extends React.Component {
         importCreatures.forEach((tuple) => {
             if(tuple[0]) {
                 this.iAPI.addEntry(tuple[1], (data) => {
-                    this.updateDisplayCreatures()
-                    console.log(data)
+                    this.updateDisplayCreatures();
+                    if(window.ENV.DEBUG) console.log(data);
                 });
             } else {
                 this.iAPI.removeEntry(tuple[1], (data) => {
                     this.updateDisplayCreatures()
-                    console.log(data)
+                    if(window.ENV.DEBUG) console.log(data);
                 });
             };
         });
@@ -74,13 +76,13 @@ export default class Stage extends React.Component {
     updateViewUrl(code) {
         let url = 'https://finaloutpost.net/view/'+code+'#main';
         this.setState({ currentView : url });
-        console.log('view is now: '+this.state.currentView);
+        if(window.ENV.DEBUG) console.log('view is now: '+this.state.currentView);
         this.clearCreature(code);
     }
 
     flagCreature(code) {
         this.iAPI.markForRemoval(code);
-        console.log('marking creature ' + code + ' as illegal!')
+        if(window.ENV.DEBUG) console.log('marking creature ' + code + ' as illegal!');
         this.clearCreature(code);
     }
 
@@ -93,7 +95,8 @@ export default class Stage extends React.Component {
         if(this.state.displayCreatures.length <= 25) {
             this.iAPI.getEntrySet(
                 (data) => { 
-                    let displayCodes = this.state.displayCreatures.map((item)=>{return item.code}).push(code);
+                    let displayCodes = this.state.displayCreatures.map((item)=>{return item.code});
+                    displayCodes.push(code);
                     let newEntries = data.records.filter(item => !displayCodes.includes(item.code));
 
                     this.setState({displayCreatures : this.state.displayCreatures.concat(newEntries)});
@@ -124,6 +127,7 @@ export default class Stage extends React.Component {
                             onClose = {() => this.closeLabView()}
                         /> :
                         <ImportPanelSearch 
+                            isError = {this.state.labError}
                             onSubmit = {(labName) => this.openLabView(labName)}
                         />
                     }

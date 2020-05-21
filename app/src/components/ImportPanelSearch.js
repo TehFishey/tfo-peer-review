@@ -33,14 +33,22 @@ export default class ImportPanelSearch extends React.Component {
         return (
             <div className="import-panel">
                 <div className="import-panel-search">
-                    <div style={{textAlign : 'left'}}>Lab Name:</div>
-                    <div><input 
-                        type="text" 
-                        value={this.state.name} 
-                        onChange={this.handleNameChange}
-                        onKeyPress={this.handleNameEnterKey}
-                    /></div>
-                    <button onClick={this.handleNameSubmit}>Search</button>
+                    <div className="import-panel-controls">
+                        <div style={{textAlign : 'left'}}>Lab Name:</div>
+                        <div><input 
+                            type="text" 
+                            style={{width: '150'}}
+                            value={this.state.name} 
+                            onChange={this.handleNameChange}
+                            onKeyPress={this.handleNameEnterKey}
+                        /></div>
+                        <button onClick={this.handleNameSubmit}>Open Lab</button>
+                    </div>
+                    <div className="import-panel-search-text">
+                    </div>
+                    <div className="import-panel-search-error">
+                        {this.props.isError ? 'ERROR: Lab not found!' : ''}
+                    </div>
                 </div>
             </div>
         )

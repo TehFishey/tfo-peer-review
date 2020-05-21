@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const rootUrl = 'https://xampp.test.environment/api/external/';
+const rootUrl = window.ENV.API_URL+'external/';
 
 export default class ExternalAPIService {
     constructor() {
@@ -11,7 +11,7 @@ export default class ExternalAPIService {
         const cmd = 'lab.get.php'
         let url = rootUrl + cmd;
 
-        console.log('ExternalAPI: Attempting lab request for username: ' + username)
+        if(window.ENV.DEBUG) console.log('ExternalAPI: Attempting lab request for username: ' + username);
 
         this.service.post(url, {action : 'lab', value : username})
         .then(response => response.data)

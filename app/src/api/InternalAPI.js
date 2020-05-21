@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const rootUrl = 'https://xampp.test.environment/api/internal/';
+const rootUrl = window.ENV.API_URL+'internal/';
 
 export default class ExternalAPIService {
     constructor() {
@@ -11,7 +11,7 @@ export default class ExternalAPIService {
         const cmd = 'creature.getset.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI AJAX: Attempting to retrieve all creature entries');
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to retrieve all creature entries');
 
         this.service.get(url)
         .then(response => response.data)
@@ -20,10 +20,10 @@ export default class ExternalAPIService {
     }
 
     getSingleEntry(code, callback) {
-        const cmd = 'creature.get?code='+code;
+        const cmd = 'creature.get.php?code='+code;
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI AJAX: Attempting to retrieve creature entry with code: ' + code);
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to retrieve creature entry with code: ' + code);
         
         this.service.get(url)
         .then(response => response.data)
@@ -35,7 +35,7 @@ export default class ExternalAPIService {
         const cmd = 'creature.update.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI AJAX: Attempting to add/update creature entry with code: ' + entry.code);
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to add/update creature entry with code: ' + entry.code);
 
         if(callback !== undefined) {
             this.service.post(url, entry)
@@ -52,7 +52,7 @@ export default class ExternalAPIService {
         const cmd = 'creature.delete.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI AJAX: to delete creature entry with code: ' + entry.code);
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: to delete creature entry with code: ' + entry.code);
 
         if(callback !== undefined) {
             this.service.post(url, entry)
@@ -69,7 +69,7 @@ export default class ExternalAPIService {
         const cmd = 'ckey.update.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI AJAX: Attempting to add ' + code + ' to markedkeys db table');
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to add ' + code + ' to markedkeys db table');
 
         if(callback !== undefined) {
             this.service.post(url, {'code' : code})
@@ -86,7 +86,7 @@ export default class ExternalAPIService {
         const cmd = 'click.create.php';
         let url = rootUrl + cmd;
 
-        console.log('InternalAPI AJAX: updating server click tracker for code ' + code);
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: updating server click tracker for code ' + code);
 
         if(callback !== undefined) {
             this.service.post(url, {'code' : code})

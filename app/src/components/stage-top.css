@@ -1,8 +1,8 @@
 .stage-top {
   width: 80%;
   min-width: 400px;
-  min-height: 100px;
-  position: relative;
+  min-height: 160px;
+  flex: 1 0 auto;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -24,23 +24,60 @@
 
 .import-panel {
   width: 100%;
-  height: 90%;
+  height: 100%;
+  flex: 1 1 auto;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   align-content: flex-start;
   margin: 5px 5px 0px 0px;
   border-radius: 5px;
 }
 
 .import-panel-search {
+  width: 100%;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 75px 1fr; 
+  border-radius: 5px;
+}
+
+.import-panel-search-text {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, .90),
+    rgba(255, 255, 255, 0.80)
+  );  
+  border-radius: 5px;
+}
+
+.import-panel-search-error {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  text-align: left;
+  font-size: 12px;
+  font-weight: bold;
+  color: #cc0303;
+}
+
+.import-panel-controls {
+  max-width: 150px;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-content: flex-start;
+  text-align: left;
   border-radius: 5px;
 }
 
 .import-panel-select {
   width: 100%;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-content: flex-start;
@@ -55,8 +92,8 @@
   align-content: flex-start;
   justify-content: center;
   background-image: linear-gradient(
-    rgb(168, 168, 197),
-    rgba(95, 95, 105, 0.9)
+    rgb(168, 168, 197, 0.6),
+    rgba(140, 140, 220, 0.5)
   );
   border-radius: 5px;
 }

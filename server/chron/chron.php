@@ -1,4 +1,4 @@
 <?php
 
-include_once './update-db.php';
-include_once './flush-db.php';
+include_once (__DIR__).'/update-db.php';
+include_once (__DIR__).'/flush-db.php';

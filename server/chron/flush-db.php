@@ -5,7 +5,7 @@
 // Drop all entries in the creatures table which are confirmed to have grown up (growthlevel > 2)
 // Drop all entries in the creatures table which are more than 5 days old (5 days is max grow time)
 
-include_once '../api/internal/db/db.php';
+include_once (__DIR__).'/../api/internal/db/db.php';
 
 $database = new Database();
 $conn = $database->getConnection();
