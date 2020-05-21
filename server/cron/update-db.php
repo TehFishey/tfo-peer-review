@@ -76,7 +76,3 @@ if($stmt->rowCount()>0) {
     // clear 'markedkeys' table afterwards
     $ckey->clear();
 }
-
-
-
-

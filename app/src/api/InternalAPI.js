@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const rootUrl = window.ENV.API_URL+'internal/';
 
-export default class ExternalAPIService {
+export default class InternallAPIService {
     constructor() {
         this.service = axios.create();
     }

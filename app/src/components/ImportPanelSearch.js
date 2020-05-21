@@ -47,7 +47,7 @@ export default class ImportPanelSearch extends React.Component {
                     <div className="import-panel-search-text">
                     </div>
                     <div className="import-panel-search-error">
-                        {this.props.isError ? 'ERROR: Lab not found!' : ''}
+                        {this.props.errorString}
                     </div>
                 </div>
             </div>

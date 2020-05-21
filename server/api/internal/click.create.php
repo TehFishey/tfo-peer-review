@@ -30,6 +30,7 @@ if(!empty($data->code)){
         // set property values
         $click->uip = $_SERVER['REMOTE_ADDR'];
         $click->code = $data->code;
+        $click->clicked = (string) time();
   
         // create the object
         if($click->create()){

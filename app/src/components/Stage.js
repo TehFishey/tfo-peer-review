@@ -13,7 +13,7 @@ export default class Stage extends React.Component {
         super(props);
         this.state = {
             labIsOpen : false,
-            labError : false,
+            labError : '',
             importCreatures : [],
             displayCreatures : [],
             currentView : '',
@@ -23,15 +23,19 @@ export default class Stage extends React.Component {
     }
 
     openLabView(labName) {
-        this.setState({labError : false});
+        this.setState({labError : ''});
         this.eAPI.labRequest(labName, (data) => {
             if(!data.error) {
+                if(window.ENV.DEBUG) console.log('Found valid lab! Checking creatures and adding to state.');
                 delete data.error;
                 delete data.errorCode;
                 this.checkCreatures(Object.values(data));
                 this.setState({labIsOpen : true});
             } else {
-                this.setState({labError : true})
+                if(window.ENV.DEBUG) console.log('Lab Error! Error code: ' + (typeof data.errorCode !== 'undefined') ? data.errorCode.toString() : 'null');
+                if(data.errorCode.toString() === '1') this.setState({labError : 'ERROR: Lab not found!'});
+                else if(data.errorCode.toString() === '3') this.setState({labError : 'ERROR: Lab contains no growing creatures!'});
+                else this.setState({labError : 'ERROR: Unspecified error! What happened?!?'});  
             }
         })
     }
@@ -76,13 +80,13 @@ export default class Stage extends React.Component {
     updateViewUrl(code) {
         let url = 'https://finaloutpost.net/view/'+code+'#main';
         this.setState({ currentView : url });
-        if(window.ENV.DEBUG) console.log('view is now: '+this.state.currentView);
+        if(window.ENV.DEBUG) console.log('View is now: '+this.state.currentView);
         this.clearCreature(code);
     }
 
     flagCreature(code) {
         this.iAPI.markForRemoval(code);
-        if(window.ENV.DEBUG) console.log('marking creature ' + code + ' as illegal!');
+        if(window.ENV.DEBUG) console.log('Marking creature ' + code + ' as illegal.');
         this.clearCreature(code);
     }
 
@@ -127,7 +131,7 @@ export default class Stage extends React.Component {
                             onClose = {() => this.closeLabView()}
                         /> :
                         <ImportPanelSearch 
-                            isError = {this.state.labError}
+                            errorString = {this.state.labError}
                             onSubmit = {(labName) => this.openLabView(labName)}
                         />
                     }
