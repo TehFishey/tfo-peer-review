@@ -1,143 +1,103 @@
 import React from 'react';
-import ImportPanelSearch from './ImportPanelSearch';
-import ImportPanelSelect from './ImportPanelSelect';
+import ImportPanel from './ImportPanel';
 import SelectPanel from './SelectPanel.js';
 import ViewPanel from './ViewPanel.js';
-import internalAPI from '../api/InternalAPI';
-import ExternalAPI from '../api/ExternalAPI';
+import API from '../utilities/API';
 import './stage-top.css';
 import './stage-bottom.css';
+import checkUUID from '../utilities/cookie';
 
 export default class Stage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            labIsOpen : false,
-            labError : false,
-            importCreatures : [],
             displayCreatures : [],
+            displayCreatureLimit : 25,
             currentView : '',
         }
-        this.iAPI = new internalAPI();
-        this.eAPI = new ExternalAPI()
+        this.API = new API();
     }
 
-    openLabView(labName) {
-        this.setState({labError : false});
-        this.eAPI.labRequest(labName, (data) => {
-            if(!data.error) {
-                delete data.error;
-                delete data.errorCode;
-                this.checkCreatures(Object.values(data));
-                this.setState({labIsOpen : true});
-            } else {
-                this.setState({labError : true})
-            }
-        })
-    }
-
-    checkCreatures(importArray) {
-        let creatures = [];
-
-        importArray.forEach((item) => {
-            this.iAPI.getSingleEntry(item.code, (data) => {
-                (typeof data.code !== 'undefined') ?
-                creatures.push([true, item]) :
-                creatures.push([false, item]) 
-                this.setState({importCreatures : creatures})
-            });
-        })
-    }
-
-    closeLabView() {
-        this.setState({labIsOpen : false});
-        this.setState({importCreatures : []});
-    }
-
-    submitLabView(importCreatures) {
-        importCreatures.forEach((tuple) => {
-            if(tuple[0]) {
-                this.iAPI.addEntry(tuple[1], (data) => {
-                    this.updateDisplayCreatures();
-                    if(window.ENV.DEBUG) console.log(data);
-                });
-            } else {
-                this.iAPI.removeEntry(tuple[1], (data) => {
-                    this.updateDisplayCreatures()
-                    if(window.ENV.DEBUG) console.log(data);
-                });
-            };
-        });
-
-        this.setState({labIsOpen : false});
-        this.setState({importCreatures : []});
-    }
-
-    updateViewUrl(code) {
+    openCreature(code) {
         let url = 'https://finaloutpost.net/view/'+code+'#main';
         this.setState({ currentView : url });
-        if(window.ENV.DEBUG) console.log('view is now: '+this.state.currentView);
+        if(window.ENV.DEBUG) console.log('Controller: View is now: '+this.state.currentView);
         this.clearCreature(code);
     }
 
     flagCreature(code) {
-        this.iAPI.markForRemoval(code);
-        if(window.ENV.DEBUG) console.log('marking creature ' + code + ' as illegal!');
+        checkUUID();
+        this.API.markForRemoval(code);
+        if(window.ENV.DEBUG) console.log('Controller: Marking creature ' + code + ' as illegal.');
         this.clearCreature(code);
     }
 
     clearCreature(code) {
-        this.iAPI.addClick(code);
+        checkUUID();
+        this.API.addClick(code);
         this.setState({ displayCreatures : this.state.displayCreatures.filter(
             item => item.code !== code 
         )})
 
-        if(this.state.displayCreatures.length <= 25) {
-            this.iAPI.getEntrySet(
-                (data) => { 
-                    let displayCodes = this.state.displayCreatures.map((item)=>{return item.code});
-                    displayCodes.push(code);
-                    let newEntries = data.records.filter(item => !displayCodes.includes(item.code));
+        this.updateDisplayCreatures(code)
+    }
 
-                    this.setState({displayCreatures : this.state.displayCreatures.concat(newEntries)});
+    updateDisplayCreatures(clearedCode) {
+        let current = this.state.displayCreatures.length;
+        let min = this.state.displayCreatureLimit;
+        
+        if(current <= min) {
+            let fetchCount = min-current + Math.round(min*.5);
+            if(window.ENV.DEBUG) console.log('Controller: DisplayCreatures is getting low! Fetching '+min+'-'+current+'+'+Math.round(min*.5)+' ('+fetchCount+') new entries.');
+
+            this.API.getEntrySet(fetchCount,
+                (data) => { 
+                    if(window.ENV.DEBUG) console.log(data);
+                    if(data.found) {
+                        let displayCodes = this.state.displayCreatures.map((item)=>{return item.code});
+                        if(clearedCode) displayCodes.push(clearedCode);
+
+                        let newEntries = data.creatures.filter(item => !displayCodes.includes(item.code));
+
+                        if(window.ENV.DEBUG) console.log('Controller: Adding '+newEntries.length+' new entries to displayCreatures.');
+                        this.setState({displayCreatures : this.state.displayCreatures.concat(newEntries)});
+                    }
                 }
             )
         }
     }
 
-    updateDisplayCreatures() {
-        this.iAPI.getEntrySet((data) => {
-            this.setState({ displayCreatures : data.records });
-        });
+    updateDisplaySize(width, height) {
+        // width + margin + borders
+        let itemWidth = 77;
+        // height + margin + borders
+        let itemHeight = 87;
+
+        let columns = Math.floor(width/itemWidth);
+        let rows = Math.floor(height/itemHeight);
+
+        if(window.ENV.DEBUG) console.log('Controller: SelectPanel can fit '+columns+'x'+rows+' ('+(columns*rows)+') components.');
+
+        this.setState({displayCreatureLimit : (columns * rows)}, ()=>{this.updateDisplayCreatures()});
     }
 
     componentDidMount() {
-        this.updateDisplayCreatures();
-    }   
+        checkUUID();
+    }
 
     render() {
         return (
             <div className="App-stage">
                 <div className="stage-top">
-                    {(this.state.labIsOpen) ? 
-                        <ImportPanelSelect
-                            key = {this.state.importCreatures} 
-                            importCreatures = {this.state.importCreatures}
-                            onSubmit = {(importCreatures) => this.submitLabView(importCreatures)}
-                            onClose = {() => this.closeLabView()}
-                        /> :
-                        <ImportPanelSearch 
-                            isError = {this.state.labError}
-                            onSubmit = {(labName) => this.openLabView(labName)}
-                        />
-                    }
+                    <ImportPanel API={this.API} onCreatureUpdate={()=>{this.updateDisplayCreatures()}}/>
                 </div>
                 <div className="stage-bottom-outer">
                     <div className="stage-bottom-inner">
                     <SelectPanel 
                         creatures={this.state.displayCreatures} 
-                        onCreaturePick={(code) => this.updateViewUrl(code)}
+                        onCreaturePick={(code) => this.openCreature(code)}
                         onCreatureFlag={(code) => this.flagCreature(code)}
+                        onRender={(width,height) => this.updateDisplaySize(width,height)}
                     />
                     <ViewPanel currentView={this.state.currentView}/>
                     </div>

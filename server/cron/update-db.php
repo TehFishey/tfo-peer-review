@@ -7,9 +7,9 @@
 // Clear 'markedkeys' table afterwards
 
 include_once (__DIR__).'/../config/config.php';
-include_once (__DIR__).'/../api/internal/db/db.php';
-include_once (__DIR__).'/../api/internal/library/ckey.php';
-include_once (__DIR__).'/../api/internal/library/creature.php';
+include_once (__DIR__).'/../api/db/db.php';
+include_once (__DIR__).'/../api/library/ckey.php';
+include_once (__DIR__).'/../api/library/creature.php';
 
 $database = new Database();
 $conn = $database->getConnection();
@@ -60,7 +60,6 @@ if($stmt->rowCount()>0) {
                 !empty($data->name) &&
                 !empty($data->growthLevel)
             ){
-              
                 $creature->code = $data->code;
                 $creature->imgsrc = $data->imgsrc;
                 $creature->gotten = $data->gotten;
@@ -76,7 +75,3 @@ if($stmt->rowCount()>0) {
     // clear 'markedkeys' table afterwards
     $ckey->clear();
 }
-
-
-
-

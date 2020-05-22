@@ -4,7 +4,7 @@ class Creature {
     // database connection and table name
     private $conn;
     private $table_name = "creatures";
-    private $ip_table_name = "userclicks";
+    private $uc_table_name = "userclicks";
   
     // object properties
     public $code;           // string - 5 character creature code (ex. "6bMDs")
@@ -18,34 +18,18 @@ class Creature {
         $this->conn = $db;
     }
 
-    //Currently unused
-    /*
-    function readAll() {
-        // select all query
-        $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel FROM " 
-                 . $this->table_name . " AS c";
-      
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-      
-        // execute query
-        $stmt->execute();
-      
-        return $stmt;
-    }
-    */
-
-    function readSet($uip) {
-        // Retrieves 50 random 'creatures' entries where no 'userclicks' entry match the creature code
+    function readSet($uuid, $count) {
+        // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel 
-            FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->ip_table_name . " AS ip ON c.code = ip.code 
+            FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->uc_table_name . " AS uc ON c.code = uc.code 
             GROUP BY c.code 
-            HAVING COUNT(CASE WHEN ip.ip = '" . $uip . "' THEN 1 END) = 0
+            HAVING COUNT(CASE WHEN uc.uuid = '" . $uuid . "' THEN 1 END) = 0
             ORDER BY RAND()
-            LIMIT 50";
+            LIMIT ".$count;
 
         $stmt = $this->conn->prepare($query);
-      
+        //echo("UUID: ".$uuid." Count: ".$count);
+
         // execute query
         $stmt->execute();
       
@@ -107,74 +91,6 @@ class Creature {
       
         return false;  
     }
-    
-    //Currently unused
-    /*
-    function create() {
-        // query to insert record
-        $query = "INSERT INTO " . $this->table_name . " SET 
-            code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel";
-      
-        // prepare query
-        $stmt = $this->conn->prepare($query);
-      
-        // sanitize
-        $this->imgsrc=htmlspecialchars(strip_tags($this->imgsrc));
-        $this->gotten=htmlspecialchars(strip_tags($this->gotten));
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
-      
-        // bind values
-        $stmt->bindParam(":code", $this->code);
-        $stmt->bindParam(":imgsrc", $this->imgsrc);
-        $stmt->bindParam(":gotten", $this->gotten);
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":growthLevel", $this->growthLevel);
-      
-        // execute query
-        if($stmt->execute()){
-            return true;
-        }
-      
-        return false;  
-    }
-    */
-
-    //Currently unused
-    /*
-    function update() {
-        // update query
-        $query = "UPDATE " . $this->table_name . " SET
-           code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel 
-           WHERE id = :id";
-  
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-  
-        // sanitize
-        $this->id=htmlspecialchars(strip_tags($this->id));
-        $this->code=htmlspecialchars(strip_tags($this->code));
-        $this->imgsrc=htmlspecialchars(strip_tags($this->imgsrc));
-        $this->gotten=htmlspecialchars(strip_tags($this->gotten));
-        $this->name=htmlspecialchars(strip_tags($this->name));
-        $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
-  
-        // bind new values
-        $stmt->bindParam(':id', $this->id);
-        $stmt->bindParam(':code', $this->code);
-        $stmt->bindParam(':imgsrc', $this->imgsrc);
-        $stmt->bindParam(':gotten', $this->gotten);
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':growthLevel', $this->growthLevel);
-  
-        // execute the query
-        if($stmt->execute()){
-            return true;
-        }
-  
-        return false;
-    }
-    */
 
     function delete() {
         // delete query

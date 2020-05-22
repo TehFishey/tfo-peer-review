@@ -44,10 +44,10 @@ export default class ImportPanelSearch extends React.Component {
                         /></div>
                         <button onClick={this.handleNameSubmit}>Open Lab</button>
                     </div>
-                    <div className="import-panel-search-text">
+                    <div className="import-panel-search-text">Welcome to the peer review network, a place to review other scientists’ creatures and to have your own reviewed as well. After all, peer review is a very important part of the scientific process!<br/><br/> Please start by entering your lab’s name and submitting your creatures. Then scroll down a bit and click away. If you find any adult creatures, please mark them by clicking the red [X] under their portrait. Every click helps! Thank you for doing your part.
                     </div>
                     <div className="import-panel-search-error">
-                        {this.props.isError ? 'ERROR: Lab not found!' : ''}
+                        {this.props.errorString}
                     </div>
                 </div>
             </div>
