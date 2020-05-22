@@ -6,7 +6,7 @@ class UserClick {
     private $table_name = "userclicks";
   
     // object properties
-    public $uip;            // string - IP address of clicking/connecting user
+    public $uuid;           // string - 36 character uuid of clicking/connecting user (from browser cookie)
     public $code;           // string - 5 character creature code (ex. "6bMDs")
     public $clicked;        // string - 10 character Unix timestamp for when click occured
   
@@ -16,19 +16,19 @@ class UserClick {
     }
 
     function create() {
-        $query = "INSERT INTO " . $this->table_name . "(ip, code, clicked) 
-            select :ip, :code, :clicked 
-            on duplicate key update ip = values(ip)";
+        $query = "INSERT INTO " . $this->table_name . "(uuid, code, clicked) 
+            select :uuid, :code, :clicked 
+            on duplicate key update uuid = values(uuid)";
         $stmt = $this->conn->prepare($query);
 
-        $this->uip=htmlspecialchars(strip_tags($this->uip));
+        $this->uuid=htmlspecialchars(strip_tags($this->uuid));
         $this->code=htmlspecialchars(strip_tags($this->code));
         $this->clicked=htmlspecialchars(strip_tags($this->clicked));
-        $stmt->bindParam(":ip", $this->uip);
+        $stmt->bindParam(":uuid", $this->uuid);
         $stmt->bindParam(":code", $this->code);
         $stmt->bindParam(":clicked", $this->clicked);
 
-        echo($this->uip." Code: ".$this->code." Clicked: ".$this->clicked);
+        //echo($this->uuid." Code: ".$this->code." Clicked: ".$this->clicked);
 
         if($stmt->execute()){
             return true;

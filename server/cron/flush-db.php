@@ -7,7 +7,7 @@
 // Drop all entries in the clicks table tied to creatures whcich are the same as ^
 // Drop all entries in the clicks table that are more than 1 day old.
 
-include_once (__DIR__).'/../api/internal/db/db.php';
+include_once (__DIR__).'/../api/db/db.php';
 
 $database = new Database();
 $conn = $database->getConnection();
@@ -21,19 +21,19 @@ $maxGrowDate = (string) strtotime('-5 day', time());
 $clickRefreshDate = (string) strtotime('-1 day', time());
 
 // Delete click table entries for grown creatures
-$query = "DELETE ip.* FROM " . $creature_table . " AS c LEFT OUTER JOIN " . $click_table . " AS ip ON c.code = ip.code 
+$query = "DELETE uc.* FROM " . $creature_table . " AS c LEFT OUTER JOIN " . $click_table . " AS uc ON c.code = uc.code 
     WHERE c.growthLevel > 2 OR c.gotten < " . $maxGrowDate;
 $stmt = $conn->prepare($query);
 $stmt->execute();
 
 // Delete creature tabled entries for grown creatures
-$query = "DELETE c.* FROM " . $creature_table . " AS c LEFT OUTER JOIN " . $click_table . " AS ip ON c.code = ip.code 
+$query = "DELETE c.* FROM " . $creature_table . " AS c LEFT OUTER JOIN " . $click_table . " AS uc ON c.code = uc.code 
     WHERE c.growthLevel > 2 OR c.gotten < " . $maxGrowDate;
 $stmt = $conn->prepare($query);
 $stmt->execute();
 
 //Delete click table entries for expired clicks
-$query = "DELETE ip.* FROM " . $click_table . " AS ip WHERE ip.clicked < " . $clickRefreshDate;
+$query = "DELETE uc.* FROM " . $click_table . " AS uc WHERE uc.clicked < " . $clickRefreshDate;
 $stmt = $conn->prepare($query);
 $stmt->execute();
 

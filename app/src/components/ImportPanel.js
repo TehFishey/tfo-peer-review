@@ -11,13 +11,13 @@ export default class ImportPanel extends React.Component {
             importCreatures : [],
         };
 
-        this.eAPI = this.props.eAPI;
-        this.iAPI = this.props.iAPI;
+        this.API = this.props.API;
     }
 
     openLabView(labName) {
         this.setState({labError : ''});
-        this.eAPI.labRequest(labName, (data) => {
+        this.API.tfoLabRequest(labName, (data) => {
+            if(window.ENV.DEBUG) console.log(data);
             if(!data.error) {
                 if(window.ENV.DEBUG) console.log('Controller: Found valid lab! Checking creatures and adding to state.');
                 delete data.error;
@@ -37,8 +37,8 @@ export default class ImportPanel extends React.Component {
         let creatures = [];
 
         importArray.forEach((item) => {
-            this.iAPI.getSingleEntry(item.code, (data) => {
-                (typeof data.code !== 'undefined') ?
+            this.API.getSingleEntry(item.code, (data) => {
+                (data.found) ?
                 creatures.push([true, item]) :
                 creatures.push([false, item]) 
                 this.setState({importCreatures : creatures})
@@ -54,13 +54,13 @@ export default class ImportPanel extends React.Component {
     submitLabView(importCreatures) {
         importCreatures.forEach((tuple) => {
             if(tuple[0]) {
-                this.iAPI.addEntry(tuple[1], (data) => {
+                this.API.addEntry(tuple[1], (data) => {
                     this.props.onCreatureUpdate();
                     if(window.ENV.DEBUG) console.log('Controller: Adding entry: ');
                     if(window.ENV.DEBUG) console.log(data);
                 });
             } else {
-                this.iAPI.removeEntry(tuple[1], (data) => {
+                this.API.removeEntry(tuple[1], (data) => {
                     this.props.onCreatureUpdate();
                     if(window.ENV.DEBUG) console.log('Controller: Removing entry: ');
                     if(window.ENV.DEBUG) console.log(data);

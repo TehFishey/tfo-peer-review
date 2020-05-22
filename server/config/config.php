@@ -2,6 +2,7 @@
 
 /** Configuration Variables **/
 
+define('HOST_URL', 'localhost:3000');
 define('DB_NAME', 'peereview');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'root');
