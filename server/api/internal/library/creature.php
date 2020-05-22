@@ -35,14 +35,14 @@ class Creature {
     }
     */
 
-    function readSet($uip) {
-        // Retrieves 50 random 'creatures' entries where no 'userclicks' entry match the creature code
+    function readSet($uip, $count) {
+        // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel 
             FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->ip_table_name . " AS ip ON c.code = ip.code 
             GROUP BY c.code 
             HAVING COUNT(CASE WHEN ip.ip = '" . $uip . "' THEN 1 END) = 0
             ORDER BY RAND()
-            LIMIT 50";
+            LIMIT ".$count;
 
         $stmt = $this->conn->prepare($query);
       

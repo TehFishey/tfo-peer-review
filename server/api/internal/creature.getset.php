@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -16,14 +16,25 @@ include_once './library/creature.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// get ip address of frontend
+// get ip address of frontend (for comparison to 'userclicks' table)
 $uip = $_SERVER['REMOTE_ADDR'];
+
+
+// get posted data
+$data = json_decode(file_get_contents("php://input"));
+
+// how many creatures should we fetch (between 1 and 50)
+if(!empty($data->count)) {
+    $count = $data->count;
+    if($count>50) $count = 50;
+    if($count<1) $count = 1;
+} else $count = 1;
 
 // initialize object
 $creature = new Creature($db);
   
-// query for group; pass in user ip
-$stmt = $creature->readSet($uip);
+// query for group; pass in user ip and count
+$stmt = $creature->readSet($uip, $count);
 $num = $stmt->rowCount();
   
 // check if more than 0 record found

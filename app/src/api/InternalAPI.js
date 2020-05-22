@@ -7,25 +7,25 @@ export default class InternallAPIService {
         this.service = axios.create();
     }
 
-    getEntrySet(callback) {
+    getEntrySet(count, callback) {
         const cmd = 'creature.getset.php';
         let url = rootUrl + cmd;
 
-        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to retrieve all creature entries');
+        if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to retrieve '+count+' creature entries');
 
-        this.service.get(url)
+        this.service.post(url, {'count' : count})
         .then(response => response.data)
         .then((data) => callback(data))
         .catch(error => {console.log(error)});
     }
 
     getSingleEntry(code, callback) {
-        const cmd = 'creature.get.php?code='+code;
+        const cmd = 'creature.get.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('InternalAPI AJAX: Attempting to retrieve creature entry with code: ' + code);
         
-        this.service.get(url)
+        this.service.post(url, {'code' : code})
         .then(response => response.data)
         .then((data) => callback(data))
         .catch(error => {console.log(error)});

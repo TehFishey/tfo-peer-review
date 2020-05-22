@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ImportPanelItem extends React.Component {
+export default class ImportPanelSelectItem extends React.Component {
     render () {
         return (
             <div className="import-panel-item" 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ImportPanelItem from './ImportPanelItem';
+import ImportPanelSelectItem from './ImportPanelSelectItem';
 
 export default class ImportPanelSelect extends React.Component {    
     constructor(props) {
@@ -38,7 +38,7 @@ export default class ImportPanelSelect extends React.Component {
     createPanelItems() {
         let panelItems = []
         this.state.importCreatures.forEach((tuple, index) => panelItems.push(
-            <ImportPanelItem  key = {index}
+            <ImportPanelSelectItem  key = {index}
                 code = {tuple[1].code} 
                 src={tuple[1].imgsrc}
                 checked ={tuple[0]}
