@@ -12,7 +12,7 @@ function App() {
       <div className="App-footer">
       Copyright (c) 2020 M. D'Attilo<br/>
       This webapp is an open source project under the MIT License.<br/>
-      Source code is <a href="https://github.com/TehFishey/peereview.">available on GitHub</a>.
+      Source code is <a href="https://github.com/TehFishey/tfo-peer-review">available on GitHub</a>.
       </div>
     </div>
   );

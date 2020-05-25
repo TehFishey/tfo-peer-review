@@ -33,7 +33,7 @@ $curl->var = $labname;
 $curl->execute();
 
 // If request failed, return error
-if($curl->error) {
+if($curl->error!=null || $curl->output=='') {
     http_response_code(500);
     die(json_encode(array("error" => "(500) Error communicating with TFO.")));
 } 
