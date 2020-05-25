@@ -6,6 +6,8 @@
 .pnp.js
 /.vscode
 
+# configs
+/server/config/config.php
 
 # testing
 /coverage
