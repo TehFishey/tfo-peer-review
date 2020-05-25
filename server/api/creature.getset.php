@@ -23,7 +23,7 @@ if($_COOKIE['tfopr-uuid']!=null && strlen($_COOKIE['tfopr-uuid'])==36) {
     $uuid = $_COOKIE['tfopr-uuid'];
 } else {
     http_response_code(400);
-    die(json_encode(array("message" => "(400) Unable to create userclick. UUID token is invalid.")));
+    die(json_encode(array("message" => "(400) Unable to get creature set. UUID token is invalid.")));
 }
 
 // How many creatures to fetch? (between 1 and 50; default 1)

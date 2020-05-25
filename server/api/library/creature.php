@@ -1,10 +1,16 @@
 <?php
 class Creature {
-  
+    /*-----------------------------------
+    Database object for 'creatureData' (aka. 'main') table
+
+    The 'creatureData' table contains all creature objects fetched/imported into the site from TFO. These are the creatures which are displayed by the frontend
+    to users for clicking. Creatures can be add, removed, checked, and updated by cron scripts or api commands.
+    --------------------------------------*/
+
     // database connection and table name
     private $conn;
-    private $table_name = "creatures";
-    private $uc_table_name = "userclicks";
+    private $table_name = "tbl_creatureData";
+    private $click_table_name = "tbl_uuidClicks";
   
     // object properties
     public $code;           // string - 5 character creature code (ex. "6bMDs")
@@ -12,16 +18,18 @@ class Creature {
     public $gotten;         // string - 10 character Unix timestamp for when creature was aquired
     public $name;           // string - 30 creature name (or Unnamed) (ex. "Unnamed")
     public $growthLevel;    // string - 1 character creature growthLevel level (1-egg, 2-hatch, 3-mature) (ex. "1")
+    public $isStunted;       // string - 5 character boolean (true/false) for if the creature is a stunted capsule/child
   
     // constructor with $db as database connection
     public function __construct($db) {
         $this->conn = $db;
     }
 
+
     function readSet($uuid, $count) {
         // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel 
-            FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->uc_table_name . " AS uc ON c.code = uc.code 
+            FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->click_table_name . " AS uc ON c.code = uc.code 
             GROUP BY c.code 
             HAVING COUNT(CASE WHEN uc.uuid = '" . $uuid . "' THEN 1 END) = 0
             ORDER BY RAND()
@@ -66,7 +74,7 @@ class Creature {
         // 'code' is a primary key, so this should work fine.
 
         $query = "REPLACE INTO " . $this->table_name . " SET 
-            code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel";
+            code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel, isStunted=:isStunted";
       
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -76,6 +84,7 @@ class Creature {
         $this->gotten=htmlspecialchars(strip_tags($this->gotten));
         $this->name=htmlspecialchars(strip_tags($this->name));
         $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
+        $this->isStunted=htmlspecialchars(strip_tags($this->isStunted));
       
         // bind values
         $stmt->bindParam(":code", $this->code);
@@ -83,12 +92,10 @@ class Creature {
         $stmt->bindParam(":gotten", $this->gotten);
         $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":growthLevel", $this->growthLevel);
+        $stmt->bindParam(":isStunted", $this->isStunted);
       
         // execute query
-        if($stmt->execute()){
-            return true;
-        }
-      
+        if($stmt->execute()){ return true; }
         return false;  
     }
 
@@ -106,9 +113,7 @@ class Creature {
         $stmt->bindParam(1, $this->code);
   
         // execute query
-        if($stmt->execute()){
-            return true;
-        }
+        if($stmt->execute()){ return true; }
   
         return false;
     }

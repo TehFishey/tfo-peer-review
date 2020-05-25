@@ -15,8 +15,8 @@ $database = new Database();
 $conn = $database->getConnection();
 
 // Read all creature keys in 'markedkeys'
-$ckey = new CreatureKey($conn);
-$stmt = $ckey->read();
+$flags = new UuidCreatureFlag($conn);
+$stmt = $flags->readCodes();
 
 if($stmt->rowCount()>0) {
     $key_arr=array();  
@@ -73,5 +73,5 @@ if($stmt->rowCount()>0) {
     }
 
     // clear 'markedkeys' table afterwards
-    $ckey->clear();
+    $flags->clear();
 }

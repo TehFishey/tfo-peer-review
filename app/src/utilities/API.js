@@ -68,7 +68,7 @@ export default class APIService {
     }
 
     markForRemoval(code, callback) {
-        const cmd = 'ckey.update.php';
+        const cmd = 'flag.create.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to add ' + code + ' to markedkeys db table');

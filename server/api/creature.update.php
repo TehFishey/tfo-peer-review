@@ -59,6 +59,7 @@ $creature->imgsrc = $curl_data->{0}->imgsrc;
 $creature->gotten = $curl_data->{0}->gotten;
 $creature->name = $curl_data->{0}->name;
 $creature->growthLevel = $curl_data->{0}->growthLevel;
+$creature->isStunted = $curl_data->{0}->isStunted;
   
 // ...and create the object.
 if($creature->replace()){

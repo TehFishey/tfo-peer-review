@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once './db/db.php';
-include_once './library/click.php';
+include_once './library/uuidclick.php';
 include_once './library/creature.php';
 
 // Instantiate objects
@@ -24,7 +24,7 @@ if($_COOKIE['tfopr-uuid']!=null && strlen($_COOKIE['tfopr-uuid'])==36) {
     $uuid = $_COOKIE['tfopr-uuid'];
 } else {
     http_response_code(400);
-    die(json_encode(array("message" => "(400) Unable to create userclick. UUID token is invalid.")));
+    die(json_encode(array("message" => "(400) Unable to log creature click. UUID token is invalid.")));
 }
 
 // Validate incoming creature code
@@ -38,25 +38,25 @@ if(!empty($data->code) && strlen($data->code)==5) {
     $creature->readOne();
     if($creature->name==null){
         http_response_code(409);
-        die(json_encode(array("message" => "(409) Creature code does not exist in database.")));
+        die(json_encode(array("message" => "(409) Unable to log creature click. Creature code does not exist in database.")));
     }
 } else {
     http_response_code(400);
-    die(json_encode(array("message" => "(400) Unable to create userclick. Creature code is invalid.")));
+    die(json_encode(array("message" => "(400) Unable to log creature click. Creature code is invalid.")));
 }
 
 // If data validation checks are passed, encode the db object...
-$click = new UserClick($db);
+$click = new UuidCreatureClick($db);
 
 $click->uuid = $uuid;
 $click->code = $code;
-$click->clicked = (string) time();
+$click->time = (string) time();
 
 // ... and add it to the db.
 if($click->create()){
     http_response_code(201);
-    echo json_encode(array("message" => "(201) entry was created."));
+    echo json_encode(array("message" => "(201) Creature click was logged."));
 } else {
     http_response_code(503);
-    die(json_encode(array("error" => "(503) Unable to create entry.")));
+    die(json_encode(array("error" => "(503) Unable to log creature click.")));
 }

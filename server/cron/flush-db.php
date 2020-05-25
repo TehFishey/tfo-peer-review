@@ -11,8 +11,8 @@ include_once (__DIR__).'/../api/db/db.php';
 
 $database = new Database();
 $conn = $database->getConnection();
-$creature_table = 'creatures';
-$click_table = 'userclicks';
+$creature_table = 'tbl_creatureData';
+$click_table = 'tbl_uuidClicks';
 
 // UNIX timestamp for 5 days prior to current time. All entries older than this are deleted
 $maxGrowDate = (string) strtotime('-5 day', time());
@@ -33,7 +33,7 @@ $stmt = $conn->prepare($query);
 $stmt->execute();
 
 //Delete click table entries for expired clicks
-$query = "DELETE uc.* FROM " . $click_table . " AS uc WHERE uc.clicked < " . $clickRefreshDate;
+$query = "DELETE uc.* FROM " . $click_table . " AS uc WHERE uc.time < " . $clickRefreshDate;
 $stmt = $conn->prepare($query);
 $stmt->execute();
 
