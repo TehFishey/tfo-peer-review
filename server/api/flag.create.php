@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once './db/db.php';
+include_once './utilities/tokenbucket.php';
 include_once './library/cflag.php';
 include_once './library/creature.php';
 
@@ -18,6 +19,13 @@ include_once './library/creature.php';
 $database = new Database();
 $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
+$ratelimiter = new TokenBucket($db, $_SERVER['REMOTE_ADDR'], 100, 10);
+
+// Check ip against rate limits
+if (!$ratelimiter->consume(2)){
+    http_response_code(429);
+    die(json_encode(array("message" => "(429) Too many requests.")));
+}
 
 // Validate uuid (stored in tfopr-uuid browser cookie)
 if($_COOKIE['tfopr-uuid']!=null && strlen($_COOKIE['tfopr-uuid'])==36) {

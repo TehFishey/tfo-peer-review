@@ -11,20 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once './db/db.php';
-include_once './utilities/tokenbucket.php';
 include_once './library/curl.tfo.php';
   
 // Instantiate objects
-$database = new Database();
-$db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
-$ratelimiter = new TokenBucket($db, $_SERVER['REMOTE_ADDR'], 100, 10);
-
-// Check ip against rate limits
-if (!$ratelimiter->consume(30)){
-    http_response_code(429);
-    die(json_encode(array("message" => "(429) Too many requests.")));
-}
 
 // Validate incoming labname exists
 if(!empty($data->labname)) {
