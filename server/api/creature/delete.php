@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object file
 include_once '../utilities/db.php';
+include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
 include_once '../library/session.php';
 include_once '../library/creature.php';
@@ -88,12 +89,16 @@ if($stmt->rowCount()>0) {
 }
 
 if(!array_diff($codes, $cachedCodes)) {
+    $log = new Logger($db);
+    $log->ip = $_SERVER['REMOTE_ADDR'];
     // If all codes exist in the session's cache, it's safe to delete them.
     foreach($codes as &$code) {
         $creature->code = $code;
         if(!$creature->delete()) {
             http_response_code(503);
             echo json_encode(array("error" => "(503) Unable to delete creature."));
+        } else {
+            $log->logRemove();
         }
     }
     http_response_code(201);

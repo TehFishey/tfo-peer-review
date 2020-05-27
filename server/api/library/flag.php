@@ -41,8 +41,8 @@ class Flag {
 
     // readCodes -> Read all creature codes in the 'FlaggedCodes' table.
     function readCodes() {
-        $query = "SELECT f.code FROM " . $this->table_name . " AS f 
-            GROUP BY f.code";
+        $query = "SELECT code FROM ".$this->table_name. 
+            "GROUP BY code";
         $stmt = $this->conn->prepare($query);
 
         if($stmt->execute()){ return $stmt; }

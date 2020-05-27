@@ -32,8 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once '../utilities/db.php';
+include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
-include_once '../library/curl';
+include_once '../library/curl.php';
 include_once '../library/session.php';
 include_once '../library/creature.php';
   
@@ -75,6 +76,10 @@ $curl->var = $labname;
 // ... execute the request ...
 $curl->execute();
 
+$log = new Logger($db);
+$log->ip = $_SERVER['REMOTE_ADDR'];
+$log->logCurl();
+
 // If request failed, return error
 if($curl->error!=null || $curl->output=='') {
     http_response_code(500);
@@ -98,9 +103,9 @@ else {
             $creature->growthLevel = $item['growthLevel'];
 
             // The TFO API usually doesn't return isStunted value (if true, it shouldn't return the creature at all)
-            if(!empty($creature->isStunted))
+            if(!empty($item['isStunted']))
                 $creature->isStunted = $item['isStunted'];
-            else $creature->isStunted = 'false';
+            else $creature->isStunted = "false";
 
             $creature->replaceInCache();
         }

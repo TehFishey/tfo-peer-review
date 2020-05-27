@@ -8,7 +8,7 @@
  * Description:
  * This endpoint allows users to get sets of object data regarding entries in the Creatures
  * database table. The number of objects to be retrieved is defined by the "count" property 
- * (default 1, max 60). During retrieval, Creature codes (primary keys) are checked against 
+ * (default 1, max 100). During retrieval, Creature codes (primary keys) are checked against 
  * codes associated with the user's UUID in the Clicks table (see click/create.php), so that the 
  * endpoint will only return creatures that users have not interacted with in the past day (as fits
  * the purpose of this site). 
@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object file
 include_once '../utilities/db.php';
+include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
 include_once '../library/creature.php';
   
@@ -47,15 +48,15 @@ if($_COOKIE['tfopr-uuid']!=null && strlen($_COOKIE['tfopr-uuid'])==36) {
     die(json_encode(array("message" => "(400) Unable to get creatures. UUID token is invalid.")));
 }
 
-// How many creatures to fetch? (between 1 and 60; default 1)
+// How many creatures to fetch? (between 1 and 100; default 1)
 // Allows for both JSON and URI inputs, for ease of development
 if(!empty($_GET['count'])) {
     $count = $_GET['count'];
-    if($count>60) $count = 60;
+    if($count>60) $count = 100;
     if($count<1) $count = 1;;
 } else if(!empty($data->count)) {
     $count = $data->count;
-    if($count>60) $count = 60;
+    if($count>60) $count = 100;
     if($count<1) $count = 1;
 } else $count = 1;
 

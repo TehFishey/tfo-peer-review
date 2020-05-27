@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once '../utilities/db.php';
+include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
 include_once '../library/flag.php';
 include_once '../library/creature.php';

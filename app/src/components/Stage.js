@@ -44,12 +44,14 @@ export default class Stage extends React.Component {
     }
 
     fetchDisplayCreatures = throttle((clearedCode)=>{
+        const mult = 1;
         let current = this.state.displayCreatures.length;
         let min = this.state.displayCreatureLimit;
-        
+        let extra = Math.round(min*mult);
+
         if(current <= min) {
-            let fetchCount = min-current + Math.round(min*.5);
-            if(window.ENV.DEBUG) console.log('Controller: DisplayCreatures is getting low! Fetching '+min+'-'+current+'+'+Math.round(min*.5)+' ('+fetchCount+') new entries.');
+            let fetchCount = min-current + extra;
+            if(window.ENV.DEBUG) console.log('Controller: DisplayCreatures is getting low! Fetching '+min+'-'+current+'+'+extra+' ('+fetchCount+') new entries.');
 
             this.API.getCreatureEntries(fetchCount,
                 (data) => { 

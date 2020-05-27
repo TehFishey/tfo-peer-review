@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once '../utilities/db.php';
+include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
 include_once '../library/click.php';
 include_once '../library/creature.php';
@@ -80,6 +81,10 @@ $click->time = (string) time();
 
 // ... and add it to the db table.
 if($click->create()){
+    $log = new Logger($db);
+    $log->ip = $_SERVER['REMOTE_ADDR'];
+    $log->logClick();
+
     http_response_code(201);
     echo json_encode(array("message" => "(201) Creature click was logged."));
 } else {
