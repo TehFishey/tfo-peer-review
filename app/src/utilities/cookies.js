@@ -1,7 +1,7 @@
 import cookies from 'js-cookie';
 import {v4 as uuid} from 'uuid';
 
-export default function checkUUID(update) {  
+export function checkUUID(update) {  
     if(window.ENV.DEBUG) console.log('Controller: checking for valid-ish UUID cookie');
     let cookieID = cookies.get('tfopr-uuid');
 

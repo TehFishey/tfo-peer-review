@@ -9,66 +9,76 @@ export default class APIService {
         });
     }
 
-    getEntrySet(count, callback) {
-        const cmd = 'creature.getset.php';
-        let url = rootUrl + cmd;
+    getCreatureEntries(count, callback) {
+        const cmd = './creature/get.php';
+        let url = rootUrl + cmd + '?count='+count;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to retrieve '+count+' creature entries');
 
-        this.service.post(url, {'count' : count})
-        .then(response => response.data)
-        .then((data) => callback(data))
-        .catch(error => {console.log(error)});
-    }
-
-    getSingleEntry(code, callback) {
-        const cmd = 'creature.get.php';
-        let url = rootUrl + cmd;
-
-        if(window.ENV.DEBUG) console.log('API: Attempting to retrieve creature entry with code: ' + code);
-        
-        this.service.post(url, {'code' : code})
-        .then(response => response.data)
-        .then((data) => callback(data))
-        .catch(error => {console.log(error)});
-    }
-
-    addEntry(entry, callback) {
-        const cmd = 'creature.update.php';
-        let url = rootUrl + cmd;
-
-        if(window.ENV.DEBUG) console.log('API: Attempting to add/update creature entry with code: ' + entry.code);
-
         if(callback !== undefined) {
-            this.service.post(url, entry)
+            this.service.get(url)
             .then(response => response.data)
             .then((data) => callback(data))
             .catch(error => {console.log(error)});
         } else {
-            this.service.post(url, entry)
+            this.service.get(url)
             .catch(error => {console.log(error)});
         }
     }
 
-    removeEntry(entry, callback) {
-        const cmd = 'creature.delete.php';
+    addCreatureEntries(codes, callback) {
+        const cmd = './creature/create.php';
         let url = rootUrl + cmd;
 
-        if(window.ENV.DEBUG) console.log('API: to delete creature entry with code: ' + entry.code);
+        if(window.ENV.DEBUG) console.log('API: Attempting to add/update creature entries with codes: ' + codes.toString());
 
         if(callback !== undefined) {
-            this.service.post(url, entry)
+            this.service.post(url, {'codes' : codes})
             .then(response => response.data)
             .then((data) => callback(data))
             .catch(error => {console.log(error)});
         } else {
-            this.service.post(url, entry)
+            this.service.post(url, {'codes' : codes})
             .catch(error => {console.log(error)});
         }
     }
 
-    markForRemoval(code, callback) {
-        const cmd = 'flag.create.php';
+    removeCreatureEntries(codes, callback) {
+        const cmd = './creature/delete.php';
+        let url = rootUrl + cmd;
+
+        if(window.ENV.DEBUG) console.log('API: Attempting to delete creature entries with codes: ' + codes.toString());
+
+        if(callback !== undefined) {
+            this.service.post(url, {'codes' : codes})
+            .then(response => response.data)
+            .then((data) => callback(data))
+            .catch(error => {console.log(error)});
+        } else {
+            this.service.post(url, {'codes' : codes})
+            .catch(error => {console.log(error)});
+        }
+    }
+
+    checkCreatureEntries(codes, callback) {
+        const cmd = './creature/test.php';
+        let url = rootUrl + cmd;
+
+        if(window.ENV.DEBUG) console.log('API: Checking server for existing entries with codes: ' + codes.toString());
+
+        if(callback !== undefined) {
+            this.service.post(url, {'codes' : codes})
+            .then(response => response.data)
+            .then((data) => callback(data))
+            .catch(error => {console.log(error)});
+        } else {
+            this.service.post(url, {'codes' : codes})
+            .catch(error => {console.log(error)});
+        }
+    }
+
+    addCreatureFlag(code, callback) {
+        const cmd = './flag/create.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to add ' + code + ' to markedkeys db table');
@@ -84,8 +94,8 @@ export default class APIService {
         }
     }
 
-    addClick(code, callback) {
-        const cmd = 'click.create.php';
+    addCreatureClick(code, callback) {
+        const cmd = './click/create.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: updating server click tracker for code ' + code);
@@ -101,15 +111,21 @@ export default class APIService {
         }
     }
 
-    tfoLabRequest(username, callback) {
-        const cmd = 'curl.tfo.lab.php'
-        let url = rootUrl + cmd;
+    fetchByLabname(username, callback) {
+        const cmd = './creature/fetch.php';
+        let url = rootUrl + cmd + '?labname='+username;
 
         if(window.ENV.DEBUG) console.log('API: Attempting lab request for username: ' + username);
 
-        this.service.post(url, {'labname' : username})
-        .then(response => response.data)
-        .then(data => callback(data))
-        .catch(error => {console.log(error)})
+        if(callback !== undefined) {
+            this.service.get(url)
+            .then(response => response.data)
+            .then(data => callback(data))
+            .catch(error => {console.log(error)})
+        } else {
+            this.service.get(url)
+            .then(response => response.data)
+            .catch(error => {console.log(error)})
+        }
     }
 }

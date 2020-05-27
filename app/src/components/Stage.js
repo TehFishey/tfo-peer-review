@@ -3,9 +3,10 @@ import ImportPanel from './ImportPanel';
 import SelectPanel from './SelectPanel.js';
 import ViewPanel from './ViewPanel.js';
 import API from '../utilities/API';
+import {checkUUID} from '../utilities/cookies';
+import {throttle} from '../utilities/limiters';
 import './stage-top.css';
 import './stage-bottom.css';
-import checkUUID from '../utilities/cookie';
 
 export default class Stage extends React.Component {
     constructor(props) {
@@ -27,22 +28,22 @@ export default class Stage extends React.Component {
 
     flagCreature(code) {
         checkUUID();
-        this.API.markForRemoval(code);
+        this.API.addCreatureFlag(code);
         if(window.ENV.DEBUG) console.log('Controller: Marking creature ' + code + ' as illegal.');
         this.clearCreature(code);
     }
 
     clearCreature(code) {
         checkUUID();
-        this.API.addClick(code);
+        this.API.addCreatureClick(code);
         this.setState({ displayCreatures : this.state.displayCreatures.filter(
             item => item.code !== code 
         )})
 
-        this.updateDisplayCreatures(code)
+        this.fetchDisplayCreatures(code)
     }
 
-    updateDisplayCreatures(clearedCode) {
+    fetchDisplayCreatures = throttle((clearedCode)=>{
         let current = this.state.displayCreatures.length;
         let min = this.state.displayCreatureLimit;
         
@@ -50,7 +51,7 @@ export default class Stage extends React.Component {
             let fetchCount = min-current + Math.round(min*.5);
             if(window.ENV.DEBUG) console.log('Controller: DisplayCreatures is getting low! Fetching '+min+'-'+current+'+'+Math.round(min*.5)+' ('+fetchCount+') new entries.');
 
-            this.API.getEntrySet(fetchCount,
+            this.API.getCreatureEntries(fetchCount,
                 (data) => { 
                     if(window.ENV.DEBUG) console.log(data);
                     if(data.found) {
@@ -59,13 +60,13 @@ export default class Stage extends React.Component {
 
                         let newEntries = data.creatures.filter(item => !displayCodes.includes(item.code));
 
-                        if(window.ENV.DEBUG) console.log('Controller: Adding '+newEntries.length+' new entries to displayCreatures.');
+                        if(window.ENV.DEBUG) console.log('Controller: Recieved '+newEntries.length+' new entries. Adding to displayCreatures.');
                         this.setState({displayCreatures : this.state.displayCreatures.concat(newEntries)});
                     }
                 }
             )
         }
-    }
+    }, 3000); 
 
     updateDisplaySize(width, height) {
         // width + margin + borders
@@ -78,7 +79,7 @@ export default class Stage extends React.Component {
 
         if(window.ENV.DEBUG) console.log('Controller: SelectPanel can fit '+columns+'x'+rows+' ('+(columns*rows)+') components.');
 
-        this.setState({displayCreatureLimit : (columns * rows)}, ()=>{this.updateDisplayCreatures()});
+        this.setState({displayCreatureLimit : (columns * rows)}, ()=>{this.fetchDisplayCreatures()});
     }
 
     componentDidMount() {
@@ -89,7 +90,7 @@ export default class Stage extends React.Component {
         return (
             <div className="App-stage">
                 <div className="stage-top">
-                    <ImportPanel API={this.API} onCreatureUpdate={()=>{this.updateDisplayCreatures()}}/>
+                    <ImportPanel API={this.API} onCreatureUpdate={()=>{this.fetchDisplayCreatures()}}/>
                 </div>
                 <div className="stage-bottom-outer">
                     <div className="stage-bottom-inner">

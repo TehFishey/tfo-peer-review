@@ -28,19 +28,19 @@ if($_COOKIE['tfopr-uuid']!=null && strlen($_COOKIE['tfopr-uuid'])==36) {
     die(json_encode(array("message" => "(400) Unable to get creatures. UUID token is invalid.")));
 }
 
-// How many creatures to fetch? (between 1 and 50; default 1)
+// How many creatures to fetch? (between 1 and 60; default 1)
 if(!empty($_GET['count'])) {
     $count = $_GET['count'];
-    if($count>50) $count = 50;
+    if($count>60) $count = 60;
     if($count<1) $count = 1;;
 } else if(!empty($data->count)) {
     $count = $data->count;
-    if($count>50) $count = 50;
+    if($count>60) $count = 60;
     if($count<1) $count = 1;
 } else $count = 1;
 
 // Check ip against rate limits (done further down to do tokens = $count)
-if (!$ratelimiter->consume($count)){
+if (!$ratelimiter->consume(ceil($count/2))){
     http_response_code(429);
     die(json_encode(array("message" => "(429) Too many requests.")));
 }

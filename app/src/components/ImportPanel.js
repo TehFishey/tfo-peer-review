@@ -16,7 +16,7 @@ export default class ImportPanel extends React.Component {
 
     openLabView(labName) {
         this.setState({labError : ''});
-        this.API.tfoLabRequest(labName, (data) => {
+        this.API.fetchByLabname(labName, (data) => {
             if(window.ENV.DEBUG) console.log(data);
             if(!data.error) {
                 if(window.ENV.DEBUG) console.log('Controller: Found valid lab! Checking creatures and adding to state.');
@@ -34,16 +34,33 @@ export default class ImportPanel extends React.Component {
     }
 
     checkCreatures(importArray) {
-        let creatures = [];
+        let codeArray = importArray.map((creature)=> {return creature.code})
+        let creatureTuples = [];
+        
 
-        importArray.forEach((item) => {
-            this.API.getSingleEntry(item.code, (data) => {
-                (data.found) ?
-                creatures.push([true, item]) :
-                creatures.push([false, item]) 
-                this.setState({importCreatures : creatures})
+        if(codeArray.length > 0) {
+            this.API.checkCreatureEntries(codeArray, (data)=> {
+                if(window.ENV.DEBUG) console.log('Controller: Checking creature entries: '+ codeArray.toString());
+                if(window.ENV.DEBUG) console.log('Server Response: ');
+                if(window.ENV.DEBUG) console.log(data);
+
+                if(data.found) {
+                    creatureTuples = importArray.map((creature)=> {
+                        let bool = data.exists[creature.code];
+                        return [bool, creature];
+                    });
+                } else {
+                    creatureTuples = importArray.map((creature)=> {
+                        return [false, creature]
+                    })
+                }
+                this.setState({importCreatures : creatureTuples});
             });
-        })
+        }
+        else {
+            if(window.ENV.DEBUG) console.log('Controller: No creatures found to check! Exiting...');
+            this.setState({importCreatures : []});
+        }
     }
 
     closeLabView() {
@@ -52,22 +69,28 @@ export default class ImportPanel extends React.Component {
     }
 
     submitLabView(importCreatures) {
+        let addCodes = [];
+        let removeCodes = [];
+
         importCreatures.forEach((tuple) => {
-            if(tuple[0]) {
-                this.API.addEntry(tuple[1], (data) => {
-                    this.props.onCreatureUpdate();
-                    if(window.ENV.DEBUG) console.log('Controller: Adding entry: ');
-                    if(window.ENV.DEBUG) console.log(data);
-                });
-            } else {
-                this.API.removeEntry(tuple[1], (data) => {
-                    this.props.onCreatureUpdate();
-                    if(window.ENV.DEBUG) console.log('Controller: Removing entry: ');
-                    if(window.ENV.DEBUG) console.log(data);
-                });
-            };
+            if(tuple[0]) addCodes.push(tuple[1].code);
+            else removeCodes.push(tuple[1].code);
         });
 
+        if(addCodes.length > 0) {
+            this.API.addCreatureEntries(addCodes, (data) => {
+                if(window.ENV.DEBUG) console.log('Controller: Adding entries: '+ addCodes.toString());
+                if(window.ENV.DEBUG) console.log('Server Response: '+ data.message);
+                this.props.onCreatureUpdate();
+            });
+        }
+        if(removeCodes.length > 0) {
+            this.API.removeCreatureEntries(removeCodes, (data) => {
+                if(window.ENV.DEBUG) console.log('Controller: Removing entries: '+ removeCodes.toString());
+                if(window.ENV.DEBUG) console.log('Server Response: '+ data.message);
+                this.props.onCreatureUpdate();
+            });
+        }
         this.setState({labIsOpen : false});
         this.setState({importCreatures : []});
     }

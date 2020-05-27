@@ -1,5 +1,6 @@
 import React from 'react';
 import SelectPanelItem from './SelectPanelItem';
+import {debounce} from '../utilities/limiters';
 
 export default class SelectPanel extends React.Component {
     constructor(props) {
@@ -28,27 +29,7 @@ export default class SelectPanel extends React.Component {
         } else return <label> Looks like there's nothing here... </label>   
     }
 
-    debounce(func, ms) {
-        let timer
-        return () => {
-            clearTimeout(timer)
-            timer = setTimeout(() => {
-                timer = null;
-                func.apply(this,arguments);
-            }, ms);
-        };
-    }
-
-    componentDidMount() {
-        this.updateSize();
-        window.addEventListener("resize", this.handleUpdate);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("resize", this.handleUpdate);
-    }
-
-    updateSize = this.debounce(()=>{
+    updateSize = debounce(()=>{
         let currentWidth = this.panelDiv.clientWidth;
         let currentHeight = this.panelDiv.clientHeight;
         
@@ -58,6 +39,15 @@ export default class SelectPanel extends React.Component {
             this.props.onRender(currentWidth,currentHeight);
         }
     }, 1000);
+
+    componentDidMount() {
+        this.updateSize();
+        window.addEventListener("resize", this.handleUpdate);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.handleUpdate);
+    }
 
     render () {
         return (
