@@ -9,9 +9,9 @@ class Creature {
 
     // database connection and table name
     private $conn;
-    private $creature_table_name = "tbl_creatureData";
-    private $cache_table_name = "tbl_sessionCache";
-    private $click_table_name = "tbl_uuidClicks";
+    private $creature_table_name = "Creatures";
+    private $cache_table_name = "SessionCache";
+    private $click_table_name = "Clicks";
     
 
     // object properties

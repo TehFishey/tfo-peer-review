@@ -12,7 +12,7 @@ class Flag {
 
     // database connection and table name
     private $conn;
-    private $table_name = "tbl_uuidInvalidFlags";
+    private $table_name = "FlaggedCodes";
   
     // object properties
     public $uuid;           // string - 36 character uuid of clicking/connecting user (from browser cookie)
@@ -39,7 +39,7 @@ class Flag {
         return false;  
     }
 
-    // readCodes -> Read all creature codes in the 'tbl_uuidInvalidFlags' table.
+    // readCodes -> Read all creature codes in the 'FlaggedCodes' table.
     function readCodes() {
         $query = "SELECT f.code FROM " . $this->table_name . " AS f 
             GROUP BY f.code";
@@ -49,7 +49,7 @@ class Flag {
         return false;  
     }
 
-    // clear -> clear the 'tbl_uuidInvalidFlags' table.
+    // clear -> clear the 'FlaggedCodes' table.
     function clear() {
         $query = "TRUNCATE TABLE " . $this->table_name;
 

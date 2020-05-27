@@ -44,16 +44,10 @@ export default class ImportPanel extends React.Component {
                 if(window.ENV.DEBUG) console.log('Server Response: ');
                 if(window.ENV.DEBUG) console.log(data);
 
-                if(data.found) {
-                    creatureTuples = importArray.map((creature)=> {
-                        let bool = data.exists[creature.code];
-                        return [bool, creature];
-                    });
-                } else {
-                    creatureTuples = importArray.map((creature)=> {
-                        return [false, creature]
-                    })
-                }
+                creatureTuples = importArray.map((creature)=> {
+                    let bool = data.exists[creature.code];
+                    return [bool, creature];
+                });
                 this.setState({importCreatures : creatureTuples});
             });
         }

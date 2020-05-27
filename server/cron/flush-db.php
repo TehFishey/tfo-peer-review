@@ -11,8 +11,8 @@ include_once (__DIR__).'/../api/utilities/db.php';
 
 $database = new Database();
 $conn = $database->getConnection();
-$creature_table = 'tbl_creatureData';
-$click_table = 'tbl_uuidClicks';
+$creature_table = 'Creatures';
+$click_table = 'Clicks';
 
 // UNIX timestamp for 5 days prior to current time. All entries older than this are deleted
 $maxGrowDate = (string) strtotime('-5 day', time());

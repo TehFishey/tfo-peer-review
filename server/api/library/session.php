@@ -2,7 +2,7 @@
 class Session {
     // database connection and table name
     private $conn;
-    private $table_name = "tbl_sessions";
+    private $table_name = "Sessions";
   
     // object properties
     public $sessionId;      // integer - auto-incrementing unique identifier for session

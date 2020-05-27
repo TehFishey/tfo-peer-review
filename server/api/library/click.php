@@ -12,7 +12,7 @@ class Click {
 
     // database connection and table name
     private $conn;
-    private $table_name = "tbl_uuidClicks";
+    private $table_name = "Clicks";
   
     // object properties
     public $uuid;           // string - 36 character uuid of clicking/connecting user (from browser cookie)

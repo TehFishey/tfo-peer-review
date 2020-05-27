@@ -20,7 +20,7 @@ class RateLimiter {
                                     // right of the decimal
      
     private $_db;
-    private $_table_name = 'tbl_rateLimits';
+    private $_table_name = 'RateLimits';
     protected $_identifier;
     protected $_bucket_capacity;
     protected $_tokens_per_second;
