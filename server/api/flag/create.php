@@ -10,16 +10,16 @@ header("Access-Control-Allow-Credentials: true");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
-include_once '../db/db.php';
-include_once '../utilities/tokenbucket.php';
-include_once '../library/uuidflag.php';
+include_once '../utilities/db.php';
+include_once '../utilities/limiter.php';
+include_once '../library/flag.php';
 include_once '../library/creature.php';
 
 // Instantiate objects
 $database = new Database();
 $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
-$ratelimiter = new TokenBucket($db, $_SERVER['REMOTE_ADDR'], 100, 10);
+$ratelimiter = new RateLimiter($db, $_SERVER['REMOTE_ADDR'], 100, 10);
 
 // Check ip against rate limits
 if (!$ratelimiter->consume(2)){
@@ -54,7 +54,7 @@ if(!empty($data->code) && strlen($data->code)==5) {
 }
 
 // If validation checks are passed, encode the db object...
-$flag = new UuidCreatureFlag($db);
+$flag = new Flag($db);
 
 $flag->uuid = $uuid;
 $flag->code = $code;

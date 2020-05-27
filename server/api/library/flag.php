@@ -1,5 +1,5 @@
 <?php
-class UuidCreatureFlag {
+class Flag {
     /*-----------------------------------
     Database object for 'uuidInvalidFlags' table
 

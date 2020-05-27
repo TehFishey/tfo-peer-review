@@ -7,7 +7,7 @@
 // Clear 'markedkeys' table afterwards
 
 include_once (__DIR__).'/../config/config.php';
-include_once (__DIR__).'/../api/db/db.php';
+include_once (__DIR__).'/../api/utilities/db.php';
 include_once (__DIR__).'/../api/library/ckey.php';
 include_once (__DIR__).'/../api/library/creature.php';
 
@@ -15,7 +15,7 @@ $database = new Database();
 $conn = $database->getConnection();
 
 // Read all creature keys in 'markedkeys'
-$flags = new UuidCreatureFlag($conn);
+$flags = new Flag($conn);
 $stmt = $flags->readCodes();
 
 if($stmt->rowCount()>0) {

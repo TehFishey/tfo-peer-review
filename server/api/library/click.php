@@ -1,5 +1,5 @@
 <?php
-class UuidCreatureClick {
+class Click {
     /*-----------------------------------
     Database object for 'uuidClicks' table
 

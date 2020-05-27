@@ -7,7 +7,7 @@
 // Drop all entries in the clicks table tied to creatures whcich are the same as ^
 // Drop all entries in the clicks table that are more than 1 day old.
 
-include_once (__DIR__).'/../api/db/db.php';
+include_once (__DIR__).'/../api/utilities/db.php';
 
 $database = new Database();
 $conn = $database->getConnection();

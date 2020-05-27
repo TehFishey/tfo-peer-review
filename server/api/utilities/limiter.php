@@ -7,7 +7,7 @@
  * maximum capacity of that bucket, and a fill rate defined as the number of tokens
  * per second that get added to the bucket.
  */
-class TokenBucket {
+class RateLimiter {
     /* Constants to map from tokens per unit to tokens per second */
     const MILLISECOND = 0.001;
     const SECOND = 1;
@@ -73,7 +73,7 @@ class TokenBucket {
         // Check for availability, capping it to the capacity of the bucket
         $now = microtime(true);
         $available = min($now - $record['microtime'], $full_microtime);
-        if (TokenBucket::compare_microtimes($microtime, $available) > 0) {
+        if (RateLimiter::compare_microtimes($microtime, $available) > 0) {
             $this->_db->rollBack();
             return false;
         }

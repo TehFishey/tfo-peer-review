@@ -10,15 +10,15 @@ header("Access-Control-Allow-Credentials: true");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object file
-include_once '../db/db.php';
-include_once '../utilities/tokenbucket.php';
+include_once '../utilities/db.php';
+include_once '../utilities/limiter.php';
 include_once '../library/session.php';
 include_once '../library/creature.php';
 
 // Instantiate objects
 $database = new Database();
 $db = $database->getConnection();
-$ratelimiter = new TokenBucket($db, $_SERVER['REMOTE_ADDR'], 100, 10);
+$ratelimiter = new RateLimiter($db, $_SERVER['REMOTE_ADDR'], 100, 10);
 $data = json_decode(file_get_contents("php://input"));
 
 // Check ip against rate limits
