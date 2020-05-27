@@ -9,10 +9,14 @@ class Creature {
 
     // database connection and table name
     private $conn;
-    private $table_name = "tbl_creatureData";
+    private $creature_table_name = "tbl_creatureData";
+    private $cache_table_name = "tbl_sessionCache";
     private $click_table_name = "tbl_uuidClicks";
-  
+    
+
     // object properties
+    public $session;        //
+    
     public $code;           // string - 5 character creature code (ex. "6bMDs")
     public $imgsrc;         // string - 60 character image src (ex. "https:\/\/finaloutpost.net\/s\/6bMDs.png")
     public $gotten;         // string - 10 character Unix timestamp for when creature was aquired
@@ -29,14 +33,21 @@ class Creature {
     function readSet($uuid, $count) {
         // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel 
-            FROM " . $this->table_name . " AS c LEFT OUTER JOIN " . $this->click_table_name . " AS uc ON c.code = uc.code 
+            FROM " . $this->creature_table_name . " AS c LEFT OUTER JOIN " . $this->click_table_name . " AS uc ON c.code = uc.code 
             GROUP BY c.code 
-            HAVING COUNT(CASE WHEN uc.uuid = '" . $uuid . "' THEN 1 END) = 0
+            HAVING COUNT(CASE WHEN uc.uuid=:uuid THEN 1 END) = 0
             ORDER BY RAND()
-            LIMIT ".$count;
-
+            LIMIT :count";
         $stmt = $this->conn->prepare($query);
         //echo("UUID: ".$uuid." Count: ".$count);
+
+        // sanitize
+        $uuid=htmlspecialchars(strip_tags($uuid));
+        $count=htmlspecialchars(strip_tags($count));
+
+        // bind values
+        $stmt->bindParam(":uuid", $uuid);
+        $stmt->bindParam(":count", $count);
 
         // execute query
         $stmt->execute();
@@ -47,7 +58,7 @@ class Creature {
     function readOne() {
         // query to read single record
         $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel FROM "
-                    . $this->table_name . " AS c WHERE c.code = ? LIMIT 0,1";
+                    . $this->creature_table_name . " AS c WHERE c.code = ? LIMIT 0,1";
 
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
@@ -73,13 +84,14 @@ class Creature {
         // For use instead of create() and update(). 
         // 'code' is a primary key, so this should work fine.
 
-        $query = "REPLACE INTO " . $this->table_name . " SET 
+        $query = "REPLACE INTO " . $this->creature_table_name . " SET 
             code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel, isStunted=:isStunted";
       
         // prepare query
         $stmt = $this->conn->prepare($query);
       
         // sanitize
+        $this->code=htmlspecialchars(strip_tags($this->code));
         $this->imgsrc=htmlspecialchars(strip_tags($this->imgsrc));
         $this->gotten=htmlspecialchars(strip_tags($this->gotten));
         $this->name=htmlspecialchars(strip_tags($this->name));
@@ -101,7 +113,7 @@ class Creature {
 
     function delete() {
         // delete query
-        $query = "DELETE FROM " . $this->table_name . " WHERE code = ?";
+        $query = "DELETE FROM " . $this->creature_table_name . " WHERE code = ?";
   
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -116,6 +128,70 @@ class Creature {
         if($stmt->execute()){ return true; }
   
         return false;
+    }
+
+    function replaceInCache() {
+        // For use instead of create() and update(). 
+        // 'code' is a primary key, so this should work fine.
+
+        $query = "REPLACE INTO " . $this->cache_table_name . " SET 
+            sessionId=:session, code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel, isStunted=:isStunted";
+      
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+      
+        // sanitize
+        $this->session=htmlspecialchars(strip_tags($this->session));
+        $this->code=htmlspecialchars(strip_tags($this->code));
+        $this->imgsrc=htmlspecialchars(strip_tags($this->imgsrc));
+        $this->gotten=htmlspecialchars(strip_tags($this->gotten));
+        $this->name=htmlspecialchars(strip_tags($this->name));
+        $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
+        $this->isStunted=htmlspecialchars(strip_tags($this->isStunted));
+      
+        // bind values
+        $stmt->bindParam(":session", $this->session);
+        $stmt->bindParam(":code", $this->code);
+        $stmt->bindParam(":imgsrc", $this->imgsrc);
+        $stmt->bindParam(":gotten", $this->gotten);
+        $stmt->bindParam(":name", $this->name);
+        $stmt->bindParam(":growthLevel", $this->growthLevel);
+        $stmt->bindParam(":isStunted", $this->isStunted);
+      
+        // execute query
+        if($stmt->execute()){ return true; }
+        return false;  
+    }
+
+    function importFromCache() {
+
+        $query = "INSERT INTO ".$this->creature_table_name."(code, imgsrc, gotten, name, growthLevel, isStunted) 
+            SELECT cc.code, cc.imgsrc, cc.gotten, cc.name, cc.growthLevel, cc.isStunted FROM ".$this->cache_table_name." AS cc 
+            WHERE (cc.sessionId=:session AND cc.code=:code) 
+            ON DUPLICATE KEY UPDATE imgsrc=cc.imgsrc, gotten=cc.gotten, name=cc.name, growthLevel=cc.growthLevel, isStunted=cc.isStunted";
+        $stmt = $this->conn->prepare($query);
+
+        $this->session=htmlspecialchars(strip_tags($this->session));
+        $this->code=htmlspecialchars(strip_tags($this->code));
+        $stmt->bindParam(":session", $this->session);
+        $stmt->bindParam(":code", $this->code);
+
+        if($stmt->execute()){ return true; }
+        return false; 
+    }
+
+    function readCachedCodes() {
+        // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
+        $query = "SELECT code FROM ".$this->cache_table_name.
+            " GROUP BY code";
+
+        $stmt = $this->conn->prepare($query);
+        //echo("UUID: ".$uuid." Count: ".$count);
+
+        // execute query
+        $stmt->execute();
+      
+        return $stmt;
     }
 }
 

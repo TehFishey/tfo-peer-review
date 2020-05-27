@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 include_once './db/db.php';
 include_once './utilities/tokenbucket.php';
 include_once './library/creature.php';
-include_once './library/curl.tfo.php';
 
 // Instantiate objects
 $database = new Database();
