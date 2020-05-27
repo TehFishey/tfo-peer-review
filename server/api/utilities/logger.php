@@ -33,10 +33,10 @@ class Logger {
         return $this->log("curl");
     }
     function logAdd() {
-        return $this->log("add");
+        return $this->log("creatureAdd");
     }
     function logRemove() {
-        return $this->log("remove");
+        return $this->log("creatureRemove");
     }
 }
 
