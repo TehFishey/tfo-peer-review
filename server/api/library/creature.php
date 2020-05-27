@@ -1,13 +1,65 @@
 <?php
+/************************************************************************************** 
+ * Main Data Object for "Creatures" and "SessionCache" tables.
+ * "Creatures" Primary Key: code
+ * "SessionCache" Primary Key: composite(session, code)
+ * 
+ * Description:
+ * The "Creatures" table is the main table of this site; it tracks all data from creatures that users 
+ * have imported to the site from TFO. Entries from the Creatures table are read and served to the frontend for
+ * user interaction; they can also be checked, imported, and deleted in response to frontend input.
+ * 
+ * It is important to note that "Creatures" entries are never passed to this table directly. Creature objects are
+ * fetched from TLO via cURL in response to user input; the objects are stored in the "SessionCache" table, until
+ * such time as a user decides to add any number of them to "Creatures". Users can also delete entries from "Creatures",
+ * but only if they have stored a corresponding entry in "SessionCache".
+ * 
+ * This object is used to interact with both the "Creatures" and "SessionCache" tables, via different methods. The 
+ * main difference between these two is that "SessionCache" entries require a "session" property; this is a foreign
+ * key which maps them to the "Sessions" table.
+ * 
+ * Methods:
+ * ->readSet($uuid, $count) - Reads $count entries from "Creatures", which have not yet been interacted with by
+ *                            $uuid (determined by checking codes against "Clicks" table.) This method is used 
+ *                            in the creature/get endpoint to serve creatures for frontend display.
+ *                               Requires: $uuid, $count
+ * 
+ * ->readOne() - Searches for a "Creature" entry matching $this->code. If found, maps that entry's fields into 
+ *               the data object's props and returns True; otherwise, returns False. This method is used by
+ *               multiple endpoints for validation and other purposes, but is never invoked directly by the user.
+ *                  Requires: $this->code 
+ * 
+ * ->replace() - Used as a catch-all for Insert and Update queries for the "Creatures" table. Creates/updates 
+ *               a "Creatures" entry with fields set by the data object's props. Currently deprecated and unused.
+ *                  Requires: $this->code, $this->imgsrc, $this->gotten, $this->name, $this->growthLevel, $this->isStunted
+ * 
+ * ->update() - Highly specific update command; ONLY updates the "growthLevel" and and "isStunted" fields of a "Creatures"
+ *              table entry matching $this->code. Field values are taken from the object's corresponding props. This method
+ *              is only used by the update-db cron script - its limitations are dictated by the outputs of the TLO API's 
+ *              'multipleEntries' command.
+ *                  Requires: $this->code, $this->growthLevel, $this->isStunted
+ * 
+ * ->delete() - Deletes a "Creatures" table entry matching $this->code. This method is used by the creature/delete endpoint
+ *              and the update-db cron script.
+ *                  Requires: $this->code 
+ * 
+ * ->replaceInCache() - As the replace() method, but for the "CreatureCache" table instead. Used by the creature/fetch endpoint
+ *                      to add creatures retrieved by TLO to "CreatureCache". 
+ *                          Requires: $this->session $this->code, $this->imgsrc, $this->gotten, $this->name, $this->growthLevel, $this->isStunted
+ * 
+ * ->importFromCache() - Copies an entry from "CreatureCache" to "Creatures". "CreatureCache" entry must match $this->code AND $this->session 
+ *                       in order to be copied. This method is called by the creature/create endpoint, after a user has chosen to 'add' certain
+ *                       creatures to the site.
+ *                          Requires: $this->session, $this->code
+ * 
+ * ->readCachedCodes() - Returns a list of all 'code' values stored in "CreatureCache". This method is used by multiple endpoints to validate
+ *                       user inputs.
+ *                          Requires: Nothing
+ * 
+ **************************************************************************************/
+
 class Creature {
-    /*-----------------------------------
-    Database object for 'creatureData' (aka. 'main') table
-
-    The 'creatureData' table contains all creature objects fetched/imported into the site from TFO. These are the creatures which are displayed by the frontend
-    to users for clicking. Creatures can be add, removed, checked, and updated by cron scripts or api commands.
-    --------------------------------------*/
-
-    // database connection and table name
+    // database connection and table names
     private $conn;
     private $creature_table_name = "Creatures";
     private $cache_table_name = "SessionCache";
@@ -15,7 +67,7 @@ class Creature {
     
 
     // object properties
-    public $session;        //
+    public $session;        // int - integer representing unique session id in Sessions table. ONLY USED IN SessionCache OPERATIONS!
     
     public $code;           // string - 5 character creature code (ex. "6bMDs")
     public $imgsrc;         // string - 60 character image src (ex. "https:\/\/finaloutpost.net\/s\/6bMDs.png")

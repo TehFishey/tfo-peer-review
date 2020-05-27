@@ -1,11 +1,4 @@
 <?php
-
-// Step 1 of chron job:
-
-// Get all creature codes in 'markedkeys' table
-// For each code, retrieve the creature from TLO and push it do the 'creatures' table
-// Clear 'markedkeys' table afterwards
-
 include_once (__DIR__).'/../config/config.php';
 include_once (__DIR__).'/../api/utilities/db.php';
 include_once (__DIR__).'/../api/library/flag.php';
@@ -14,7 +7,7 @@ include_once (__DIR__).'/../api/library/creature.php';
 $database = new Database();
 $conn = $database->getConnection();
 
-// Read all creature keys in 'markedkeys'
+// Read all creature keys in 'FlaggedCodes'
 $flags = new Flag($conn);
 $stmt = $flags->readCodes();
 

@@ -1,4 +1,14 @@
 <?php
+/************************************************************************************** 
+ * Logger Utility Object
+ * 
+ * Description:
+ * A rudimentary logger object, used to assist in various logging operations and internal metrics
+ * collection. Metrics are written to the "Log_Weekly" table, tracking ip's and their associated 
+ * numbers of clicks, cURL requests, creature/create actions, and creature/delete actions. Every week,
+ * these values are compounded into single entries in the "Log_Compounded" table by the 'cron-weekly'
+ * cron event; "Log_Weekly" is then cleared.
+ **************************************************************************************/
 class Logger {
 
     private $conn;

@@ -1,12 +1,4 @@
 <?php
-
-// Step 2 of chron job:
-
-// Drop all entries in the creatures table which are confirmed to have grown up (growthlevel > 2)
-// Drop all entries in the creatures table which are more than 5 days old (5 days is max grow time)
-// Drop all entries in the clicks table tied to creatures whcich are the same as ^
-// Drop all entries in the clicks table that are more than 1 day old.
-
 include_once (__DIR__).'/../api/utilities/db.php';
 
 $database = new Database();

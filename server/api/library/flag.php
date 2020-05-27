@@ -1,15 +1,34 @@
 <?php
+/************************************************************************************** 
+ * Main Data Object for "FlaggedCodes" table.
+ * Primary Key: Composite(uuid, code)
+ * 
+ * Description:
+ * The "FlaggedCodes" table tracks entries in the "Creatures" table which have been 'flagged' by users as being
+ * invalid for inclusion on the website (either because the creature is an adult, is dead, is stunted, etc.) The table
+ * "Creatures" entries by their primary keys ($code). It also stores the corresponding $uuid of the user who flagged
+ * each creature.
+ * 
+ * "FlaggedCodes" is periodically read by the 'update-db' cron event. Marked creature entries are re-fetched from
+ * TFO through a specialized cURL endpoint; non-existant creatures are deleted from "Creatures", and existing ones
+ * have their their "growthLevel" and "isStunted" fields updated to current values. Confirmed invalid creatures
+ * are then purged from "Creatures" by the 'flush-db' cron event. After 'update-db' reads "FlaggedCodes", the table's
+ * contents are cleared.
+ * 
+ * (Note: the uuid field of "FlaggedCodes" is not currently used for anything; it is only there in case features are 
+ * implemented at a later date which might benefit from it.)
+ * 
+ * Methods:
+ * ->create() - Used to create a "FlaggedCodes" table entry. Called from the flag/create endpoint.
+ *                Requires: $this->uuid, $this->code
+ * 
+ * ->readCodes() - Reads out all unique creature codes in "FlaggedCodes". Called from the 'update-db' cron event.
+ *                   Requires: Nothing
+ * 
+ * ->clear() - Truncates/clears the "FlaggedCodes" table. Called at the end of the 'update-db' cron event.
+ *               Requires: Nothing
+ **************************************************************************************/
 class Flag {
-    /*-----------------------------------
-    Database object for 'uuidInvalidFlags' table
-
-    The 'uuidInvalidFlags' table tracks creatures ($code) which have been 'flagged' by users as being invalid for inclusion in the main db table,
-    likely because the creature has grown up. For forward-compatability purposes, 'uuidInvalidFlags' also tracks what user(s) ($uuid) flagged the creatures.
-
-    This db table is read and cleared every 10 minutes by cron; marked creature entries are re-fetched for the main table from TFO, 
-    and all invalid entries in the main table are then purged.
-    --------------------------------------*/
-
     // database connection and table name
     private $conn;
     private $table_name = "FlaggedCodes";

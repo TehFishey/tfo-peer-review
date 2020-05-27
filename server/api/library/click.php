@@ -1,14 +1,22 @@
 <?php
+/************************************************************************************** 
+ * Main Data Object for "Clicks" table.
+ * Primary Key: Composite(uuid, code)
+ * 
+ * Description:
+ * The "Clicks" table tracks interaction events (eg. when a user clicks or flags a creature). It does this
+ * by storing relationships between users ($uuid) and creatures ($code) as composite keys. Entries are also
+ * are given a timestamp ($time) when logged. 
+ * 
+ * This db table is read when serving users creatures to click on, to prevent the same creature from being
+ * served twice to the same user within 1 day. After a day elapses, entries are removed from this table by cron.
+ * 
+ * Methods:
+ * ->create() - Used to create a click entry. Called from endpoint.
+ *                Requires: $this->uuid, $this->code, $this->time
+ **************************************************************************************/
+
 class Click {
-    /*-----------------------------------
-    Database object for 'uuidClicks' table
-
-    The 'uuidClicks' table logs interaction events (either creature clicks or creature flaggings) between users ($uuid) and
-    creatures stored in the main db table ($code). uuidClick objects are given a timestamp ($time) when logged. 
-
-    This db table is read when serving users creatures to click on, to prevent duplicates from being served over a 24 hour 
-    timespan. After 1 day, entries are removed from this table by cron.
-    --------------------------------------*/
 
     // database connection and table name
     private $conn;

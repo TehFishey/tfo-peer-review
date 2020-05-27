@@ -1,5 +1,10 @@
 <?php
-    
+/************************************************************************************** 
+ * PDO Utility Object
+ * 
+ * Description:
+ * Simple PDO utility object. Used to open and manage database connections.
+ **************************************************************************************/
 include_once (__DIR__).'/../../config/config.php';
 
 class Database {

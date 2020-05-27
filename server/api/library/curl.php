@@ -1,6 +1,19 @@
 <?php
+/************************************************************************************** 
+ * Handler Object for Managing cURL Requests
+ * Primary Key: Composite(uuid, code)
+ * 
+ * Description:
+ * This is a simple little helper object for managing cURL requrests to TFO's API. 
+ * $this->action and $this->var map to the corresponding inputs requested by the API; 
+ * $this->output holds return objects/messages (if any), and $this->error is tripped to 
+ * True in case a cURL error occurs.
+ * 
+ * Methods:
+ * ->execute() - Execute the programmed cURL request (based on $action and $var)
+ *                  Requires: $this->action, $this->var
+ **************************************************************************************/
 include_once (__DIR__).'/../../config/config.php';
-
 class TFO_cURL {
     
     // Constants
@@ -11,7 +24,7 @@ class TFO_cURL {
     public $action;         // string - API command. Valid actions are 'lab' and 'creature'
     public $var;            // string - Variable input. Takes lab-name for 'lab', creature-code for 'creature.
     public $output;         // variable - return object from cURL request
-    public $error;           // boolean - tracks error
+    public $error;          // boolean - tracks error
 
     private function prepare($payload) {
         $handle = curl_init($this->api_url);

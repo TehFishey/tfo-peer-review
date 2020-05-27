@@ -1,10 +1,20 @@
 <?php
-/*
- * PHP Token-Bucket based Rate Limiter algorithm, with caching done via SQL. 
+/************************************************************************************** 
+ * Rate-Limiter Utility Object
+ * 
+ * Description:
+ * A Rate-Limiter based on the Token-Bucket algorithm, which stores its cache in an 
+ * SQL table. Constructor properties define the unique identifiers used for each bucket
+ * (user IP, in our case), the size of each bucket, and the number of tokens which
+ * regenerate per second.
  * 
  * Adapted from code by Ryan Britton (https://ryanbritton.com/2016/11/rate-limiting-in-php-with-token-bucket/)
  * 
- */
+ * Methods:
+ * ->consume(int $tokens) - Returns True if the number of available tokens is greater than
+ *                          $tokens (decrementing available tokens by that much if so); otherwise
+ *                          returns false.
+ **************************************************************************************/
 class RateLimiter {
     /* Constants to map from tokens per unit to tokens per second */
     const MILLISECOND = 0.001;
