@@ -22,7 +22,7 @@ class Creature {
     public $gotten;         // string - 10 character Unix timestamp for when creature was aquired
     public $name;           // string - 30 creature name (or Unnamed) (ex. "Unnamed")
     public $growthLevel;    // string - 1 character creature growthLevel level (1-egg, 2-hatch, 3-mature) (ex. "1")
-    public $isStunted;       // string - 5 character boolean (true/false) for if the creature is a stunted capsule/child
+    public $isStunted;      // string - 5 character boolean (true/false) for if the creature is a stunted capsule/child
   
     // constructor with $db as database connection
     public function __construct($db) {
@@ -113,22 +113,40 @@ class Creature {
         return false;  
     }
 
+    function update() {
+        // Dumb update command
+        $query = "UPDATE ".$this->creature_table_name." 
+            SET growthLevel=:growthLevel, isStunted=:isStunted WHERE code=:code";
+        $stmt = $this->conn->prepare($query);
+      
+        // sanitize
+        $this->code=htmlspecialchars(strip_tags($this->code));
+        $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
+        $this->isStunted=htmlspecialchars(strip_tags($this->isStunted));
+      
+        // bind values
+        $stmt->bindParam(":code", $this->code);
+        $stmt->bindParam(":growthLevel", $this->growthLevel);
+        $stmt->bindParam(":isStunted", $this->isStunted);
+      
+        // execute query
+        if($stmt->execute()){ return true; }
+        return false;  
+    }
+
     function delete() {
         // delete query
-        $query = "DELETE FROM " . $this->creature_table_name . " WHERE code = ?";
-  
-        // prepare query
+        $query = "DELETE FROM " . $this->creature_table_name . " WHERE code=:code";
         $stmt = $this->conn->prepare($query);
   
         // sanitize
         $this->code=htmlspecialchars(strip_tags($this->code));
-  
-        // bind code of record to delete
-        $stmt->bindParam(1, $this->code);
+
+        // bind values
+        $stmt->bindParam(":code", $this->code);
   
         // execute query
         if($stmt->execute()){ return true; }
-  
         return false;
     }
 

@@ -41,8 +41,8 @@ class Flag {
 
     // readCodes -> Read all creature codes in the 'FlaggedCodes' table.
     function readCodes() {
-        $query = "SELECT code FROM ".$this->table_name. 
-            "GROUP BY code";
+        $query = "SELECT f.code FROM ".$this->table_name." AS f 
+            GROUP BY f.code";
         $stmt = $this->conn->prepare($query);
 
         if($stmt->execute()){ return $stmt; }
@@ -51,7 +51,7 @@ class Flag {
 
     // clear -> clear the 'FlaggedCodes' table.
     function clear() {
-        $query = "TRUNCATE TABLE " . $this->table_name;
+        $query = "TRUNCATE TABLE ".$this->table_name;
 
         $stmt = $this->conn->prepare($query);
         if($stmt->execute()){ return true; }
