@@ -29,8 +29,10 @@ class UuidCreatureFlag {
             select :uuid, :code 
             on duplicate key update uuid = values(uuid)";
         $stmt = $this->conn->prepare($query);
-      
-        $this->imgsrc=htmlspecialchars(strip_tags($this->code));
+        
+        $this->uuid=htmlspecialchars(strip_tags($this->uuid));
+        $this->code=htmlspecialchars(strip_tags($this->code));
+        $stmt->bindParam(":uuid", $this->uuid);
         $stmt->bindParam(":code", $this->code);
 
         if($stmt->execute()){ return true; }

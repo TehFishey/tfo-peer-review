@@ -20,13 +20,7 @@ $db = $database->getConnection();
 $ratelimiter = new TokenBucket($db, $_SERVER['REMOTE_ADDR'], 100, 10);
 $data = json_decode(file_get_contents("php://input"));
 
-// Check ip against rate limits
-if (!$ratelimiter->consume(10)){
-    http_response_code(429);
-    die(json_encode(array("message" => "(429) Too many requests.")));
-}
-
-// Validate uuid (stored in tfopr-uuid browser cookie)
+// Validate UUID (stored in tfopr-uuid browser cookie)
 if($_COOKIE['tfopr-uuid']!=null && strlen($_COOKIE['tfopr-uuid'])==36) {
     $uuid = $_COOKIE['tfopr-uuid'];
 } else {
@@ -44,6 +38,12 @@ if(!empty($_GET['count'])) {
     if($count>50) $count = 50;
     if($count<1) $count = 1;
 } else $count = 1;
+
+// Check ip against rate limits (done further down to do tokens = $count)
+if (!$ratelimiter->consume($count)){
+    http_response_code(429);
+    die(json_encode(array("message" => "(429) Too many requests.")));
+}
 
 // Initialize object
 $creature = new Creature($db);

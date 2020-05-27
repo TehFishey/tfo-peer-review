@@ -57,7 +57,7 @@ class Creature {
 
     function readOne() {
         // query to read single record
-        $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel FROM "
+        $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel, c.isStunted FROM "
                     . $this->creature_table_name . " AS c WHERE c.code = ? LIMIT 0,1";
 
         // prepare query statement
@@ -72,12 +72,14 @@ class Creature {
         // get retrieved row
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             // set values to object properties
-            //$this->code = $row['code'];
             $this->imgsrc = $row['imgsrc'];
             $this->gotten = $row['gotten'];
             $this->name = $row['name'];
             $this->growthLevel = $row['growthLevel'];
+            $this->isStunted = $row['isStunted'];
+            return true;
         }
+        return false;
     }
 
     function replace() {
@@ -181,12 +183,10 @@ class Creature {
     }
 
     function readCachedCodes() {
-        // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
         $query = "SELECT code FROM ".$this->cache_table_name.
             " GROUP BY code";
 
         $stmt = $this->conn->prepare($query);
-        //echo("UUID: ".$uuid." Count: ".$count);
 
         // execute query
         $stmt->execute();
