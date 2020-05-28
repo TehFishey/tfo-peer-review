@@ -3,6 +3,9 @@
  * Handler Object for Managing cURL Requests
  * Primary Key: Composite(uuid, code)
  * 
+ * See: https://docs.google.com/document/d/1tRmDw40_VF42uucAZXwYXFfK3qbxM4jaK4YLAjSYFCE/edit
+ * for i/o details.
+ * 
  * Description:
  * This is a simple little helper object for managing cURL requrests to TFO's API. 
  * $this->action and $this->var map to the corresponding inputs requested by the API; 

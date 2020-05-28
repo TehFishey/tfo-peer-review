@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * Sub-component of ImportPanel; display is mutually exclusive with ImportPanelSelect. Provides user
+ * with an input form for searching for TFO labs. Also displays error messages after failed lab
+ * searches, and a text box which briefly explains the site's features.
+ * 
+ * @property {string} errorString: Import error code string to display (if any)
+ * @property {function} onSubmit: Function to execute when user submits a lab search.
+ */
 export default class ImportPanelSearch extends React.Component {
     constructor(props) {
         super(props);
@@ -7,15 +15,24 @@ export default class ImportPanelSearch extends React.Component {
             name : ''
         };
 
+        //Bind handler methods to class for easier html scripting.
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleNameEnterKey = this.handleNameEnterKey.bind(this);
         this.handleNameSubmit = this.handleNameSubmit.bind(this);
     }
 
+    /**
+     * Updates the name state. Intended handler for text input element.
+     * @param {event} event 
+     */
     handleNameChange(event) {
         this.setState({name : event.target.value})
     }
     
+    /**
+     * Calls onSubmit event when enter key is pressed. Intended handler for text input element.
+     * @param {event} event 
+     */
     handleNameEnterKey(event) {
         var code = event.keyCode || event.which;
         //13 is the enter keycode
@@ -24,6 +41,9 @@ export default class ImportPanelSearch extends React.Component {
         }
     }
 
+    /**
+     * Calls onSubmit event. Intended handler for button element.
+     */
     handleNameSubmit() {
         this.props.onSubmit(this.state.name);
         this.setState({name : ''});

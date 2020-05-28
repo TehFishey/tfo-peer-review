@@ -1,5 +1,14 @@
 import React from 'react';
 
+/**
+ * Button component used by ImportPanelSelect; displays data regarding a single creature object, and allows
+ * users to select/deselect that creature.
+ * 
+ * @property {string} code: code of associated creature object.
+ * @property {string} src: image path of associated creature object (external TFO url).
+ * @property {boolean} checked: whether the associated creature is currently selected or unselected.
+ * @property {function} onCheck: Function to be executed when button is clicked.
+ */
 export default class ImportPanelSelectItem extends React.Component {
     render () {
         return (

@@ -1,5 +1,14 @@
 import React from 'react';
 
+/**
+ * Button component used by SelectPanel; displays data regarding a single creature object, and allows
+ * users to select or flag that creature.
+ * 
+ * @property {string} code: code of associated creature object.
+ * @property {string} src: image path of associated creature object (external TFO url).
+ * @property {function} onClick: Function to be executed when button is clicked.
+ * @property {function} onRemovalClick: Function to be executed when flag button is clicked.
+ */
 export default class SelectPanelItem extends React.Component {
     render () {
         return (

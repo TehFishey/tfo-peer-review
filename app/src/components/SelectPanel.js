@@ -2,6 +2,17 @@ import React from 'react';
 import SelectPanelItem from './SelectPanelItem';
 import {debounce} from '../utilities/limiters';
 
+/**
+ * Component for displaying clickable creature objects pulled from the server database (which, in turn, 
+ * is populated from TFO.) This is the primary component for the "lower" window of the tfo-peer-review
+ * Stage; it allows users to quickly open pages (iFrames) for numerous creatures on TFO, thereby giving 
+ * those creatures "clicks".
+ * 
+ * @property {array} creatures: Array of creature objects available for "clicking".
+ * @property {function} onCreaturePick: Function to be called when a creature is "clicked".
+ * @property {function} onCreatureFlag: Function to be called when a creature is "flagged" by a user.
+ * @property {function} onRender: Function to be called whenever this component is re-sized or re-rendered.
+ */
 export default class SelectPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -10,9 +21,15 @@ export default class SelectPanel extends React.Component {
             height : 0,
         }
 
+        // Bind handler method for easier event-listener scripting.
         this.handleUpdate = this.updateSize.bind(this);
     }
     
+    /**
+     * Returns an array of SelectPanelItem components based on the current creatures
+     * property. Each component is associated with an element of the creatures array.
+     * @returns {array} array of configured SelectPanelItem components.
+     */
     createItems() {
         let panelItems = []
 
@@ -29,6 +46,11 @@ export default class SelectPanel extends React.Component {
         } else return <label> Looks like there's nothing here... </label>   
     }
 
+    /**
+     * Debounced function. Update's the component's height and width states based on the component's
+     * current size. Used to calculate the number of SelectPanelItem components that can currently
+     * be displayed.
+     */
     updateSize = debounce(()=>{
         let currentWidth = this.panelDiv.clientWidth;
         let currentHeight = this.panelDiv.clientHeight;
