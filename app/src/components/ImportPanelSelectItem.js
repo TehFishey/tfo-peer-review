@@ -21,7 +21,7 @@ export default class ImportPanelSelectItem extends React.Component {
                         backgroundPosition : '50% 50%'
                     }}/>
                 <div>
-                    <label>{this.props.code}</label>
+                    <label className="import-panel-item-text">{this.props.code}</label>
                     <input type="checkbox" readOnly checked={this.props.checked} />
                 </div>
             </div>

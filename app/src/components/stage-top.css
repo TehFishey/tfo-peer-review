@@ -116,13 +116,24 @@
 	border-width: 3px 4px 4px 3px;
   border-radius: 5px;
   color: #bbb;
-  font-size: 14px;
+  
 }
 
 .import-panel-item:hover{
 	border-color: #666 #aaa #bbb #888;
 	border-width: 4px 3px 3px 4px;
 	color:#888;
+}
+
+.import-panel-item-text{
+  width: 46px;
+  overflow:hidden;
+  display:inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 15px;
 }
 
 .import-creature-image {
