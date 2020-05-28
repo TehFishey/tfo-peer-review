@@ -1,6 +1,6 @@
 import React from 'react';
 import SelectPanelItem from './SelectPanelItem';
-import {debounce} from '../utilities/limiters';
+import {debounce} from '../utilities/Limiters';
 
 /**
  * Component for displaying clickable creature objects pulled from the server database (which, in turn, 
@@ -9,6 +9,7 @@ import {debounce} from '../utilities/limiters';
  * those creatures "clicks".
  * 
  * @property {array} creatures: Array of creature objects available for "clicking".
+ * @property {number} displayCount: Number of DisplayPanelItems that can currently fit into component.
  * @property {function} onCreaturePick: Function to be called when a creature is "clicked".
  * @property {function} onCreatureFlag: Function to be called when a creature is "flagged" by a user.
  * @property {function} onRender: Function to be called whenever this component is re-sized or re-rendered.
@@ -28,22 +29,27 @@ export default class SelectPanel extends React.Component {
     /**
      * Returns an array of SelectPanelItem components based on the current creatures
      * property. Each component is associated with an element of the creatures array.
+     * Array generation stops when it reaches the size limit, defined by the displayCount
+     * property.
      * @returns {array} array of configured SelectPanelItem components.
      */
     createItems() {
         let panelItems = []
 
         if(this.props.creatures) {
-            this.props.creatures.forEach((creature, index) => panelItems.push(
-                <SelectPanelItem key = {index}
-                    code = {creature.code} 
-                    src={creature.imgsrc} 
-                    onClick={(code) => this.props.onCreaturePick(code)}
-                    onRemovalClick={(code) => this.props.onCreatureFlag(code)}
-                />
-            ));
+            this.props.creatures.some((creature, index) => {
+                panelItems.push(
+                    <SelectPanelItem key = {index}
+                        code = {creature.code} 
+                        src={creature.imgsrc} 
+                        onClick={(code) => this.props.onCreaturePick(code)}
+                        onRemovalClick={(code) => this.props.onCreatureFlag(code)}
+                    />
+                )
+                return (panelItems.length >= this.props.displayCount) ? true : false;
+            });
             return panelItems;
-        } else return <label> Looks like there's nothing here... </label>   
+        }
     }
 
     /**

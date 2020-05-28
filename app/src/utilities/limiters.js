@@ -1,7 +1,7 @@
  /**
   * Returns throttled function func, which may only be executed every ms milliseconds.
-  * @param {function} func 
-  * @param {number} ms 
+  * @param {function} func function to be throttled
+  * @param {number} ms "cooldown" time for function throttle
   * @returns {function} Throttled function
   * @example
   * // Logs "I can only be printed every 1 second!"
@@ -22,9 +22,9 @@ export function throttle(func, ms) {
 
  /**
   * Returns debounced function func, which will only execute ms milliseconds after its last function call.
-  * @param {function} func 
-  * @param {number} ms 
-  * @returns {function} Throttled function
+  * @param {function} func function to be debounced
+  * @param {number} ms length of function debouncement
+  * @returns {function} Debounced function
   * @example
   * // Logs "I will print once, 1 second after I was called!"
   * function myFunction = debounce((string)=>{console.log(string)}, 1000);

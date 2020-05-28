@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ImportPanel from './ImportPanel';
 import SelectPanel from './SelectPanel.js';
 import ViewPanel from './ViewPanel.js';
 import API from '../utilities/API';
-import {checkUUID} from '../utilities/cookies';
-import {throttle} from '../utilities/limiters';
+import {checkUUID} from '../utilities/Cookies';
+import {throttle} from '../utilities/Limiters';
 import './stage-top.css';
 import './stage-bottom.css';
 
@@ -102,17 +101,17 @@ export default class Stage extends React.Component {
     }, 3000); 
 
     /**
-     * Calculates the number of "SelectPanelItem" tiles/buttons can fit in a defined space. Used to
+     * Calculates the number of "SelectPanelItem" components that can fit into a defined space. Used to
      * determine how many creature entries should be fetched/cached from database. Updates displayCreatureLimit
      * state based on result.
-     * @param {number} width 
-     * @param {number} height 
+     * @param {number} width width of display area, in px
+     * @param {number} height height of display area, in px
      */
     updateDisplaySize(width, height) {
         // SelectPanelItem width + margin + borders
-        let itemWidth = 77;
+        let itemWidth = 65+(5*2)+3+4;
         // SelectPanelItem height + margin + borders
-        let itemHeight = 87;
+        let itemHeight = 75+(5*2)+3+4;
 
         let columns = Math.floor(width/itemWidth);
         let rows = Math.floor(height/itemHeight);
@@ -137,6 +136,7 @@ export default class Stage extends React.Component {
                     <div className="stage-bottom-inner">
                     <SelectPanel 
                         creatures={this.state.displayCreatures} 
+                        displayCount={this.state.displayCreatureLimit}
                         onCreaturePick={(code) => this.openCreature(code)}
                         onCreatureFlag={(code) => this.flagCreature(code)}
                         onRender={(width,height) => this.updateDisplaySize(width,height)}

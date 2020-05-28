@@ -3,8 +3,8 @@ import {v4 as uuid} from 'uuid';
 
 /**
  * Assigns a 36-character UUID cookie to user if one does not already exist. Cookie expires in 1.5 days.
- * If {update} is true, resets existing UUID cookie's expiration date as well.
- * @param {boolean} update 
+ * Can optionally reset existing UUID cookie's expiration date, when possible.
+ * @param {boolean} update whether or not to update existing cookie's date.
  */
 export function checkUUID(update) {  
     if(window.ENV.DEBUG) console.log('Controller: checking for valid-ish UUID cookie');
