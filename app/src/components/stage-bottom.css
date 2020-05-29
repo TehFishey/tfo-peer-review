@@ -1,7 +1,7 @@
 .stage-bottom-outer {
   width: 80%;
   min-width: 400px;
-  height: 70%;
+  height: 65%;
   min-height: 500px;
   flex: 2 0 auto;
   position: relative;
@@ -9,10 +9,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: auto;
+  margin: 5px;
   background-image: linear-gradient(
-    rgba(235, 235, 255, .90),
-    rgba(255, 255, 255, 0.80)
+    rgba(235, 235, 255, .70),
+    rgba(255, 255, 255, 0.6)
   );  
   backdrop-filter: blur(5px);
   border-radius: 10px;
@@ -24,18 +24,19 @@
 }
 
 .stage-bottom-inner {
-  width: 100%;
+  width: 95%;
   height: 100%;
   flex: 1 0 auto;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: auto;
+  margin: 5px;
   background-image: linear-gradient(
-    rgb(168, 168, 197),
-    rgba(95, 95, 105, 0.9)
+    rgb(168, 168, 197, 0.80),
+    rgba(95, 95, 105, 0.8)
   );  
   padding-left: 5px;
+  padding-right: 5px;
   border-style: solid;
   border-width: 2px;
   border-color:rgb(211, 209, 209) rgb(161, 161, 161) rgb(150, 150, 150) rgb(207, 207, 207);
@@ -54,7 +55,7 @@
   margin: auto;
   overflow: hidden;
   background-image: linear-gradient(
-    rgba(235, 235, 255, .8),
+    rgba(235, 235, 255),
     rgba(255, 255, 255, 0.9)
   );
   border-style: inset;
@@ -130,9 +131,9 @@
 .select-creature-image {
   width: 55px;
   height: 65px;
+  position: relative;
   background-color: #141414;
-  margin: auto;
-  margin-top: 4px;
+  margin: 5px;
   border-radius: 5px;
 }
 

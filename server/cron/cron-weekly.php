@@ -5,6 +5,7 @@ $database = new Database();
 $conn = $database->getConnection();
 $short_log_table_name = 'Log_Weekly';
 $long_log_table_name = 'Log_Compiled';
+$rate_limiter_table_name = 'RateLimits';
 
 $weekId = date('Y-W');
 $pageViews = 0; // NYI
@@ -55,3 +56,7 @@ if($stmt->rowCount()>0) {
     $stmt = $conn->prepare($query);
     $stmt->execute();
 }
+
+$query = "DELETE * FROM ".$rate_limiter_table_name;
+$stmt = $conn->prepare($query);
+$stmt->execute();

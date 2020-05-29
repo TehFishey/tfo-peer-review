@@ -2,11 +2,13 @@ import React from 'react';
 import ImportPanel from './ImportPanel';
 import SelectPanel from './SelectPanel.js';
 import ViewPanel from './ViewPanel.js';
+import ButtonPanel from './ButtonPanel';
 import API from '../utilities/API';
 import {checkUUID} from '../utilities/Cookies';
 import {throttle} from '../utilities/Limiters';
 import './stage-top.css';
 import './stage-bottom.css';
+
 
 /**
  * Highest-order react component. Tracks globally shared states, maintains methods which write 
@@ -129,8 +131,11 @@ export default class Stage extends React.Component {
     render() {
         return (
             <div className="App-stage">
-                <div className="stage-top">
-                    <ImportPanel API={this.API} onCreatureUpdate={()=>{this.fetchDisplayCreatures()}}/>
+                <div className="stage-top-outer">
+                    <ButtonPanel/>
+                    <div className="stage-top-inner">
+                        <ImportPanel API={this.API} onCreatureUpdate={()=>{this.fetchDisplayCreatures()}}/>
+                    </div>
                 </div>
                 <div className="stage-bottom-outer">
                     <div className="stage-bottom-inner">

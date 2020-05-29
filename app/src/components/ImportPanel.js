@@ -43,7 +43,7 @@ export default class ImportPanel extends React.Component {
             else {
                 if(window.ENV.DEBUG) console.log('Controller: Lab Error, code: ' + (typeof data.errorCode !== 'undefined') ? data.errorCode.toString() : 'null');
                 if(data.errorCode.toString() === '1') this.setState({labError : 'ERROR: Lab not found!'});
-                else if(data.errorCode.toString() === '2') this.setState({labError : 'ERROR: Lab is currently hidden!'});
+                else if(data.errorCode.toString() === '2') this.setState({labError : 'ERROR: Lab is hidden!'});
                 else if(data.errorCode.toString() === '3') this.setState({labError : 'ERROR: Lab contains no growing creatures!'});
                 else this.setState({labError : 'ERROR: Unspecified error! What happened?!?'});  
             }

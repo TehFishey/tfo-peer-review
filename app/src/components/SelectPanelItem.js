@@ -19,8 +19,7 @@ export default class SelectPanelItem extends React.Component {
                         backgroundImage : 'url('+this.props.src+')',
                         backgroundRepeat : 'no-repeat', 
                         backgroundPosition : '50% 50%'
-                    }}/>
-                <div>
+                    }}>
                     <button className="select-panel-remove-button" 
                         onClick={(event) => {
                         this.props.onRemovalClick(this.props.code)
