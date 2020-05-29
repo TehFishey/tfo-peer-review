@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Wrapper class for PrivacyPolicy text. Renders simple static JSX.
+ */
 export default class PrivacyPolicy extends React.Component {
     render() {
         return (

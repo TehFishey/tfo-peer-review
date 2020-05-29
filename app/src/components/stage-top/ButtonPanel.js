@@ -1,12 +1,14 @@
 import React from 'react';
-import {createPortal} from "react-dom";
-import ModalWindow from './ButtonPanelModal';
-import ModalPrivacyPolicy from './ModalPrivacyPolicy';
-import ModalDisclaimer from './ModalDisclaimer';
-import ModalHelp from './ModalHelp';
+import ModalWindow from '../modal-window/Modal';
+import ModalPrivacyPolicy from '../modal-window/ModalPrivacyPolicy';
+import ModalDisclaimer from '../modal-window/ModalDisclaimer';
+import ModalHelp from '../modal-window/ModalHelp';
 
-const portalElement = document.getElementById("portal");
-
+/**
+ * Component which displays interface buttons above top of the "ImportPanel" window/component. 
+ * Handles opening, closing, and configuring the modal popup element. Modal window contents
+ * are defined in the ModalHelp, ModalDisclaimer, and ModalPrivacyPolicy wrapper classes.
+ */
 export default class ButtonPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -17,26 +19,36 @@ export default class ButtonPanel extends React.Component {
         }
     }
 
+    /**
+     * Re-renders and displays the modal popup window. Blurs non-modal elements.
+     */
     openModal() {
         document.getElementById('root').style.filter = 'blur(5px)';
         this.setState({showModal : true});
     }
 
+    /**
+     * Re-renders and hides the modal popup window. Unblurs non-modal elements.
+     */
     closeModal() {
         document.getElementById('root').style.filter = ''
         this.setState({showModal : false})
     }
 
+    /**
+     * Sets the modal window's contents to Help, and renders it.
+     */
     showHelpInfo() {
         this.setState({
             modalTitle : (<h1>User Guide</h1>),
             modalContents : <ModalHelp/>
         });
         this.openModal()
-
-        this.openModal()
     }
 
+    /**
+     * Sets the modal window's contents to Disclaimer, and renders it.
+     */
     showDisclaimer() {
         this.setState({
             modalTitle : (<h1>Terms & Disclaimer</h1>),
@@ -45,6 +57,9 @@ export default class ButtonPanel extends React.Component {
         this.openModal()
     }
 
+    /**
+     * Sets the modal window's contents to PrivacyPolicy, and renders it.
+     */
     showPrivacyPolicy() {
         this.setState({
             modalTitle : (<h1>Privacy Policy</h1>),
@@ -57,13 +72,12 @@ export default class ButtonPanel extends React.Component {
     render() {
         return (
             <div className="stage-top-buttons">
-                {createPortal(
                 <ModalWindow 
                     show={this.state.showModal} 
                     title={this.state.modalTitle}
                     children={this.state.modalContents}
                     onClose={()=>this.closeModal()}   
-                />, portalElement)}
+                />
                 <button onClick={()=>this.showHelpInfo()}>User Guide</button>
                 <button onClick={()=>this.showDisclaimer()}>Disclaimer</button>
                 <button onClick={()=>this.showPrivacyPolicy()}>Privacy Policy</button>

@@ -1,10 +1,14 @@
 import React from 'react';
 import Stage from './components/Stage';
+import CookieConsent from './components/CookieConsent';
 import './App.css';
+
+
 
 function App() {
   return (
     <div className="App">
+      <CookieConsent/>
       <div className="App-header">
         <h1>TFO Peer Review Network</h1>
       </div>

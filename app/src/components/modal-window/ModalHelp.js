@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Wrapper class for Help text. Renders simple static JSX.
+ */
 export default class Help extends React.Component {
     render() {
         return (

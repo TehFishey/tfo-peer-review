@@ -1,17 +1,17 @@
 import React from 'react';
-import ImportPanel from './ImportPanel';
-import SelectPanel from './SelectPanel.js';
-import ViewPanel from './ViewPanel.js';
-import ButtonPanel from './ButtonPanel';
+import ImportPanel from './stage-top/ImportPanel';
+import SelectPanel from './stage-bottom/SelectPanel.js';
+import ViewPanel from './stage-bottom/ViewPanel.js';
+import ButtonPanel from './stage-top/ButtonPanel';
 import API from '../utilities/API';
 import {checkUUID} from '../utilities/Cookies';
 import {throttle} from '../utilities/Limiters';
-import './stage-top.css';
-import './stage-bottom.css';
+import './stage-top/stage-top.css';
+import './stage-bottom/stage-bottom.css';
 
 
 /**
- * Highest-order react component. Tracks globally shared states, maintains methods which write 
+ * Primary high-order react component. Tracks globally shared states, maintains methods which write 
  * to them, instantiates API, and renders child components.
  */
 export default class Stage extends React.Component {
@@ -108,15 +108,16 @@ export default class Stage extends React.Component {
      * state based on result.
      * @param {number} width width of display area, in px
      * @param {number} height height of display area, in px
+     * @param {number} padding size of display area's internal padding, if any
      */
-    updateDisplaySize(width, height) {
+    updateDisplaySize(width, height, padding) {
         // SelectPanelItem width + margin + borders
         let itemWidth = 65+(5*2)+3+4;
         // SelectPanelItem height + margin + borders
         let itemHeight = 75+(5*2)+3+4;
 
-        let columns = Math.floor(width/itemWidth);
-        let rows = Math.floor(height/itemHeight);
+        let columns = Math.floor((width-padding*2)/itemWidth);
+        let rows = Math.floor((height-padding*2)/itemHeight);
 
         if(window.ENV.DEBUG) console.log('Controller: SelectPanel can fit '+columns+'x'+rows+' ('+(columns*rows)+') components.');
 
@@ -144,7 +145,7 @@ export default class Stage extends React.Component {
                         displayCount={this.state.displayCreatureLimit}
                         onCreaturePick={(code) => this.openCreature(code)}
                         onCreatureFlag={(code) => this.flagCreature(code)}
-                        onRender={(width,height) => this.updateDisplaySize(width,height)}
+                        onRender={(width,height) => this.updateDisplaySize(width,height, 5)}
                     />
                     <ViewPanel currentView={this.state.currentView}/>
                     </div>

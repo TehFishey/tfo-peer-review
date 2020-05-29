@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Wrapper class for Disclaimer text. Renders simple static JSX.
+ */
 export default class Disclaimer extends React.Component {
     render() {
         return (
