@@ -3,7 +3,6 @@ import ImportPanel from './stage-top/ImportPanel';
 import SelectPanel from './stage-bottom/SelectPanel.js';
 import ViewPanel from './stage-bottom/ViewPanel.js';
 import ButtonPanel from './stage-top/ButtonPanel';
-import API from '../utilities/API';
 import {checkUUID} from '../utilities/Cookies';
 import {throttle} from '../utilities/Limiters';
 import './stage-top/stage-top.css';
@@ -22,7 +21,7 @@ export default class Stage extends React.Component {
             displayCreatureLimit : 25,
             currentView : '',
         }
-        this.API = new API();
+        this.API = this.props.API;
     }
 
     /**
@@ -59,7 +58,7 @@ export default class Stage extends React.Component {
             item => item.code !== code 
         )})
 
-        this.fetchDisplayCreatures(code)
+        this.fetchDisplayCreatures(code);
     }
 
     /**

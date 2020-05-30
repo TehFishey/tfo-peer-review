@@ -32,10 +32,10 @@ export default class ModalWindow extends React.Component {
                 {createPortal((
                     <div className='modal-overlay' onClick={this.handleClose}>
                         <div className='modal-window' onClick={(e)=>{e.stopPropagation()}}>
-                            <h2 className='modal-title'>{this.props.title}</h2>
+                            <div className='modal-title'>{this.props.title}</div>
                             <div className='modal-content'>{this.props.children}</div>
                             <div className='modal-controls'>
-                                <button className='stage-interface-button' onClick={this.handleClose}>Close</button>
+                                <button className='import-panel-button' onClick={this.handleClose}>Close</button>
                             </div>
                         </div>
                     </div>), 

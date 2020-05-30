@@ -200,4 +200,30 @@ export default class APIService {
             .catch(error => {console.log(error)})
         }
     }
+
+    /**
+     * Fetches general user activity metrics/data from server database.
+     * Optionally executes {callback} on response data.
+     * @param {function} callback
+     * @example 
+     * // Returns {"weekly": {"uniques": 1,"clicks": 273,"curls": 30,"creatureAdds": 58,"creatureRemoves": 16},"allTime": {"clicks": 774,"curls": 34,"creatureAdds": 58,"creatureRemoves": 16}}
+     * APIService.getLogData((data)=>{return data});
+     */
+    getLogData(callback) {
+        const cmd = './log/get.php';
+        let url = rootUrl + cmd;
+
+        if(window.ENV.DEBUG) console.log('API: Attempting to get server log data.');
+
+        if(callback !== undefined) {
+            this.service.get(url)
+            .then(response => response.data)
+            .then(data => callback(data))
+            .catch(error => {console.log(error)})
+        } else {
+            this.service.get(url)
+            .then(response => response.data)
+            .catch(error => {console.log(error)})
+        }
+    }
 }

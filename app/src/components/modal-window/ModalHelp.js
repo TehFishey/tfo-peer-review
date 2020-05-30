@@ -63,7 +63,7 @@ export default class Help extends React.Component {
                     <li>Close settings; your login should now work on TFOPeerReview.click</li>
                 </ul>
 
-                <p>For Firefox</p>
+                <p>For Firefox:</p>
                     <ul><li>Follow the instructions <a href="https://support.mozilla.org/en-US/kb/add-trusted-websites-your-allow-list-firefox-focus">here</a> to turn off tracking protection on TFOPeerReview.click</li></ul>
             
                 <h2>I have other questions...</h2>

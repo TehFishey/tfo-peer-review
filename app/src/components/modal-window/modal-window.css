@@ -1,6 +1,8 @@
 .modal-window {
   width: 60%;
+  min-width: 290px;
   height: 80%;
+  min-height: 500px;
   position: fixed; z-index: 10;
   top: 50%;
   left: 50%;
@@ -42,6 +44,9 @@
   border-bottom: 1px solid #ccc;
   padding: 0.5rem;
   margin: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
 }
 .modal-title h1 {
   margin: 10px;
@@ -51,21 +56,23 @@
   padding: 1rem;
   overflow-y: auto;
   text-overflow: scroll;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
 }
 .modal-controls {
+  align-content: center;
   border-top: 1px solid #ccc;
   background: #eee;
   padding: 0.5rem 1rem;
   border-bottom-right-radius: 15px;
   border-bottom-left-radius: 15px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: auto;
 }
-.modal-button {
-  border: 0;
-  background: #78f89f;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 0.8rem;
-  line-height: 1;
+.modal-controls button {
+  width: 90px;
 }
 
 .hide-modal{
