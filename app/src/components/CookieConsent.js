@@ -1,6 +1,7 @@
 import React from 'react';
 import { checkConsentCookie, createConsentCookie } from '../utilities/Cookies.js';
 import './cookie-consent.css';
+import './cookie-consent-mobile.css';
 
 export default class CookieConsent extends React.Component {
     constructor(props) {
@@ -31,7 +32,7 @@ export default class CookieConsent extends React.Component {
                 <div className='cookie-consent-bar'>
                     <div className='cookie-consent-text'>
                         This website requires cookies in order to function properly - Nothing works without them!<br/> 
-                        (Details can be found in the privacy policy section)
+                        (Details on how we use cookies can be found in the privacy policy section.)
                     </div>
                     <button className='cookie-consent-button' onClick={this.handleAccept}>Accept Cookies</button>
                 </div>

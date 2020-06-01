@@ -1,7 +1,6 @@
-@media (min-width: 421px) {
+@media only screen and (max-width: 420px) {
 .cookie-consent-bar{
   background-color: #282c34;
-  width: 90%;
   height: 20%;
   position: fixed; z-index: 10;
   bottom: 5px;

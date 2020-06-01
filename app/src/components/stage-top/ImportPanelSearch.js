@@ -51,7 +51,6 @@ export default class ImportPanelSearch extends React.Component {
 
     render () {
         return (
-            <div className="import-panel">
                 <div className="import-panel-search">
                     <div className="import-panel-controls">
                         <div className="import-panel-label">Lab Name:</div>
@@ -71,7 +70,6 @@ export default class ImportPanelSearch extends React.Component {
                         {this.props.errorString}
                     </div>
                 </div>
-            </div>
         )
     }
 }

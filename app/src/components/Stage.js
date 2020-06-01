@@ -6,7 +6,9 @@ import ButtonPanel from './stage-top/ButtonPanel';
 import {checkUUID} from '../utilities/Cookies';
 import {throttle} from '../utilities/Limiters';
 import './stage-top/stage-top.css';
+import './stage-top/stage-top-mobile.css';
 import './stage-bottom/stage-bottom.css';
+import './stage-bottom/stage-bottom-mobile.css';
 
 
 /**
@@ -75,11 +77,11 @@ export default class Stage extends React.Component {
         let min = this.state.displayCreatureLimit;
         let extra = Math.round(min*mult);
 
-        // Fetches creatures if current list is within 10% of what can be displayed
-        if(current <=  Math.round(min*1.1)) {
+        // Fetches creatures if current list is within 10 clicks of what can be displayed
+        if(current <=  min + 10) {
             // Attempts to fetch difference between what can be displayed and what is available,
-            // plus extras based on mult.
-            let fetchCount = min-current + extra;
+            // plus extras based on mult. Always get 10 extra (buffer size; important on mobile)
+            let fetchCount = min - current + extra + 10;
             if(window.ENV.DEBUG) console.log('Controller: DisplayCreatures is getting low! Fetching '+min+'-'+current+'+'+extra+' ('+fetchCount+') new entries.');
 
             this.API.getCreatureEntries(fetchCount,

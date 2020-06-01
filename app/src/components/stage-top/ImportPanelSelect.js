@@ -85,7 +85,6 @@ export default class ImportPanelSelect extends React.Component {
 
     render () {
         return (
-            <div className="import-panel">
                 <div className="import-panel-select">
                     <div className="import-panel-select-items">
                         {this.createPanelItems()}
@@ -98,7 +97,6 @@ export default class ImportPanelSelect extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
         )
     }
 }

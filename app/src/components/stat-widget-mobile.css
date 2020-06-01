@@ -1,10 +1,10 @@
-@media (min-width: 421px) {
+@media only screen and (max-width: 420px) {
 .stat-widget-grid {
   height: 80px;
   width: 290px;
   margin: 5px;
   padding: 5px;
-  display: grid;
+  display: none;
   grid-template-areas: 'title title title title'
                         'label1 wadd wcur wcli'
                         'label2 aadd acur acli'

@@ -39,9 +39,10 @@ export default class PrivacyPolicy extends React.Component {
 
                 <p>Like most modern websites, TFO Peer Review uses "cookies". These cookies 
                 are used to associate users with creatures that they have already clicked, 
-                to prevent the same creature from appearing  to a user twice over 24 hours. 
-                The cookies created by this site are NOT used for tracking, logging, or any 
-                other purpose.</p>
+                to prevent the same creature from appearing to a user twice over 24 hours. 
+                We also use cookies to remember which users have consented to our use of cookies
+                (which is pretty ironic, isn't it?) The cookies created by this site are NOT used for tracking, 
+                logging, or any purpose other than the two stated here.</p>
 
                 <p>Web pages opened through TFO Peer Review may also attempt to read, write, or use 
                 cookies to influence their own behaviors, (such as TFO attempting to read a 

@@ -4,6 +4,7 @@ import StatWidget from './components/StatWidget';
 import CookieConsent from './components/CookieConsent';
 import API from './utilities/API';
 import './App.css';
+import './App-mobile.css';
 
 
 

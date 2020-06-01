@@ -1,6 +1,7 @@
 import React from 'react';
 import {throttle} from '../utilities/Limiters';
 import './stat-widget.css';
+import './stat-widget-mobile.css';
 
 export default class StatWidget extends React.Component {
     constructor(props) {
@@ -35,23 +36,7 @@ export default class StatWidget extends React.Component {
     componentDidMount() {
         this.updateData();
     } 
-/*
-            <div>
-                <div className='stat-widget-grid'>
-                    <div style={{gridArea:'title'}}>PR Network Activity Report:</div>
-                    <div style={{gridArea:'label1'}}>Weekly:</div>
-                        <div style={{gridArea:'wcur'}}><label>Labs: </label>{this.state.WeeklyCurls}</div>
-                        <div style={{gridArea:'wadd'}}><label>Creatures: </label>{this.state.WeeklyAdds}</div>
-                        <div style={{gridArea:'wcli'}}><label>Clicks: </label>{this.state.weeklyClicks}</div>
-                    <div style={{gridArea:'label2'}}>Total:</div>
-                        <div style={{gridArea:'blnk'}}></div>
-                        <div style={{gridArea:'acur'}}><label>Labs: </label>{this.state.allTimeCurls}</div>
-                        <div style={{gridArea:'aadd'}}><label>Creatures: </label>{this.state.allTimeAdds}</div>
-                        <div style={{gridArea:'acli'}}><label>Clicks: </label>{this.state.allTimeClicks}</div>
-                    <div style={{gridArea:'wuni'}}><label>Scientists this week: </label>{this.state.weeklyUniques}</div>
-                </div>
-            </div>
-*/
+
     render() {
         return(
             <div>

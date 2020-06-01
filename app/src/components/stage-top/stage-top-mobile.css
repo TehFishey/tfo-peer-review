@@ -1,9 +1,8 @@
-@media (min-width: 421px) {
+@media only screen and (max-width: 420px) {
 .stage-top-outer {
   width: 80%;
-  min-width: 360px;
-  max-width: 850px;
-  min-height: 220px;
+  min-width: 300px;
+  max-width: 410px;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -14,7 +13,7 @@
 
 .stage-top-buttons {
   height: 30px;
-  width: 90%;
+  width: 95%;
   display: flex;
   justify-content: flex-end;
 }
@@ -26,13 +25,13 @@
   border-top-right-radius:15px;
 	border:1px solid #566963;
   display:inline-block;
-  margin:0px 6px;
+  margin:0px 4px;
 	cursor:pointer;
 	color: rgb(60, 60, 60);
 	font-family:Arial;
-	font-size:15px;
+	font-size:0.8em;
 	font-weight:bold;
-	padding:7px 23px;
+	padding:5px 5px;
   text-decoration:none;
   overflow: hide;
   text-overflow: ellipsis;
@@ -51,9 +50,8 @@
 
 .stage-top-inner {
   width: 90%;
-  min-width: 400px;
-  max-width: 850px;
-  min-height: 160px;
+  min-width: 260px;
+  max-width: 400px;
   flex: 1 1 auto;
   padding: 10px;
   display: flex;
@@ -80,7 +78,6 @@
   display: flex;
   flex-flow: column wrap;
   align-content: flex-start;
-  margin: 5px 5px 0px 0px;
   border-radius: 5px;
 }
 
@@ -88,40 +85,21 @@
   width: 100%;
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 75px 1fr; 
+  grid-template-columns: 150px 1fr;
   border-radius: 5px;
 }
 
 .import-panel-blurb {
-  max-height:155px;
-  flex: 1 1 auto;
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: span 2;
-  overflow-y: auto;
-  text-overflow: scroll;
-  padding: 5px;
-  background-image: linear-gradient(
-    rgba(255, 255, 255, .90),
-    rgba(255, 255, 255, 0.80)
-  );  
-  border-style: solid;
-  border-width: 2px;
-  border-color:rgb(231, 229, 229) rgb(181, 181, 181) rgb(170, 170, 170) rgb(227, 227, 227);
-  border-radius: 5px;
-  text-align: left;
-  font-family: Candara;
-  color: rgb(40, 40, 40);
+  display: none;
 }
 
 .import-panel-search-error {
-  grid-column-start: 1;
-  grid-column-end: 1;
-  grid-row-start: 2;
-  grid-row-end: 2;
-  text-align: left;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  text-align: center;
+  margin: auto;
   font-size: 12px;
   font-weight: bold;
   color: #cc0303;
@@ -129,6 +107,10 @@
 
 .import-panel-controls {
   max-width: 150px;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
