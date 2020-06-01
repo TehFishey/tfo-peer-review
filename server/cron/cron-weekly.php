@@ -41,7 +41,8 @@ if($stmt->rowCount()>0) {
 
     
     $query = "INSERT INTO ".$long_log_table_name." SET 
-        weekId=:weekId, pageViews=:pageViews, uniques=:uniques, clicks=:clicks, curls=:curls, creatureAdds=:creatureAdds, creatureRemoves=:creatureRemoves";
+        weekId=:weekId, pageViews=:pageViews, uniques=:uniques, clicks=:clicks, curls=:curls, creatureAdds=:creatureAdds, creatureRemoves=:creatureRemoves
+        ON DUPLICATE KEY UPDATE pageViews=pageViews+:upPageViews, uniques=uniques+:upUniques, clicks=clicks+:upClicks, curls=curls+:upCurls, creatureAdds=creatureAdds+:upCreatureAdds, creatureRemoves=creatureRemoves+:upCreatureRemoves";
     $stmt = $conn->prepare($query);
 
     // bind values
@@ -53,6 +54,13 @@ if($stmt->rowCount()>0) {
     $stmt->bindParam(":creatureAdds", $creatureAdds);
     $stmt->bindParam(":creatureRemoves", $creatureRemoves);
 
+    $stmt->bindParam(":upPageViews", $pageViews);
+    $stmt->bindParam(":upUniques", $uniques);
+    $stmt->bindParam(":upClicks", $clicks);
+    $stmt->bindParam(":upCurls", $curls);
+    $stmt->bindParam(":upCreatureAdds", $creatureAdds);
+    $stmt->bindParam(":upCreatureRemoves", $creatureRemoves);
+
     $stmt->execute();
 
     $query = "TRUNCATE TABLE ".$short_log_table_name;
@@ -60,6 +68,6 @@ if($stmt->rowCount()>0) {
     $stmt->execute();
 }
 
-$query = "DELETE * FROM ".$rate_limiter_table_name;
+$query = "DELETE FROM ".$rate_limiter_table_name;
 $stmt = $conn->prepare($query);
 $stmt->execute();
