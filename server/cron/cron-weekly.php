@@ -1,4 +1,7 @@
 <?php
+// Secondary cron script for compiling and clearing logging database tables.
+// Intended to only run once per week.
+
 include_once (__DIR__).'/../api/utilities/db.php';
 
 $database = new Database();

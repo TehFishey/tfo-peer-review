@@ -1,4 +1,19 @@
 <?php
+/************************************************************************************** 
+ * log/get Internal-API endpoint
+ * 
+ * Takes: GET
+ * Returns: {"weekly": {"uniques": count,"clicks": count,"curls": count,"creatureAdds": count,"creatureRemoves": count},
+ *          "allTime": {"clicks": count, "curls": count,"creatureAdds": count,"creatureRemoves": count}}
+ * 
+ * Description:
+ * This endpoint allows the frontend to fetch data contained in the Log_Weekly and Log_Compiled tables,
+ * for display in the frontend metrics widget. As this action takes no request data, there are no validation checks,
+ * however the rate-limits for requests is set rather high to prevent excessive calls. This endpoint should only
+ * be called very infrequently by any given user.
+ * 
+ **************************************************************************************/
+
 header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET POST");
