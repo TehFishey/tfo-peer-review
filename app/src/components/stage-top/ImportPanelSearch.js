@@ -55,8 +55,8 @@ export default class ImportPanelSearch extends React.Component {
                     <div className="import-panel-controls">
                         <div className="import-panel-label">Lab Name:</div>
                         <div><input 
+                            className="import-panel-text-input"
                             type="text" 
-                            style={{display: 'inline-block', width: '142px'}}
                             value={this.state.name} 
                             onChange={this.handleNameChange}
                             onKeyPress={this.handleNameEnterKey}

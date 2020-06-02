@@ -1,9 +1,9 @@
-@media (min-width: 421px) {
+@media (min-width: 451px) {
 .stage-bottom-outer {
   width: 80%;
-  min-width: 360px;
-  height: 65%;
-  min-height: 500px;
+  min-width: 370px;
+  height: calc(100vh - 500px);
+  min-height: 520px;
   flex: 2 0 auto;
   position: relative;
   padding: 10px;

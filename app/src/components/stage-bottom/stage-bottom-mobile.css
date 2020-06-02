@@ -1,9 +1,9 @@
-@media only screen and (max-width: 420px) {
+@media only screen and (max-width: 450px) {
 .stage-bottom-outer {
   width: 90%;
   min-width: 290px;
-  height: 65%;
-  min-height: 400px;
+  height: calc(100vh - 360px);
+  min-height: 720px;
   flex: 2 0 auto;
   position: relative;
   padding: 2px;
