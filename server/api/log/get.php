@@ -14,7 +14,7 @@
  * 
  **************************************************************************************/
 
-header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET POST");
 header("Access-Control-Max-Age: 3600");
