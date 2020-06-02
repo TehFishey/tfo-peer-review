@@ -1,0 +1,36 @@
+@media only screen and (max-width: 450px) {
+.stat-widget-grid {
+  height: 80px;
+  width: 290px;
+  margin: 5px;
+  padding: 5px;
+  display: none;
+  grid-template-areas: 'title title title title'
+                        'label1 wadd wcur wcli'
+                        'label2 aadd acur acli'
+                        'wuni wuni wuni wuni';
+  grid-template-rows: 16px 26px 26px 26px;
+  grid-template-columns: 50px 80px 80px 80px;
+  text-align: left;
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 10px;
+  background-image: linear-gradient(
+    rgba(136, 136, 175, 0.8),
+    rgba(88, 88, 105, 0.8)
+  ); 
+  border-style: groove;
+  border-width: 3px;
+  border-radius: 3px;
+  border-color:rgb(211, 209, 209);
+}
+
+.stat-widget-cell {
+  height: 20px;
+  margin-top: 1px;
+  margin-bottom: 2px;
+  padding-top: 2px;
+  border-top: groove;
+  border-width: 2px;
+  border-color: rgb(121, 124, 124);
+}
+}

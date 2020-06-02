@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## TFO Peer Review
 
-## Available Scripts
+tfo-peer-review is a single-page fansite or "click site" webapp which interfaces with the Final Outpost adoptables game at <a href="https://finaloutpost.net/">FinalOutpost.net</a>. It is intended to provide users with a streamlined interface for quickly interacting with each other's creatures in large numbers. This webapp is currently being hosted at <a href="https://TFOPeerReview.click">TFOPeerReview.click</a>
 
-In the project directory, you can run:
+## Requirements/Frameworks
 
-### `npm start`
+tfo-peer-review features a React.js-based frontend and a PHP/MariaDB-based backend. It is intended to be run off a LAMP stack, but should work on any webserver which can serve PHP files and connect to an SQL database.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Requirements:
+- npm 6.14
+- PHP 7.4
+- MariaDB 10.5
+- a webserver capable of serving PHP files, such as XAMPP (for local development/testing) or Apache2 (for server deployment)
+- a TFO API key tied to the appropriate IP address
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+Clone the project and install frontend dependencies with npm:
+```shell
+git clone https://github.com/TehFishey/tfo-peer-review.git
+cd tfo-peer-review/app/
+npm install
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Setup database, user, and tables via prepared SQL script:
+```
+cd tfo-peer-review/
+mysql -u <root> -p <rootpassword>
+> SOURCE dbsetup.sql;
+```
+*Note: this will create the SQL database 'tfopeerreview_db', and add permissions to user 'tfopeerreview_user' with password 'password'.*
 
-### `npm run build`
+Rename `tfo-peer-review/server/config/config-default.php` to `config.php`. Open the file with your preferred text editor, and replace *YOUR-API-CODE-HERE* with your TFO API key.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Setup your chosen webserver to use `tfo-peer-review/server` as its webroot (or move the server files to your webroot). For development environments, ensure that your server's (or browser's) CORS settings are configured appropriately. (Exact steps vary by server; check your webserver documentation for details.)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Open `tfo-peer-review/app/public/config.js` with your preferred text editor, and replace *https://localhost/api/* with the path to your server's or virtual host's api directory.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Running the Project:
 
-### `npm run eject`
+Execute `npm start` in `tfo-peer-review/app` to open the frontend in development mode. The frontend should be able to communicate with the api hosted by your webserver, and your webserver should be able to communicate with TFO.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Building the Project:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Execute `npm run build` in `tfo-peer-review/app` to execute a build-task. Frontend files will be built to the `tfo-peer-review/app/build` directory. These may then be copied to your webroot (`tfo-peer-review/server` for example) for server-side hosting and deployment.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Deployment Notes
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+In addition to hosting the above files and database, deployment servers will want to run two prepared cron scripts at regular intervals. The script at `tfo-peer-review/server/cron/cron.php` conducts regular clean-up and upkeep of the database tables, and should be run frequently (between every 5-15 minutes). The script at `tfo-peer-review/server/cron/cron-weekly.php` conducts log compilation tasks, and should be run weekly. 
 
-## Learn More
+**IMPORTANT NOTE***: Ensure that the scripts in the cron directory are *not* accessible externally once deployed, either by configuring your webserver to block access to them or moving them out of the webroot entirely. If moved out of webroot, be sure to update the scripts' include paths to account for any changes.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Attributions
+- React frontend bootstrapped with <a href="https://github.com/facebook/create-react-app">create-react-app</a>
+- PHP Rate-Limiter adapted from code by <a href="https://ryanbritton.com/2016/11/rate-limiting-in-php-with-token-bucket/">Ryan Britton</a>
+- RPC API loosely based on tutorial by <a href="https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html">codeofaninja.com</a> 
+- Special thanks to Corteo for the creation of <a href="https://github.com/facebook/create-react-app">The Final Outpost</a> and its associated API.

@@ -4,8 +4,10 @@
 /app/node_modules
 /.pnp
 .pnp.js
-/.vscode
 
+
+# configs
+/server/config/config.php
 
 # testing
 /coverage
@@ -19,6 +21,8 @@
 .env.development.local
 .env.test.local
 .env.production.local
+/.vscode
+/.vscode/settings.json
 *.code-workspace
 
 npm-debug.log*

@@ -1,4 +1,4 @@
 window.ENV = {
-    API_URL : 'https://xampp.test.environment/api/',
+    API_URL : 'https://localhost/api/',
     DEBUG : true
 }
