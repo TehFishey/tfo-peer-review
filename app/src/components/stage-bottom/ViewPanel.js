@@ -16,9 +16,13 @@ export default class ViewPanel extends React.Component {
                     onClick={()=>{this.props.onCreatureFlag(this.props.currentView)}}>
                         Mark Creature as Adult [X]
                 </button>
+
                 <iframe 
                     className="view-panel-iframe" 
-                    src={`https://finaloutpost.net/view/${this.props.currentView}#main`} 
+                    src={(this.props.currentView) ? 
+                        `https://finaloutpost.net/view/${this.props.currentView}#main` :
+                        ``
+                    } 
                     title="IFrame"
                 />
             </div>
