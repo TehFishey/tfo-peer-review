@@ -55,7 +55,7 @@ export default class Footer extends React.Component {
                     <StatWidget API={this.API}/>
                 </div>
                 <div style={{gridArea:"copyright", margin: "auto 0px", overflow: "hidden"}}>
-                    <div className='footer-attribution' style={{fontSize: '10px', fontStyle: 'italic'}}>tfo-peer-review version 1.0.0  <button className='footer-changelog' onClick={()=>this.showChangelog()}>Changelog</button></div>
+                    <div className='footer-attribution' style={{fontSize: '10px', fontStyle: 'italic'}}>tfo-peer-review version 1.0.1  <button className='footer-changelog' onClick={()=>this.showChangelog()}>Changelog</button></div>
                     <div className='footer-attribution'>TFO Peer Review © 2020 M. D'Attilo  <a href="https://github.com/TehFishey/tfo-peer-review/blob/master/LICENSE">View license</a></div>
                     <div className='footer-attribution'>The Final Outpost is property of Corteo</div>
                     <div className='footer-attribution'>All creature images are property of their respective authors</div>

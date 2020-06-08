@@ -9,7 +9,7 @@ export default class PrivacyPolicy extends React.Component {
             <div>
                 <p>TFO Peer Review puts a high priority on protecting users' privacy.
                 This Privacy Policy details the types of information 
-                collected by TFO Peer Review, and explains how that information is used.</p>
+                collected by TFO Peer Review and explains how that information is used.</p>
 
                 <p>If you have additional questions or require more information about 
                 our Privacy Policy, do not hesitate to contact us.</p>
@@ -28,8 +28,8 @@ export default class PrivacyPolicy extends React.Component {
 
                 <p>TFO Peer Review additionally collects a limited amount of metric data 
                 regarding user interactions with the site, to help measure site use 
-                and performance. These metrics include the users' IP addresses, 
-                as well as: the number of creature pages that users have opened, the number 
+                and performance. These metrics include the users' IP addresses 
+                as well as the number of creature pages that users have opened, the number 
                 of labs that users have fetched from TFO, and the number of creatures that 
                 users have added or removed from TFO Peer Review. Once per week, these records 
                 are compiled into an aggregate metrics report; records tied to user IP 
