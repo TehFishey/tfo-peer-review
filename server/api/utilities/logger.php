@@ -8,7 +8,7 @@
  * (form 'Year'-'WeekOfYear', or YYYY-WW). Additionally, unique creature codes and user labname strings are written to
  * the Log_Creatures and Log_Labs tables respectively, again adjoined by weekIds.
  *
- * User IP addresses are logged separately, in the Log_Uniques table. This table has no weekId key, and is
+ * User IP addresses are logged separately, in the Log_Uniques table. This table is
  * cleared every week by the 'cron-weekly' cron event.
  * 
  **************************************************************************************/
@@ -63,10 +63,11 @@ class Logger {
 
         if(!$stmt->execute()) {return false;}
         if(!($stmt->rowCount()>0)) {
-            $query = "INSERT INTO ".$this->ips_table_name."(ip) 
-            SELECT :ip
+            $query = "INSERT INTO ".$this->ips_table_name."(weekId, ip) 
+            SELECT :weekId, :ip
             ON DUPLICATE KEY UPDATE ip = ip";
             $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":weekId", $this->weekId);
             $stmt->bindParam(":ip", $this->ip);
             $stmt->execute();
 
@@ -83,7 +84,7 @@ class Logger {
     function logClick() { return ($this->logIp() && $this->logMetric("click")); }
     function logCurl() { return ($this->logIp() && $this->logMetric("curl")); }
     function logRemove() { return ($this->logIp() && $this->logMetric("creatureRemove")); }
-    
+
     function logAdd($code) {
         if($this->logIp() && $this->logMetric("creatureAdd")) {
             $query = "INSERT INTO ".$this->creatures_table_name."(weekId, code) 
