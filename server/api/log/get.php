@@ -14,6 +14,7 @@
  * 
  **************************************************************************************/
 
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
 header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET POST");
@@ -49,20 +50,25 @@ $output['allTime'] = array();
 
 // Create data object and execute query for weekly logs
 $logs = new Log($db);
+$logs->weekId = date('Y-W');
 
 $logs->readWeeklyLogs();
 $output['weekly']['uniques'] = $logs->uniques;
 $output['weekly']['clicks'] = $logs->clicks;
-$output['weekly']['curls'] = $logs->curls;
-$output['weekly']['creatureAdds'] = $logs->creatureAdds;
-$output['weekly']['creatureRemoves'] = $logs->creatureRemoves;
+//$output['weekly']['curls'] = $logs->curls;
+//$output['weekly']['creatureAdds'] = $logs->creatureAdds;
+//$output['weekly']['creatureRemoves'] = $logs->creatureRemoves;
+$output['weekly']['uniqueCreatures'] = $logs->uniqueCreatures;
+$output['weekly']['uniqueLabs'] = $logs->uniqueLabs;
 
 // Execute query for all-time logs
 $logs->readCompiledLogs();
-$output['allTime']['clicks'] = $logs->clicks + $output['weekly']['clicks'];
-$output['allTime']['curls'] = $logs->curls + $output['weekly']['curls'];
-$output['allTime']['creatureAdds'] = $logs->creatureAdds + $output['weekly']['creatureAdds'];
-$output['allTime']['creatureRemoves'] = $logs->creatureRemoves + $output['weekly']['creatureRemoves'];
+$output['allTime']['clicks'] = $logs->clicks;
+//$output['allTime']['curls'] = $logs->curls;
+//$output['allTime']['creatureAdds'] = $logs->creatureAdds;
+//$output['allTime']['creatureRemoves'] = $logs->creatureRemoves;
+$output['allTime']['uniqueCreatures'] = $logs->uniqueCreatures;
+$output['allTime']['uniqueLabs'] = $logs->uniqueLabs;
 
 http_response_code(200);
 echo json_encode($output); 

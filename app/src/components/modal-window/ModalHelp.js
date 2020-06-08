@@ -15,7 +15,7 @@ export default class Help extends React.Component {
 
                 <h2>What is a "Click"?</h2>
 
-                <p>In The Final Outpost, clicking on a creature (i.e. opening its view page) will raise one or more of that 
+                <p>In The Final Outpost, clicking on a creature (i.e, opening its view page) will raise one or more of that 
                 creature's "stats". A creature's stats can only be raised like this once per day by each player, so getting 
                 other players to click on your creatures is important for reaching high stat totals. Getting clicks is especially 
                 important for growing creatures, as the "hardiness" stat cannot be improved after a creature reaches maturity.</p>
@@ -36,7 +36,7 @@ export default class Help extends React.Component {
 
                 <p>To provide as many clicks for growing creatures as possible, 
                 this site does not allow adults in its creature pool. While adults are periodically 
-                removed from this site's database, this can sometimes take some time; If you come across an adult creature that 
+                removed from this site's database, this can sometimes take some time. If you come across an adult creature that 
                 hasn't been removed yet, please click the red [X] on its tile so that it can be looked at by the server.</p>
 
                 <h2>How do I get gold for clicks on this site?</h2>
@@ -68,8 +68,7 @@ export default class Help extends React.Component {
             
                 <h2>I have other questions...</h2>
                 <p>Feel free to contact me @TehFishey#8171 on the TFO Discord server! Alternatively, if you've found a 
-                bug, feel free to open an issue at the 
-                <a href="https://github.com/TehFishey/tfo-peer-review/issues">tfo-peer-review issue tracker.</a></p>
+                bug, feel free to open an issue at the <a href="https://github.com/TehFishey/tfo-peer-review/issues">tfo-peer-review issue tracker.</a></p>
             </div>
         );
     }

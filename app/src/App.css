@@ -46,7 +46,7 @@
   grid-template-columns: 316px minmax(0, 1fr);
   background-color: #282c34;
   text-align: bottom;
-  font-size: calc(12px);
+  font-size: 12px;
   color: white;
   border-radius: 5px;
   box-shadow: 2px 2px 5px #474747;
@@ -57,7 +57,8 @@
 .App-footer a:visited{
   color: #a9d8e6;
 }
-.attribution{
+
+.footer-attribution{
   height: 16px;
   width: 100%;
   display: inline-block;
@@ -65,4 +66,16 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+.footer-changelog {
+  display: inline-block; 
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  padding: 0px;
+  font-size: 10px;
+  text-decoration: underline;
+  color: #61dafb;
+}
+
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import SelectPanelItem from './SelectPanelItem';
-import {debounce} from '../../utilities/Limiters';
+import {debounce} from '../../utilities/limiters';
 
 /**
  * Component for displaying clickable creature objects pulled from the server database (which, in turn, 

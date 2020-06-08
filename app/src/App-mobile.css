@@ -57,12 +57,24 @@
 .App-footer a:visited{
   color: #a9d8e6;
 }
-.attribution{
+
+.footer-attribution{
   height: 16px;
   width: 100%;
   display: inlin;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.footer-changelog {
+  display: inline-block; 
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  padding: 0px;
+  font-size: 10px;
+  text-decoration: underline;
+  color: #61dafb;
 }
 }

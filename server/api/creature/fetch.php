@@ -20,6 +20,7 @@
  * 
  **************************************************************************************/
 
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
 header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET POST");
@@ -73,24 +74,33 @@ $curl = new TFO_cURL();
 $curl->action = 'lab';
 $curl->var = $labname;
 
-// ... execute the request ...
+// ... and execute it.
 $curl->execute();
 
+// Log that a Curl request was *attempted* (this is done regardless of output)
 $log = new Logger($db);
 $log->ip = $_SERVER['REMOTE_ADDR'];
+$log->weekId = date('Y-W');
 $log->logCurl();
 
 // If request failed, return error
 if($curl->error!=null || $curl->output=='') {
     http_response_code(500);
     die(json_encode(array("error" => "(500) Error communicating with TFO.")));
-} 
-// Otherwise, parse response into SessionCache and then return response object to frontend.
+}
+
+// Otherwise, parse out the response ...
 else {
     $result = $curl->output;
     $imports = json_decode($result, true);
+
     // If imports['error'] is true, there won't be any creatures to import.
     if(!$imports['error']) {
+
+        // Log labname to db only AFTER it's confirmed to be a valid import
+        $log->logLab($labname);
+
+        // Unset error information and decode creatures; import into SessionCache
         unset($imports['error']);
         unset($imports['errorCode']);
         $creature = new Creature($db);
@@ -111,6 +121,7 @@ else {
         }
     }
 
+    // Whatever the response from TFO was, pass it verbatim to the client after we're done with it.
     http_response_code(200);
     echo $result;
 }

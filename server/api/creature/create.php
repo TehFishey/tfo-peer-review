@@ -21,6 +21,7 @@
  * 
  **************************************************************************************/
 
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
 header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
@@ -93,6 +94,7 @@ if($stmt->rowCount()>0) {
 if(!array_diff($codes, $cachedCodes)) {
     $log = new Logger($db);
     $log->ip = $_SERVER['REMOTE_ADDR'];
+    $log->weekId = date('Y-W');
     // If all codes exist in the session's cache, transfer each of them from the cache table to creatures table.
     foreach($codes as &$code) {
         $creature->code = $code;
@@ -100,7 +102,7 @@ if(!array_diff($codes, $cachedCodes)) {
             http_response_code(503);
             echo json_encode(array("error" => "(503) Unable to create creature."));
         } else {
-            $log->logAdd();
+            $log->logAdd($code);
         }
     }
     http_response_code(201);

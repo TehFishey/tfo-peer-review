@@ -54,22 +54,31 @@ CREATE TABLE `SessionCache` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --logs
-CREATE TABLE `Log_Weekly` (
-  `ip` varchar(45) NOT NULL,
-  `action` varchar(36) NOT NULL,
-  `count` int NOT NULL,
-  PRIMARY KEY(ip, action)
+CREATE TABLE `Log_Metrics` (
+  `weekId` varchar(7) PRIMARY KEY NOT NULL,
+  `uniques` int NOT NULL DEFAULT 0,
+  `clicks` int NOT NULL DEFAULT 0,
+  `curls` int NOT NULL DEFAULT 0,
+  `creatureAdds` int NOT NULL DEFAULT 0,
+  `creatureRemoves` int NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---long-term logs
-CREATE TABLE `Log_Compiled` (
-  `weekId` varchar(7) PRIMARY KEY NOT NULL,
-  `pageViews` int NOT NULL,
-  `uniques` int NOT NULL,
-  `clicks` int NOT NULL,
-  `curls` int NOT NULL,
-  `creatureAdds` int NOT NULL,
-  `creatureRemoves` int NOT NULL
+CREATE TABLE `Log_Labs` (
+  `weekId` varchar(7) NOT NULL,
+  `labname` varchar(20) NOT NULL,
+  PRIMARY KEY(weekId, labname)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `Log_Creatures` (
+  `weekId` varchar(7) NOT NULL,
+  `code` varchar(5) NOT NULL,
+  PRIMARY KEY(weekId, code)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `Log_Uniques` (
+  `weekId` varchar(7) NOT NULL,
+  `ip` varchar(45) NOT NULL,
+  PRIMARY KEY(weekId, ip)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --rate limiter logs

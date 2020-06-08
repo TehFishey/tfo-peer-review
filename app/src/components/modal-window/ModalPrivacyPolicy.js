@@ -9,7 +9,7 @@ export default class PrivacyPolicy extends React.Component {
             <div>
                 <p>TFO Peer Review puts a high priority on protecting users' privacy.
                 This Privacy Policy details the types of information 
-                collected by TFO Peer Review, and explains how that information is used.</p>
+                collected by TFO Peer Review and explains how that information is used.</p>
 
                 <p>If you have additional questions or require more information about 
                 our Privacy Policy, do not hesitate to contact us.</p>
@@ -28,12 +28,10 @@ export default class PrivacyPolicy extends React.Component {
 
                 <p>TFO Peer Review additionally collects a limited amount of metric data 
                 regarding user interactions with the site, to help measure site use 
-                and performance. These metrics include the users' IP addresses, 
-                as well as: the number of creature pages that users have opened, the number 
-                of labs that users have fetched from TFO, and the number of creatures that 
-                users have added or removed from TFO Peer Review. Once per week, these records 
-                are compiled into an aggregate metrics report; records tied to user IP 
-                addresses are NOT retained for longer than one week.</p>
+                and performance. These metrics include counts for each API operation performed by
+                the server each week, as well as logs of: user IP addresses, creature codes added to 
+                the site, and lab names sucessfully queried by the site. In the interest of privacy,
+                however, records tied to user IP addresses are NOT retained for longer than one week.</p>
 
                 <h2>Cookies Policy</h2>
 
@@ -90,7 +88,7 @@ export default class PrivacyPolicy extends React.Component {
                     
                 <p>This Privacy Policy was created with the help of the <a href="https://www.privacypolicygenerator.org">
                 Free Privacy Policy Generator</a> and the <a href="https://www.privacypolicyonline.com/privacy-policy-generator/">
-                Privacy Policy Generator Online</a>. This policy was last updated on May 29, 2020</p>
+                Privacy Policy Generator Online</a>. This policy was last updated on June 8, 2020</p>
             </div>
         );
     }
