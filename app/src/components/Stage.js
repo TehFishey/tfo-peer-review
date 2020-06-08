@@ -31,9 +31,8 @@ export default class Stage extends React.Component {
      * @param {string} code - code of creature to display
      */
     openCreature(code) {
-        let url = 'https://finaloutpost.net/view/'+code+'#main';
-        this.setState({ currentView : url });
-        if(window.ENV.DEBUG) console.log('Controller: View is now: '+this.state.currentView);
+        this.setState({ currentView : code });
+        if(window.ENV.DEBUG) console.log(`Controller: View is now: https://finaloutpost.net/view/${this.state.currentView}#main`);
         this.clearCreature(code);
     }
 
@@ -113,9 +112,9 @@ export default class Stage extends React.Component {
      */
     updateDisplaySize(width, height, padding) {
         // SelectPanelItem width + margin + borders
-        let itemWidth = 65+(5*2)+3+4;
+        let itemWidth = 65+(2*2)+3+4;
         // SelectPanelItem height + margin + borders
-        let itemHeight = 75+(5*2)+3+4;
+        let itemHeight = 75+(2*2)+3+4;
 
         let columns = Math.floor((width-padding*2)/itemWidth);
         let rows = Math.floor((height-padding*2)/itemHeight);
@@ -148,7 +147,7 @@ export default class Stage extends React.Component {
                         onCreatureFlag={(code) => this.flagCreature(code)}
                         onRender={(width,height) => this.updateDisplaySize(width,height, 5)}
                     />
-                    <ViewPanel currentView={this.state.currentView}/>
+                    <ViewPanel currentView={this.state.currentView} onCreatureFlag={(code) => this.flagCreature(code)}/>
                     </div>
                 </div>
             </div>
