@@ -50,6 +50,7 @@ $output['allTime'] = array();
 
 // Create data object and execute query for weekly logs
 $logs = new Log($db);
+$logs->weekId = date('Y-W');
 
 $logs->readWeeklyLogs();
 $output['weekly']['uniques'] = $logs->uniques;

@@ -206,7 +206,7 @@ export default class APIService {
      * Optionally executes {callback} on response data.
      * @param {function} callback
      * @example 
-     * // Returns {"weekly": {"uniques": 1,"clicks": 273,"curls": 30,"creatureAdds": 58,"creatureRemoves": 16},"allTime": {"clicks": 774,"curls": 34,"creatureAdds": 58,"creatureRemoves": 16}}
+     * // Returns {"weekly": {"uniques": 1,"clicks": 273,"uniqueCreatures": 30,"uniqueLabs": 58},"allTime": {"clicks": 273,"uniqueCreatures": 30,"uniqueLabs": 58}}
      * APIService.getLogData((data)=>{return data});
      */
     getLogData(callback) {

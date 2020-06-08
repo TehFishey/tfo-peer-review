@@ -17,7 +17,8 @@
  * 
  **************************************************************************************/
 
-header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
+header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
@@ -83,6 +84,7 @@ $click->time = (string) time();
 if($click->create()){
     $log = new Logger($db);
     $log->ip = $_SERVER['REMOTE_ADDR'];
+    $log->weekId = date('Y-W');
     $log->logClick();
 
     http_response_code(201);
