@@ -147,7 +147,7 @@ export default class Stage extends React.Component {
                         onCreatureFlag={(code) => this.flagCreature(code)}
                         onRender={(width,height) => this.updateDisplaySize(width,height, 3)}
                     />
-                    <ViewPanel currentView={this.state.currentView} onCreatureFlag={(code) => this.flagCreature(code)}/>
+                    <ViewPanel currentView={this.state.currentView} onCreatureFlag={(code) => {this.flagCreature(code); this.setState({currentView : ''});}}/>
                     </div>
                 </div>
             </div>
