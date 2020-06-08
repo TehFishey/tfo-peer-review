@@ -57,9 +57,10 @@ class Logger {
     }
 
     private function logIp() {
-        $query = "SELECT * FROM ".$this->ips_table_name." WHERE ip = :ip";
+        $query = "SELECT * FROM ".$this->ips_table_name." WHERE ip = :ip AND weekId = :weekId";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":ip", $this->ip);
+        $stmt->bindParam(":weekId", $this->weekId);
 
         if(!$stmt->execute()) {return false;}
         if(!($stmt->rowCount()>0)) {
