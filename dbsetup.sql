@@ -14,7 +14,6 @@ CREATE TABLE `Creatures` (
   `code` varchar(5) PRIMARY KEY NOT NULL,
   `imgSrc` varchar(60) NOT NULL,
   `gotten` varchar(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
   `growthLevel` varchar(1) NOT NULL,
   `isStunted` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

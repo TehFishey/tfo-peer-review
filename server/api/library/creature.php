@@ -31,7 +31,7 @@
  * 
  * ->replace() - Used as a catch-all for Insert and Update queries for the "Creatures" table. Creates/updates 
  *               a "Creatures" entry with fields set by the data object's props. Currently deprecated and unused.
- *                  Requires: $this->code, $this->imgsrc, $this->gotten, $this->name, $this->growthLevel, $this->isStunted
+ *                  Requires: $this->code, $this->imgsrc, $this->gotten, $this->growthLevel, $this->isStunted
  * 
  * ->update() - Highly specific update command; ONLY updates the "growthLevel" and and "isStunted" fields of a "Creatures"
  *              table entry matching $this->code. Field values are taken from the object's corresponding props. This method
@@ -45,7 +45,7 @@
  * 
  * ->replaceInCache() - As the replace() method, but for the "CreatureCache" table instead. Used by the creature/fetch endpoint
  *                      to add creatures retrieved by TLO to "CreatureCache". 
- *                          Requires: $this->session $this->code, $this->imgsrc, $this->gotten, $this->name, $this->growthLevel, $this->isStunted
+ *                          Requires: $this->session $this->code, $this->imgsrc, $this->gotten, $this->growthLevel, $this->isStunted
  * 
  * ->importFromCache() - Copies an entry from "CreatureCache" to "Creatures". "CreatureCache" entry must match $this->code AND $this->session 
  *                       in order to be copied. This method is called by the creature/create endpoint, after a user has chosen to 'add' certain
@@ -72,7 +72,6 @@ class Creature {
     public $code;           // string - 5 character creature code (ex. "6bMDs")
     public $imgsrc;         // string - 60 character image src (ex. "https:\/\/finaloutpost.net\/s\/6bMDs.png")
     public $gotten;         // string - 10 character Unix timestamp for when creature was aquired
-    public $name;           // string - 30 creature name (or Unnamed) (ex. "Unnamed")
     public $growthLevel;    // string - 1 character creature growthLevel level (1-egg, 2-hatch, 3-mature) (ex. "1")
     public $isStunted;      // string - 5 character boolean (true/false) for if the creature is a stunted capsule/child
   
@@ -84,7 +83,7 @@ class Creature {
 
     function readSet($uuid, $count) {
         // Retrieves $count random 'creatures' entries where no 'userclicks' entry match the creature code
-        $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel 
+        $query = "SELECT c.code, c.imgsrc, c.gotten, c.growthLevel
             FROM " . $this->creature_table_name . " AS c LEFT OUTER JOIN " . $this->click_table_name . " AS uc ON c.code = uc.code 
             GROUP BY c.code 
             HAVING COUNT(CASE WHEN uc.uuid=:uuid THEN 1 END) = 0
@@ -109,7 +108,7 @@ class Creature {
 
     function readOne() {
         // query to read single record
-        $query = "SELECT c.code, c.imgsrc, c.gotten, c.name, c.growthLevel, c.isStunted FROM "
+        $query = "SELECT c.code, c.imgsrc, c.gotten, c.growthLevel, c.isStunted FROM "
                     . $this->creature_table_name . " AS c WHERE c.code = ? LIMIT 0,1";
 
         // prepare query statement
@@ -126,7 +125,6 @@ class Creature {
             // set values to object properties
             $this->imgsrc = $row['imgsrc'];
             $this->gotten = $row['gotten'];
-            $this->name = $row['name'];
             $this->growthLevel = $row['growthLevel'];
             $this->isStunted = $row['isStunted'];
             return true;
@@ -139,7 +137,7 @@ class Creature {
         // 'code' is a primary key, so this should work fine.
 
         $query = "REPLACE INTO " . $this->creature_table_name . " SET 
-            code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel, isStunted=:isStunted";
+            code=:code, imgsrc=:imgsrc, gotten=:gotten, growthLevel=:growthLevel, isStunted=:isStunted";
       
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -148,7 +146,6 @@ class Creature {
         $this->code=htmlspecialchars(strip_tags($this->code));
         $this->imgsrc=htmlspecialchars(strip_tags($this->imgsrc));
         $this->gotten=htmlspecialchars(strip_tags($this->gotten));
-        $this->name=htmlspecialchars(strip_tags($this->name));
         $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
         $this->isStunted=htmlspecialchars(strip_tags($this->isStunted));
       
@@ -156,7 +153,6 @@ class Creature {
         $stmt->bindParam(":code", $this->code);
         $stmt->bindParam(":imgsrc", $this->imgsrc);
         $stmt->bindParam(":gotten", $this->gotten);
-        $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":growthLevel", $this->growthLevel);
         $stmt->bindParam(":isStunted", $this->isStunted);
       
@@ -207,7 +203,7 @@ class Creature {
         // 'code' is a primary key, so this should work fine.
 
         $query = "REPLACE INTO " . $this->cache_table_name . " SET 
-            sessionId=:session, code=:code, imgsrc=:imgsrc, gotten=:gotten, name=:name, growthLevel=:growthLevel, isStunted=:isStunted";
+            sessionId=:session, code=:code, imgsrc=:imgsrc, gotten=:gotten, growthLevel=:growthLevel, isStunted=:isStunted";
       
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -217,7 +213,6 @@ class Creature {
         $this->code=htmlspecialchars(strip_tags($this->code));
         $this->imgsrc=htmlspecialchars(strip_tags($this->imgsrc));
         $this->gotten=htmlspecialchars(strip_tags($this->gotten));
-        $this->name=htmlspecialchars(strip_tags($this->name));
         $this->growthLevel=htmlspecialchars(strip_tags($this->growthLevel));
         $this->isStunted=htmlspecialchars(strip_tags($this->isStunted));
       
@@ -226,7 +221,6 @@ class Creature {
         $stmt->bindParam(":code", $this->code);
         $stmt->bindParam(":imgsrc", $this->imgsrc);
         $stmt->bindParam(":gotten", $this->gotten);
-        $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":growthLevel", $this->growthLevel);
         $stmt->bindParam(":isStunted", $this->isStunted);
       
@@ -237,10 +231,10 @@ class Creature {
 
     function importFromCache() {
 
-        $query = "INSERT INTO ".$this->creature_table_name."(code, imgsrc, gotten, name, growthLevel, isStunted) 
-            SELECT cc.code, cc.imgsrc, cc.gotten, cc.name, cc.growthLevel, cc.isStunted FROM ".$this->cache_table_name." AS cc 
+        $query = "INSERT INTO ".$this->creature_table_name."(code, imgsrc, gotten, growthLevel, isStunted)
+            SELECT cc.code, cc.imgsrc, cc.gotten, cc.growthLevel, cc.isStunted FROM ".$this->cache_table_name." AS cc
             WHERE (cc.sessionId=:session AND cc.code=:code) 
-            ON DUPLICATE KEY UPDATE imgsrc=cc.imgsrc, gotten=cc.gotten, name=cc.name, growthLevel=cc.growthLevel, isStunted=cc.isStunted";
+            ON DUPLICATE KEY UPDATE imgsrc=cc.imgsrc, gotten=cc.gotten, growthLevel=cc.growthLevel, isStunted=cc.isStunted";
         $stmt = $this->conn->prepare($query);
 
         $this->session=htmlspecialchars(strip_tags($this->session));

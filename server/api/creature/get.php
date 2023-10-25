@@ -90,7 +90,6 @@ if(!($stmt->rowCount()>0)) {
             "code" => $code,
             "imgsrc" => $imgsrc,
             "gotten" => $gotten,
-            "name" => $name,
             "growthLevel" => $growthLevel
         );
         // Push them to {creatures : }, and return.
