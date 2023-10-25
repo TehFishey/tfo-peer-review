@@ -109,7 +109,6 @@ else {
             $creature->code = $item['code'];
             $creature->imgsrc = $item['imgsrc'];
             $creature->gotten = $item['gotten'];
-            $creature->name = $item['name'];
             $creature->growthLevel = $item['growthLevel'];
 
             // The TFO API usually doesn't return isStunted value (if true, it shouldn't return the creature at all)
