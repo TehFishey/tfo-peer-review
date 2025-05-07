@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once '../utilities/db.php';
+include_once '../utilities/remoteaddress.php';
 include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
 include_once '../library/curl.php';
@@ -40,9 +41,10 @@ include_once '../library/session.php';
 include_once '../library/creature.php';
   
 // Instantiate objects
+$ip = new RemoteAddress();
 $database = new Database();
 $db = $database->getConnection();
-$ratelimiter = new RateLimiter($db, $_SERVER['REMOTE_ADDR'], 100, 10);
+$ratelimiter = new RateLimiter($db, $ip->getIpAddress(), 100, 10);
 $data = json_decode(file_get_contents("php://input"));
 
 // Check ip against rate limits
@@ -65,7 +67,7 @@ if(!empty($_GET['labname'])) {
 
 // If data validation checks are passed, create a session object and run get/create on the sessions table.
 $session = new Session($db);
-$session->ip = $_SERVER['REMOTE_ADDR'];
+$session->ip = $ip->getIpAddress();
 $session->time = time();
 $session->updateAndRead();
 
@@ -79,7 +81,7 @@ $curl->execute();
 
 // Log that a Curl request was *attempted* (this is done regardless of output)
 $log = new Logger($db);
-$log->ip = $_SERVER['REMOTE_ADDR'];
+$log->ip = $ip->getIpAddress();
 $log->weekId = date('Y-W');
 $log->logCurl();
 

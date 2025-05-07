@@ -13,3 +13,5 @@ $click_table = 'Clicks';
 $query = "DELETE FROM ".$click_table;
 $stmt = $conn->prepare($query);
 $stmt->execute();
+
+echo('DEBUG: cron-daily.php executed @ '.time()."\n");

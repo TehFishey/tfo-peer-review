@@ -1,4 +1,4 @@
 window.ENV = {
-    API_URL : 'https://localhost/api/',
+    API_URL : 'http://localhost/api/',
     DEBUG : true
 }

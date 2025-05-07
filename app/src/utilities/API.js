@@ -1,5 +1,5 @@
 import axios from 'axios';
-const rootUrl = window.ENV.API_URL;
+const rootUrl = window.location + "/api"
 
 /**
  * Frontend API handler object; Uses Axios to execute AJAX communications with the internal API.
@@ -24,7 +24,7 @@ export default class APIService {
      * APIService.getCreatureEntities(2, (data)=>{return data.creatures;});
      */
     getCreatureEntries(count, callback) {
-        const cmd = './creature/get.php';
+        const cmd = '/creature/get.php';
         let url = rootUrl + cmd + '?count='+count;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to retrieve '+count+' creature entries');
@@ -51,7 +51,7 @@ export default class APIService {
      * APIService.addCreatureEntries(['zzzzz', 'yyyyy'], (data)=>{return data.message;});
      */
     addCreatureEntries(codes, callback) {
-        const cmd = './creature/create.php';
+        const cmd = '/creature/create.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to add/update creature entries with codes: ' + codes.toString());
@@ -78,7 +78,7 @@ export default class APIService {
      * APIService.removeCreatureEntries(['zzzzz', 'yyyyy'], (data)=>{return data.message;});
      */
     removeCreatureEntries(codes, callback) {
-        const cmd = './creature/delete.php';
+        const cmd = '/creature/delete.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to delete creature entries with codes: ' + codes.toString());
@@ -104,7 +104,7 @@ export default class APIService {
      * APIService.checkCreatureEntries(['aaaaa', 'bbbbb'], (data)=>{return data.exists;});
      */
     checkCreatureEntries(codes, callback) {
-        const cmd = './creature/test.php';
+        const cmd = '/creature/test.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Checking server for existing entries with codes: ' + codes.toString());
@@ -130,7 +130,7 @@ export default class APIService {
      * APIService.addCreatureFla('xxxxx', (data)=>{return data.message;});
      */
     addCreatureFlag(code, callback) {
-        const cmd = './flag/create.php';
+        const cmd = '/flag/create.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to add ' + code + ' to markedkeys db table');
@@ -156,7 +156,7 @@ export default class APIService {
      * APIService.addCreatureClick('xxxxx', (data)=>{return data.message;});
      */
     addCreatureClick(code, callback) {
-        const cmd = './click/create.php';
+        const cmd = '/click/create.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: updating server click tracker for code ' + code);
@@ -184,7 +184,7 @@ export default class APIService {
      * APIService.fetchByLabname('TehFishey', (data)=>{return data;});
      */
     fetchByLabname(username, callback) {
-        const cmd = './creature/fetch.php';
+        const cmd = '/creature/fetch.php';
         let url = rootUrl + cmd + '?labname='+username;
 
         if(window.ENV.DEBUG) console.log('API: Attempting lab request for username: ' + username);
@@ -210,7 +210,7 @@ export default class APIService {
      * APIService.getLogData((data)=>{return data});
      */
     getLogData(callback) {
-        const cmd = './log/get.php';
+        const cmd = '/log/get.php';
         let url = rootUrl + cmd;
 
         if(window.ENV.DEBUG) console.log('API: Attempting to get server log data.');

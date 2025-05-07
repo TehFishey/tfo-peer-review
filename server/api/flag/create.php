@@ -39,16 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
 
 // Include database and object files
 include_once '../utilities/db.php';
+include_once '../utilities/remoteaddress.php';
 include_once '../utilities/logger.php';
 include_once '../utilities/limiter.php';
 include_once '../library/flag.php';
 include_once '../library/creature.php';
 
 // Instantiate objects
+$ip = new RemoteAddress();
 $database = new Database();
 $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
-$ratelimiter = new RateLimiter($db, $_SERVER['REMOTE_ADDR'], 100, 10);
+$ratelimiter = new RateLimiter($db, $ip->getIpAddress(), 100, 10);
 
 // Check ip against rate limits
 // Click operations have a cost of 2/100 tokens (5 per second)

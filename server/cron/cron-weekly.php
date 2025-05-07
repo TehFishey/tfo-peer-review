@@ -19,3 +19,5 @@ $stmt->execute();
 $query = "DELETE FROM ".$rate_limiter_table_name;
 $stmt = $conn->prepare($query);
 $stmt->execute();
+
+echo('DEBUG: cron-weekly.php executed @ '.time()."\n");

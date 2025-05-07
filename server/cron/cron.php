@@ -5,3 +5,5 @@
 
 include_once (__DIR__).'/update-db.php';
 include_once (__DIR__).'/flush-db.php';
+
+#echo('DEBUG: cron.php executed @ '.time()."\n");

@@ -1,0 +1,36 @@
+# Context needs to be project root
+# Build using docker build . -t tfo-peer-review -f docker/dockerfile
+
+FROM node:alpine as build-deps
+WORKDIR /usr/src/app
+COPY ./app/package.json ./app/package-lock.json ./
+RUN npm install
+COPY ./app ./
+RUN npm run-script build
+
+FROM php:7.4-apache
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN docker-php-ext-enable mysqli pdo pdo_mysql
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y cron
+
+COPY --from=build-deps /usr/src/app/build /var/www/html
+COPY ./server /var/www/html
+ADD ./docker/config-docker.php /var/www/html/config/config.php
+ADD ./docker/.htaccess /var/www/html/.htaccess
+
+COPY ./docker/crontab-docker /etc/crontab
+RUN chmod 0644 /etc/crontab
+RUN touch /var/log/cron.log
+
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+RUN echo '/dev/stderr' >> "$PHP_INI_DIR/php.ini"
+
+COPY ./docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 80
+ENTRYPOINT ["/entrypoint.sh"]
+CMD bash -c "cron && apache2-foreground"

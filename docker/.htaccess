@@ -1,0 +1,6 @@
+# BEGIN Tfo-Peer-Review
+
+RedirectMatch 403 ^/config/.*$
+RedirectMatch 403 ^/cron/.*$
+
+# END Tfo-Peer-Review
