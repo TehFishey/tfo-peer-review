@@ -1,7 +1,7 @@
 # Context needs to be project root
 # Build using docker build . -t tfo-peer-review -f docker/dockerfile
 
-FROM node:alpine as build-deps
+FROM node:14.15.0-alpine as build-deps
 WORKDIR /usr/src/app
 COPY ./app/package.json ./app/package-lock.json ./
 RUN npm install

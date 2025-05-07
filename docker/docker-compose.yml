@@ -5,7 +5,7 @@ volumes:
 
 services:
   db:
-    image: mariadb:latest
+    image: mariadb:10.7.3-focal
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: "password"
