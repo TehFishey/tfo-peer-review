@@ -20,6 +20,10 @@ export default class Help extends React.Component {
                     <li> Adjusted frontend metrics widget to display new log data. They should be more intuitive/accurate for users, now.</li>
                     <li> Changed privacy policy to accurately represent new state of server logging.</li>
                 </ul>
+                <h2>Version 1.1.1</h2>
+                <ul>
+                    <li> (Finally) Fixed a database/API error related to loading creatures with longer names into TPR. (Fix by pinkgothic; much credit, many thank.)</li>
+                </ul>
             </div>
         );
     }
