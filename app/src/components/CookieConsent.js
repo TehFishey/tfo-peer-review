@@ -1,5 +1,5 @@
 import React from 'react';
-import { checkConsentCookie, createConsentCookie } from '../utilities/cookies.js';
+import { checkConsentCookie, createConsentCookie } from '../utilities/Cookies';
 import './cookie-consent.css';
 import './cookie-consent-mobile.css';
 

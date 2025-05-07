@@ -1,5 +1,5 @@
 import React from 'react';
-import {throttle} from '../../utilities/limiters';
+import {throttle} from '../../utilities/Limiters';
 import './stat-widget.css';
 import './stat-widget-mobile.css';
 

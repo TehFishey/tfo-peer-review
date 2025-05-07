@@ -17,8 +17,8 @@
  * 
  **************************************************************************************/
 
-header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
@@ -65,7 +65,7 @@ if(!empty($data->code) && strlen($data->code)==5) {
     $creature = new creature($db);
     $creature->code = $code;
     $creature->readOne();
-    if($creature->name==null){
+    if($creature->gotten==null){
         http_response_code(409);
         die(json_encode(array("message" => "(409) Unable to log click. Creature code does not exist in database.")));
     }

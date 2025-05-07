@@ -3,8 +3,8 @@ import ImportPanel from './stage-top/ImportPanel';
 import SelectPanel from './stage-bottom/SelectPanel.js';
 import ViewPanel from './stage-bottom/ViewPanel.js';
 import ButtonPanel from './stage-top/ButtonPanel';
-import {checkUUID} from '../utilities/cookies';
-import {throttle} from '../utilities/limiters';
+import {checkUUID} from '../utilities/Cookies';
+import {throttle} from '../utilities/Limiters';
 import './stage-top/stage-top.css';
 import './stage-top/stage-top-mobile.css';
 import './stage-bottom/stage-bottom.css';
@@ -147,7 +147,7 @@ export default class Stage extends React.Component {
                         onCreatureFlag={(code) => this.flagCreature(code)}
                         onRender={(width,height) => this.updateDisplaySize(width,height, 3)}
                     />
-                    <ViewPanel currentView={this.state.currentView} onCreatureFlag={(code) => this.flagCreature(code)}/>
+                    <ViewPanel currentView={this.state.currentView} onCreatureFlag={(code) => {this.flagCreature(code); this.setState({currentView : ''});}}/>
                     </div>
                 </div>
             </div>

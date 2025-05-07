@@ -18,8 +18,8 @@
  * 
  **************************************************************************************/
 
-header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET POST");
 header("Access-Control-Max-Age: 3600");
@@ -90,7 +90,6 @@ if(!($stmt->rowCount()>0)) {
             "code" => $code,
             "imgsrc" => $imgsrc,
             "gotten" => $gotten,
-            "name" => $name,
             "growthLevel" => $growthLevel
         );
         // Push them to {creatures : }, and return.

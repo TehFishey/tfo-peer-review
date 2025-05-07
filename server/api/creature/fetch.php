@@ -20,8 +20,8 @@
  * 
  **************************************************************************************/
 
-header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
-//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
+//header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN']);
+header("Access-Control-Allow-Origin: ".$_SERVER['HTTP_REFERER']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET POST");
 header("Access-Control-Max-Age: 3600");
@@ -109,7 +109,6 @@ else {
             $creature->code = $item['code'];
             $creature->imgsrc = $item['imgsrc'];
             $creature->gotten = $item['gotten'];
-            $creature->name = $item['name'];
             $creature->growthLevel = $item['growthLevel'];
 
             // The TFO API usually doesn't return isStunted value (if true, it shouldn't return the creature at all)
