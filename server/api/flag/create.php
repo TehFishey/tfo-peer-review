@@ -76,7 +76,7 @@ if(!empty($data->code) && strlen($data->code)==5) {
     $creature = new creature($db);
     $creature->code = $code;
     $creature->readOne();
-    if($creature->name==null){
+    if($creature->gotten==null){
         http_response_code(409);
         die(json_encode(array("message" => "(409) Unable to flag creature. Creature code does not exist in database.")));
     }
