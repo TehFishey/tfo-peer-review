@@ -26,7 +26,7 @@ Setup database, user, and tables via prepared SQL script:
 ```
 cd tfo-peer-review/
 mysql -u <root> -p <rootpassword>
-> SOURCE dbsetup.sql;
+> SOURCE schema.sql;
 ```
 *Note: this will create the SQL database 'tfopeerreview_db', and add permissions to user 'tfopeerreview_user' with password 'password'.*
 
